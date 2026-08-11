@@ -9,276 +9,411 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  :root{
-    --bg:#000000;
-    --red:#ff1f3d;
-    --red-glow:#ff3b52;
-    --red-dim:#4d0f18;
-    --text:#f3ecec;
-    --muted:#8a5a60;
-    --silver:#eef0f2;
-  }
+:root{
+--bg:#000000;
+--red:#ff1f3d;
+--red-glow:#ff3b52;
+--red-dim:#4d0f18;
+--text:#f3ecec;
+--muted:#8a5a60;
+--silver:#eef0f2;
+}
 
-  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
-  html,body{
-    margin:0;
-    padding:0;
-    height:100%;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    overflow:hidden;
-  }
+html,body{
+margin:0;
+padding:0;
+height:100%;
+background:var(--bg);
+color:var(--text);
+font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+overflow:hidden;
+}
 
-  canvas#rain{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    opacity:0.55;
-  }
+canvas#rain{
+position:fixed;
+inset:0;
+z-index:0;
+opacity:0.55;
+}
 
-  .vignette{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    background:
-      radial-gradient(ellipse at 50% 40%, transparent 30%, #000 88%),
-      linear-gradient(180deg, #000 0%, transparent 14%, transparent 86%, #000 100%);
-  }
+.vignette{
+position:fixed;
+inset:0;
+z-index:1;
+pointer-events:none;
+background:
+radial-gradient(ellipse at 50% 40%, transparent 30%, #000 88%),
+linear-gradient(180deg, #000 0%, transparent 14%, transparent 86%, #000 100%);
+}
 
-  /* ---------- corner brand marks ---------- */
-  .brand-tl, .brand-tr{
-    position:fixed;
-    top:18px;
-    z-index:2;
-    font-family:'JetBrains Mono', monospace;
-    font-size:10px;
-    letter-spacing:0.14em;
-    color:var(--muted);
-  }
-  .brand-tl{ left:18px; }
-  .brand-tr{ right:18px; }
-  .brand-tl b, .brand-tr b{
-    color:var(--red);
-    font-weight:600;
-  }
-  .tag{
-    border:1px solid var(--red-dim);
-    padding:4px 9px;
-    border-radius:3px;
-    display:inline-block;
-  }
+/* ---------- corner brand marks ---------- */
+.brand-tl, .brand-tr{
+position:fixed;
+top:18px;
+z-index:2;
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+letter-spacing:0.14em;
+color:var(--muted);
+}
 
-  /* ---------- layout ---------- */
-  .wrap{
-    position:relative;
-    z-index:2;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:70px 20px 40px;
-    text-align:center;
-  }
+.brand-tl{ left:18px; }
+.brand-tr{ right:18px; }
 
-  .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.32em;
-    text-transform:uppercase;
-    color:var(--red);
-    margin-bottom:14px;
-  }
-  .eyebrow::before{ content:"— "; color:var(--red-dim); }
-  .eyebrow::after{ content:" —"; color:var(--red-dim); }
+.brand-tl b, .brand-tr b{
+color:var(--red);
+font-weight:600;
+}
 
-  /* glitch title */
-  h1{
-    position:relative;
-    font-family:'Orbitron','Inter',sans-serif;
-    font-size:clamp(28px, 9vw, 40px);
-    font-weight:900;
-    letter-spacing:0.01em;
-    margin:0 0 6px;
-    color:var(--silver);
-    text-shadow:0 0 22px rgba(255,31,61,0.45);
-  }
-  h1::before, h1::after{
-    content:attr(data-text);
-    position:absolute;
-    left:0; right:0; top:0;
-    opacity:0.7;
-  }
-  h1::before{
-    color:#ff1f3d;
-    animation:glitchA 3.4s infinite steps(1);
-    clip-path:inset(0 0 60% 0);
-  }
-  h1::after{
-    color:#4ad4ff;
-    animation:glitchB 3.4s infinite steps(1);
-    clip-path:inset(60% 0 0 0);
-  }
-  @keyframes glitchA{
-    0%,92%,100%{ transform:translate(0,0); opacity:0; }
-    93%{ transform:translate(-2px,-1px); opacity:0.8; }
-    95%{ transform:translate(2px,1px); opacity:0.6; }
-    97%{ transform:translate(-1px,0); opacity:0.8; }
-  }
-  @keyframes glitchB{
-    0%,91%,100%{ transform:translate(0,0); opacity:0; }
-    92%{ transform:translate(2px,1px); opacity:0.7; }
-    94%{ transform:translate(-2px,-1px); opacity:0.5; }
-    96%{ transform:translate(1px,0); opacity:0.7; }
-  }
+.tag{
+border:1px solid var(--red-dim);
+padding:4px 9px;
+border-radius:3px;
+display:inline-block;
+}
 
-  .lot{
-    font-size:13px;
-    color:var(--muted);
-    margin-bottom:22px;
-    letter-spacing:0.02em;
-  }
+/* ---------- layout ---------- */
+.wrap{
+position:relative;
+z-index:2;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:70px 20px 40px;
+text-align:center;
+}
 
-  .prize{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    padding:7px 18px;
-    border-radius:2px;
-    background:rgba(255,31,61,0.06);
-    border:1px solid var(--red-dim);
-    color:var(--silver);
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    font-weight:500;
-    margin-bottom:36px;
-  }
-  .prize b{ color:var(--red); font-weight:600; }
+.eyebrow{
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+letter-spacing:0.32em;
+text-transform:uppercase;
+color:var(--red);
+margin-bottom:14px;
+}
 
-  /* ---------- countdown ring ---------- */
-  .crystal{
-    position:relative;
-    width:min(300px, 78vw);
-    aspect-ratio:1/1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:34px;
-  }
+.eyebrow::before{ content:"— "; color:var(--red-dim); }
+.eyebrow::after{ content:" —"; color:var(--red-dim); }
 
-  .crystal svg{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-  }
+/* glitch title */
+h1{
+position:relative;
+font-family:'Orbitron','Inter',sans-serif;
+font-size:clamp(28px, 9vw, 40px);
+font-weight:900;
+letter-spacing:0.01em;
+margin:0 0 6px;
+color:var(--silver);
+text-shadow:0 0 22px rgba(255,31,61,0.45);
+}
 
-  .crystal-ring{
-    fill:none;
-    stroke:rgba(255,31,61,0.14);
-    stroke-width:2;
-  }
+h1::before, h1::after{
+content:attr(data-text);
+position:absolute;
+left:0; right:0; top:0;
+opacity:0.7;
+}
 
-  .crystal-progress{
-    fill:none;
-    stroke:var(--red);
-    stroke-width:3;
-    stroke-linecap:round;
-    filter:drop-shadow(0 0 9px rgba(255,31,61,0.75));
-    transition:stroke-dashoffset 1s linear;
-  }
+h1::before{
+color:#ff1f3d;
+animation:glitchA 3.4s infinite steps(1);
+clip-path:inset(0 0 60% 0);
+}
 
-  .digits{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:2px;
-  }
+h1::after{
+color:#4ad4ff;
+animation:glitchB 3.4s infinite steps(1);
+clip-path:inset(60% 0 0 0);
+}
 
-  .time-row{
-    font-family:'Orbitron','JetBrains Mono',sans-serif;
-    font-size:clamp(30px, 8vw, 40px);
-    font-weight:700;
-    letter-spacing:0.03em;
-    font-variant-numeric:tabular-nums;
-    color:var(--silver);
-    text-shadow:0 0 18px rgba(255,31,61,0.4);
-  }
+@keyframes glitchA{
+0%,92%,100%{ transform:translate(0,0); opacity:0; }
+93%{ transform:translate(-2px,-1px); opacity:0.8; }
+95%{ transform:translate(2px,1px); opacity:0.6; }
+97%{ transform:translate(-1px,0); opacity:0.8; }
+}
 
-  .time-labels{
-    display:flex;
-    gap:14px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:10px;
-    letter-spacing:0.18em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-top:4px;
-  }
+@keyframes glitchB{
+0%,91%,100%{ transform:translate(0,0); opacity:0; }
+92%{ transform:translate(2px,1px); opacity:0.7; }
+94%{ transform:translate(-2px,-1px); opacity:0.5; }
+96%{ transform:translate(1px,0); opacity:0.7; }
+}
 
-  .started-badge{
-    display:none;
-    font-family:'Orbitron','Inter',sans-serif;
-    font-size:clamp(20px,6vw,28px);
-    font-weight:800;
-    color:var(--red);
-    text-shadow:0 0 22px rgba(255,31,61,0.65);
-    animation:pulse 1.1s ease-in-out infinite;
-  }
-  @keyframes pulse{
-    0%,100%{ opacity:1; transform:scale(1); }
-    50%{ opacity:0.7; transform:scale(1.05); }
-  }
+.lot{
+font-size:13px;
+color:var(--muted);
+margin-bottom:22px;
+letter-spacing:0.02em;
+}
 
-  /* ---------- cta ---------- */
-  .cta-frame{
-    position:relative;
-    width:100%;
-    max-width:300px;
-  }
-  .cta-frame::before, .cta-frame::after{
-    content:"";
-    position:absolute;
-    width:14px; height:14px;
-    border:1.5px solid var(--red);
-    opacity:0.8;
-  }
-  .cta-frame::before{ top:-6px; left:-6px; border-right:none; border-bottom:none; }
-  .cta-frame::after{ bottom:-6px; right:-6px; border-left:none; border-top:none; }
+.prize{
+display:inline-flex;
+align-items:center;
+gap:6px;
+padding:7px 18px;
+border-radius:2px;
+background:rgba(255,31,61,0.06);
+border:1px solid var(--red-dim);
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:500;
+margin-bottom:36px;
+}
 
-  .cta{
-    width:100%;
-    padding:15px 20px;
-    border-radius:2px;
-    border:1px solid var(--red-dim);
-    background:linear-gradient(180deg, rgba(255,31,61,0.12), rgba(255,31,61,0.02));
-    color:var(--silver);
-    font-family:'JetBrains Mono', monospace;
-    font-size:13px;
-    font-weight:600;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:transform .15s ease, background .2s ease;
-  }
-  .cta:active{ transform:scale(0.97); }
-  .cta.live{
-    border-color:var(--red);
-    background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
-  }
+.prize b{ color:var(--red); font-weight:600; }
 
-  .footer-note{
-    margin-top:20px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:10px;
-    letter-spacing:0.1em;
-    color:var(--muted);
-  }
-  .footer-note b{ color:var(--red); }
+/* ---------- countdown ring ---------- */
+.crystal{
+position:relative;
+width:min(300px, 78vw);
+aspect-ratio:1/1;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:34px;
+}
+
+.crystal svg{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+}
+
+.crystal-ring{
+fill:none;
+stroke:rgba(255,31,61,0.14);
+stroke-width:2;
+}
+
+.crystal-progress{
+fill:none;
+stroke:var(--red);
+stroke-width:3;
+stroke-linecap:round;
+filter:drop-shadow(0 0 9px rgba(255,31,61,0.75));
+transition:stroke-dashoffset 1s linear;
+}
+
+.digits{
+position:relative;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:2px;
+}
+
+.time-row{
+font-family:'Orbitron','JetBrains Mono',sans-serif;
+font-size:clamp(30px, 8vw, 40px);
+font-weight:700;
+letter-spacing:0.03em;
+font-variant-numeric:tabular-nums;
+color:var(--silver);
+text-shadow:0 0 18px rgba(255,31,61,0.4);
+}
+
+.time-labels{
+display:flex;
+gap:14px;
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+letter-spacing:0.18em;
+text-transform:uppercase;
+color:var(--muted);
+margin-top:4px;
+}
+
+.started-badge{
+display:none;
+font-family:'Orbitron','Inter',sans-serif;
+font-size:clamp(20px,6vw,28px);
+font-weight:800;
+color:var(--red);
+text-shadow:0 0 22px rgba(255,31,61,0.65);
+animation:pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse{
+0%,100%{ opacity:1; transform:scale(1); }
+50%{ opacity:0.7; transform:scale(1.05); }
+}
+
+/* ---------- cta ---------- */
+.cta-frame{
+position:relative;
+width:100%;
+max-width:300px;
+}
+
+.cta-frame::before, .cta-frame::after{
+content:"";
+position:absolute;
+width:14px; height:14px;
+border:1.5px solid var(--red);
+opacity:0.8;
+}
+
+.cta-frame::before{ top:-6px; left:-6px; border-right:none; border-bottom:none; }
+.cta-frame::after{ bottom:-6px; right:-6px; border-left:none; border-top:none; }
+
+.cta{
+width:100%;
+padding:15px 20px;
+border-radius:2px;
+border:1px solid var(--red-dim);
+background:linear-gradient(180deg, rgba(255,31,61,0.12), rgba(255,31,61,0.02));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:13px;
+font-weight:600;
+letter-spacing:0.06em;
+text-transform:uppercase;
+cursor:pointer;
+transition:transform .15s ease, background .2s ease;
+}
+
+.cta:active{ transform:scale(0.97); }
+
+.cta.live{
+border-color:var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+}
+
+.footer-note{
+margin-top:20px;
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+letter-spacing:0.1em;
+color:var(--muted);
+}
+
+.footer-note b{ color:var(--red); }
+
+/* ---------- admin edit button + modal ---------- */
+.edit-fab{
+position:fixed;
+right:16px;
+bottom:16px;
+z-index:5;
+width:44px;
+height:44px;
+border-radius:50%;
+border:1px solid var(--red-dim);
+background:rgba(0,0,0,0.7);
+color:var(--red);
+font-size:18px;
+display:none;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+backdrop-filter:blur(4px);
+}
+
+.edit-fab.show{ display:flex; }
+
+.edit-overlay{
+position:fixed;
+inset:0;
+z-index:10;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(3px);
+display:none;
+align-items:flex-end;
+justify-content:center;
+}
+
+.edit-overlay.show{ display:flex; }
+
+.edit-sheet{
+width:100%;
+max-width:420px;
+background:#0a0a0c;
+border:1px solid var(--red-dim);
+border-bottom:none;
+border-radius:14px 14px 0 0;
+padding:20px 18px 28px;
+}
+
+.edit-sheet h2{
+margin:0 0 16px;
+font-family:'JetBrains Mono', monospace;
+font-size:13px;
+letter-spacing:0.1em;
+text-transform:uppercase;
+color:var(--red);
+}
+
+.edit-field{
+margin-bottom:12px;
+text-align:left;
+}
+
+.edit-field label{
+display:block;
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--muted);
+margin-bottom:5px;
+}
+
+.edit-field input{
+width:100%;
+padding:10px 12px;
+border-radius:4px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.03);
+color:var(--silver);
+font-family:'Inter', sans-serif;
+font-size:14px;
+}
+
+.edit-field input:focus{
+outline:none;
+border-color:var(--red);
+}
+
+.edit-actions{
+display:flex;
+gap:10px;
+margin-top:16px;
+}
+
+.edit-actions button{
+flex:1;
+padding:12px;
+border-radius:4px;
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+letter-spacing:0.05em;
+text-transform:uppercase;
+cursor:pointer;
+border:1px solid var(--red-dim);
+background:transparent;
+color:var(--muted);
+}
+
+.edit-actions .save{
+border-color:var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+color:var(--silver);
+}
+
+.edit-status{
+margin-top:10px;
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+color:var(--muted);
+min-height:14px;
+}
 </style>
 </head>
 <body>
@@ -290,157 +425,323 @@
 <div class="brand-tr"><span class="tag">CASE&nbsp;DROP</span></div>
 
 <div class="wrap">
-  <div class="eyebrow">The ghost never sleeps</div>
-  <h1 id="title" data-text="DIGITAL GHOST">DIGITAL GHOST</h1>
-  <div class="lot" id="subtitle">Розыгрыш кейсов в канале</div>
-  <div class="prize" id="prize">💰 <b>250 000</b>&nbsp;COINS</div>
 
-  <div class="crystal">
-    <svg viewBox="0 0 200 200">
-      <circle class="crystal-ring" cx="100" cy="100" r="92"></circle>
-      <circle class="crystal-progress" id="ring" cx="100" cy="100" r="92"
-              stroke-dasharray="578" stroke-dashoffset="0"
-              transform="rotate(-90 100 100)"></circle>
-    </svg>
-    <div class="digits">
-      <div class="time-row" id="clock">00:00:00</div>
-      <div class="time-labels">
-        <span id="labelDays" style="display:none">дни</span>
-        <span>часы</span><span>мин</span><span>сек</span>
-      </div>
-      <div class="started-badge" id="startedBadge">СТАРТ!</div>
-    </div>
-  </div>
+<div class="eyebrow">The ghost never sleeps</div>
 
-  <div class="cta-frame">
-    <button class="cta" id="ctaBtn">Участвовать</button>
-  </div>
-  <div class="footer-note">Кто успел — <b>тот забрал</b></div>
+<h1 id="title" data-text="DIGITAL GHOST">DIGITAL GHOST</h1>
+<div class="lot" id="subtitle">Розыгрыш кейсов в канале</div>
+
+<div class="prize" id="prize">💰 <b>250 000</b>&nbsp;COINS</div>
+
+<div class="crystal">
+<svg viewBox="0 0 200 200">
+<circle class="crystal-ring" cx="100" cy="100" r="92"></circle>
+<circle class="crystal-progress" id="ring" cx="100" cy="100" r="92"
+stroke-dasharray="578" stroke-dashoffset="0"
+transform="rotate(-90 100 100)"></circle>
+</svg>
+<div class="digits">
+<div class="time-row" id="clock">00:00:00</div>
+<div class="time-labels">
+<span id="labelDays" style="display:none">дни</span>
+<span>часы</span><span>мин</span><span>сек</span>
+</div>
+<div class="started-badge" id="startedBadge">СТАРТ!</div>
+</div>
+</div>
+
+<div class="cta-frame">
+<button class="cta" id="ctaBtn">Участвовать</button>
+</div>
+
+<div class="footer-note">Кто успел — <b>тот забрал</b></div>
+
+</div>
+
+<button class="edit-fab" id="editFab" type="button">✎</button>
+
+<div class="edit-overlay" id="editOverlay">
+<div class="edit-sheet">
+<h2>Редактировать розыгрыш</h2>
+
+<div class="edit-field">
+<label for="fTitle">Заголовок</label>
+<input id="fTitle" type="text" maxlength="80" placeholder="DIGITAL GHOST">
+</div>
+
+<div class="edit-field">
+<label for="fSubtitle">Подзаголовок</label>
+<input id="fSubtitle" type="text" maxlength="120" placeholder="Розыгрыш кейсов в канале">
+</div>
+
+<div class="edit-field">
+<label for="fPrize">Приз</label>
+<input id="fPrize" type="text" maxlength="60" placeholder="250 000 COINS">
+</div>
+
+<div class="edit-field">
+<label for="fMinutes">Сколько минут осталось (оставь пустым, чтобы не менять)</label>
+<input id="fMinutes" type="number" min="1" placeholder="10">
+</div>
+
+<div class="edit-actions">
+<button type="button" id="editCancel">Отмена</button>
+<button type="button" id="editSave" class="save">Сохранить</button>
+</div>
+
+<div class="edit-status" id="editStatus"></div>
+</div>
 </div>
 
 <script>
-  const tg = window.Telegram ? window.Telegram.WebApp : null;
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    try { tg.setBackgroundColor('#000000'); } catch(e) {}
-    try { tg.setHeaderColor('#000000'); } catch(e) {}
-  }
+const tg = window.Telegram ? window.Telegram.WebApp : null;
 
-  // ---- read data ----
-  const params = new URLSearchParams(window.location.search);
+if (tg) {
+tg.ready();
+tg.expand();
+try { tg.setBackgroundColor('#000000'); } catch(e) {}
+try { tg.setHeaderColor('#000000'); } catch(e) {}
+}
 
-  const startParam =
-    (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) ||
-    params.get('tgWebAppStartParam') ||
-    params.get('end_time');
+// ---- read data ----
+const params = new URLSearchParams(window.location.search);
 
-  const title = params.get('title');
-  const subtitle = params.get('subtitle');
-  const prize = params.get('prize');
-  const joinUrl = params.get('join_url') || 'https://t.me/JaydenSullivan';
+const startParam =
+(tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) ||
+params.get('tgWebAppStartParam') ||
+params.get('end_time');
 
-  if (title){
-    document.getElementById('title').textContent = title;
-    document.getElementById('title').setAttribute('data-text', title);
-  }
-  if (subtitle) document.getElementById('subtitle').textContent = subtitle;
-  if (prize) document.getElementById('prize').innerHTML = '💰 <b>' + prize + '</b>';
+const title = params.get('title');
+const subtitle = params.get('subtitle');
+const prize = params.get('prize');
+const joinUrl = params.get('join_url') || 'https://t.me/JaydenSullivan';
 
-  const endTime = startParam ? parseInt(startParam, 10) * 1000 : (Date.now() + 10 * 60 * 1000);
-  const totalDuration = Math.max(1, endTime - Date.now());
+if (title){
+document.getElementById('title').textContent = title;
+document.getElementById('title').setAttribute('data-text', title);
+}
+if (subtitle) document.getElementById('subtitle').textContent = subtitle;
+if (prize) document.getElementById('prize').innerHTML = '💰 <b>' + prize + '</b>';
 
-  const clockEl = document.getElementById('clock');
-  const ringEl = document.getElementById('ring');
-  const startedBadge = document.getElementById('startedBadge');
-  const labelDays = document.getElementById('labelDays');
-  const ctaBtn = document.getElementById('ctaBtn');
+let endTime = startParam ? parseInt(startParam, 10) * 1000 : (Date.now() + 10 * 60 * 1000);
+let totalDuration = Math.max(1, endTime - Date.now());
 
-  const RING_LEN = 578; // 2 * PI * 92, rounded
+// Адрес бота на Railway — сюда мини-апп ходит за живыми данными
+// розыгрыша и сюда же сохраняет правки из формы редактирования.
+const API_BASE = 'https://telegram-countdown-bot-production-fe81.up.railway.app';
 
-  function pad(n){ return n.toString().padStart(2,'0'); }
+const clockEl = document.getElementById('clock');
+const ringEl = document.getElementById('ring');
+const startedBadge = document.getElementById('startedBadge');
+const labelDays = document.getElementById('labelDays');
+const ctaBtn = document.getElementById('ctaBtn');
+const RING_LEN = 578; // 2 * PI * 92, rounded
 
-  function render(){
-    const now = Date.now();
-    const remainingMs = endTime - now;
+function pad(n){ return n.toString().padStart(2,'0'); }
 
-    if (remainingMs <= 0){
-      clockEl.style.display = 'none';
-      document.querySelector('.time-labels').style.display = 'none';
-      startedBadge.style.display = 'block';
-      ringEl.setAttribute('stroke-dashoffset', '0');
-      ctaBtn.textContent = 'Открыть канал';
-      ctaBtn.classList.add('live');
-      clearInterval(timerId);
-      return;
-    }
+function render(){
+const now = Date.now();
+const remainingMs = endTime - now;
 
-    const totalSeconds = Math.floor(remainingMs / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+if (remainingMs <= 0){
+clockEl.style.display = 'none';
+document.querySelector('.time-labels').style.display = 'none';
+startedBadge.style.display = 'block';
+ringEl.setAttribute('stroke-dashoffset', '0');
+ctaBtn.textContent = 'Открыть канал';
+ctaBtn.classList.add('live');
+clearInterval(timerId);
+return;
+}
 
-    if (days > 0){
-      labelDays.style.display = 'inline';
-      clockEl.textContent = `${days}д ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    } else {
-      clockEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    }
+const totalSeconds = Math.floor(remainingMs / 1000);
+const days = Math.floor(totalSeconds / 86400);
+const hours = Math.floor((totalSeconds % 86400) / 3600);
+const minutes = Math.floor((totalSeconds % 3600) / 60);
+const seconds = totalSeconds % 60;
 
-    const progress = Math.max(0, Math.min(1, remainingMs / totalDuration));
-    ringEl.setAttribute('stroke-dashoffset', String(RING_LEN * (1 - progress)));
-  }
+if (days > 0){
+labelDays.style.display = 'inline';
+clockEl.textContent = `${days}д ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+} else {
+clockEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
 
-  render();
-  const timerId = setInterval(render, 1000);
+const progress = Math.max(0, Math.min(1, remainingMs / totalDuration));
+ringEl.setAttribute('stroke-dashoffset', String(RING_LEN * (1 - progress)));
+}
 
-  ctaBtn.addEventListener('click', () => {
-    if (tg && tg.openTelegramLink) {
-      tg.openTelegramLink(joinUrl);
-    } else {
-      window.open(joinUrl, '_blank');
-    }
-  });
+render();
+const timerId = setInterval(render, 1000);
 
-  // ---- matrix-style digital rain (red, echoes the DGhost brand art) ----
-  const canvas = document.getElementById('rain');
-  const ctx = canvas.getContext('2d');
-  let w, h, columns, drops;
-  const CHARS = '01';
-  const FONT_SIZE = 15;
+ctaBtn.addEventListener('click', () => {
+if (tg && tg.openTelegramLink) {
+tg.openTelegramLink(joinUrl);
+} else {
+window.open(joinUrl, '_blank');
+}
+});
 
-  function setupRain(){
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-    columns = Math.floor(w / FONT_SIZE);
-    drops = new Array(columns).fill(0).map(() => Math.random() * -100);
-  }
-  setupRain();
-  window.addEventListener('resize', setupRain);
+// ---- matrix-style digital rain (red, echoes the DGhost brand art) ----
+const canvas = document.getElementById('rain');
+const ctx = canvas.getContext('2d');
+let w, h, columns, drops;
+const CHARS = '01';
+const FONT_SIZE = 15;
 
-  function drawRain(){
-    ctx.fillStyle = 'rgba(0,0,0,0.13)';
-    ctx.fillRect(0, 0, w, h);
+function setupRain(){
+w = canvas.width = window.innerWidth;
+h = canvas.height = window.innerHeight;
+columns = Math.floor(w / FONT_SIZE);
+drops = new Array(columns).fill(0).map(() => Math.random() * -100);
+}
+setupRain();
+window.addEventListener('resize', setupRain);
 
-    ctx.font = FONT_SIZE + 'px monospace';
+function drawRain(){
+ctx.fillStyle = 'rgba(0,0,0,0.13)';
+ctx.fillRect(0, 0, w, h);
+ctx.font = FONT_SIZE + 'px monospace';
 
-    for (let i = 0; i < columns; i++){
-      const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-      const x = i * FONT_SIZE;
-      const y = drops[i] * FONT_SIZE;
+for (let i = 0; i < columns; i++){
+const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+const x = i * FONT_SIZE;
+const y = drops[i] * FONT_SIZE;
+const isHead = Math.random() > 0.94;
 
-      const isHead = Math.random() > 0.94;
-      ctx.fillStyle = isHead ? '#ff8a95' : 'rgba(255,31,61,0.55)';
-      ctx.fillText(char, x, y);
+ctx.fillStyle = isHead ? '#ff8a95' : 'rgba(255,31,61,0.55)';
+ctx.fillText(char, x, y);
 
-      if (y > h && Math.random() > 0.975){
-        drops[i] = 0;
-      }
-      drops[i]++;
-    }
-  }
-  setInterval(drawRain, 60);
+if (y > h && Math.random() > 0.975){
+drops[i] = 0;
+}
+drops[i]++;
+}
+}
+setInterval(drawRain, 60);
+
+// ============================================================
+// ЖИВЫЕ ДАННЫЕ РОЗЫГРЫША + РЕДАКТИРОВАНИЕ (только для админа)
+// ============================================================
+
+const editFab = document.getElementById('editFab');
+const editOverlay = document.getElementById('editOverlay');
+const editCancel = document.getElementById('editCancel');
+const editSave = document.getElementById('editSave');
+const editStatus = document.getElementById('editStatus');
+const fTitle = document.getElementById('fTitle');
+const fSubtitle = document.getElementById('fSubtitle');
+const fPrize = document.getElementById('fPrize');
+const fMinutes = document.getElementById('fMinutes');
+
+function applyGiveawayState(data){
+if (!data) return;
+
+if (data.title){
+document.getElementById('title').textContent = data.title;
+document.getElementById('title').setAttribute('data-text', data.title);
+fTitle.value = data.title;
+}
+if (data.subtitle){
+document.getElementById('subtitle').textContent = data.subtitle;
+fSubtitle.value = data.subtitle;
+}
+if (data.prize){
+document.getElementById('prize').innerHTML = '💰 <b>' + data.prize + '</b>';
+fPrize.value = data.prize;
+}
+if (data.end_time){
+endTime = data.end_time * 1000;
+totalDuration = Math.max(1, endTime - Date.now());
+// сброс "СТАРТ!"-состояния, если время снова в будущем
+if (endTime - Date.now() > 0){
+clockEl.style.display = '';
+document.querySelector('.time-labels').style.display = '';
+startedBadge.style.display = 'none';
+ctaBtn.textContent = 'Участвовать';
+ctaBtn.classList.remove('live');
+if (typeof timerId !== 'undefined') clearInterval(timerId);
+window.timerId = setInterval(render, 1000);
+}
+}
+render();
+}
+
+// Подтягиваем реальное состояние розыгрыша (переопределяет
+// значения из URL — они могли устареть, если ссылка старая)
+fetch(API_BASE + '/api/giveaway')
+.then(r => r.json())
+.then(applyGiveawayState)
+.catch(() => {
+// сервер бота недоступен — остаёмся на значениях из URL
+});
+
+// Проверяем, админ ли открыл мини-апп — только тогда
+// показываем кнопку редактирования
+if (tg && tg.initData){
+
+fetch(API_BASE + '/api/whoami?init_data=' + encodeURIComponent(tg.initData))
+.then(r => r.json())
+.then(data => {
+if (data && data.is_admin){
+editFab.classList.add('show');
+}
+})
+.catch(() => {});
+
+}
+
+editFab.addEventListener('click', () => {
+editOverlay.classList.add('show');
+editStatus.textContent = '';
+});
+
+editCancel.addEventListener('click', () => {
+editOverlay.classList.remove('show');
+});
+
+editSave.addEventListener('click', () => {
+
+if (!tg || !tg.initData){
+editStatus.textContent = 'Открой мини-апп из Telegram, не в браузере.';
+return;
+}
+
+editSave.disabled = true;
+editStatus.textContent = 'Сохраняю...';
+
+fetch(API_BASE + '/api/giveaway', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+init_data: tg.initData,
+title: fTitle.value.trim(),
+subtitle: fSubtitle.value.trim(),
+prize: fPrize.value.trim(),
+minutes: fMinutes.value ? Number(fMinutes.value) : null,
+})
+})
+.then(async r => {
+if (!r.ok){
+if (r.status === 401 || r.status === 403){
+throw new Error('Нет доступа — открой мини-апп через кнопку бота.');
+}
+throw new Error('Ошибка сохранения (' + r.status + ')');
+}
+return r.json();
+})
+.then(data => {
+applyGiveawayState(data);
+editStatus.textContent = 'Сохранено ✓';
+setTimeout(() => { editOverlay.classList.remove('show'); }, 600);
+})
+.catch(err => {
+editStatus.textContent = err.message || 'Ошибка сохранения.';
+})
+.finally(() => {
+editSave.disabled = false;
+});
+});
 </script>
 </body>
 </html>

@@ -1929,7 +1929,9 @@ bad_trade_link: 'Не похоже на трейд-ссылку — провер
 not_linked: 'Сначала привяжи трейд-ссылку.',
 inventory_private: 'Инвентарь закрыт. В настройках приватности Steam выставь инвентарь на "Открытый".',
 inventory_private_or_empty: 'Инвентарь закрыт или пуст (или в нём нет предметов CS2).',
-steam_unavailable: 'Steam сейчас не отвечает, попробуй чуть позже.',
+steam_unavailable: 'Сервис инвентаря сейчас не отвечает, попробуй чуть позже.',
+rate_limited: 'Слишком много запросов, подожди немного и попробуй снова.',
+not_configured: 'Инвентарь Steam ещё не настроен на сервере — сообщи админу.',
 };
 
 function steamErrorMessage(code){
@@ -2052,6 +2054,9 @@ sWear.value = item.wear || '';
 sRarity.value = item.rarity || '';
 sStattrak.checked = !!item.stattrak;
 if (item.photo_url) sPhoto.value = item.photo_url;
+if (item.float_value !== null && item.float_value !== undefined){
+sFloat.value = item.float_value;
+}
 
 inventoryOverlay.classList.remove('show');
 });
@@ -2141,4 +2146,3 @@ loadMe();
 </script>
 </body>
 </html>
- 

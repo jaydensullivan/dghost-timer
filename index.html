@@ -1003,11 +1003,11 @@ margin-bottom:6px;
 <div class="brand-tr"><span class="tag">CASE&nbsp;DROP</span></div>
 
 <div class="bottom-nav">
-<button class="nav-btn active" id="tabTimerBtn" type="button">
+<button class="nav-btn" id="tabTimerBtn" type="button">
 <span class="nav-icon">⏱</span>
 <span class="nav-label">Таймер</span>
 </button>
-<button class="nav-btn" id="tabShopBtn" type="button">
+<button class="nav-btn active" id="tabShopBtn" type="button">
 <span class="nav-icon">🛒</span>
 <span class="nav-label">Магазин</span>
 </button>
@@ -1017,7 +1017,7 @@ margin-bottom:6px;
 </button>
 </div>
 
-<div class="wrap" id="screenTimer">
+<div class="wrap" id="screenTimer" style="display:none;">
 
 <div class="eyebrow">The ghost never sleeps</div>
 
@@ -1051,7 +1051,7 @@ transform="rotate(-90 100 100)"></circle>
 
 </div>
 
-<div class="screen-shop" id="screenShop">
+<div class="screen-shop" id="screenShop" style="display:block;">
 
 <div class="shop-header">
 <div class="balance-pill" id="balancePill">💰 —</div>
@@ -1514,7 +1514,7 @@ const screenProfile = document.getElementById('screenProfile');
 
 let isAdmin = false;
 let currentUserId = null;
-let currentTab = 'timer';
+let currentTab = 'shop';
 
 function showAlert(message){
 if (tg && tg.showAlert){ tg.showAlert(message); }
@@ -2140,9 +2140,9 @@ addSkinSave.disabled = false;
 });
 });
 
-// Баланс подтягиваем сразу, чтобы переключение на "Магазин"
-// было мгновенным
+// Магазин теперь главный экран — сразу подтягиваем баланс и каталог
 loadMe();
+loadSkins();
 </script>
 </body>
 </html>

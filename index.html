@@ -414,6 +414,236 @@ font-size:11px;
 color:var(--muted);
 min-height:14px;
 }
+
+/* ---------- tab bar ---------- */
+.tabbar{
+position:fixed;
+top:16px;
+left:50%;
+transform:translateX(-50%);
+z-index:4;
+display:flex;
+gap:4px;
+padding:4px;
+border-radius:10px;
+border:1px solid var(--red-dim);
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(6px);
+}
+
+.tab-btn{
+padding:7px 14px;
+border-radius:7px;
+border:none;
+background:transparent;
+color:var(--muted);
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+letter-spacing:0.04em;
+text-transform:uppercase;
+cursor:pointer;
+}
+
+.tab-btn.active{
+background:linear-gradient(180deg, rgba(255,31,61,0.28), rgba(255,31,61,0.08));
+color:var(--silver);
+}
+
+/* ---------- shop screen ---------- */
+.screen-shop{
+display:none;
+position:relative;
+z-index:2;
+min-height:100vh;
+padding:78px 16px 100px;
+}
+
+.shop-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:10px;
+}
+
+.balance-pill{
+padding:8px 14px;
+border-radius:20px;
+border:1px solid var(--red-dim);
+background:rgba(255,31,61,0.06);
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:600;
+}
+
+.add-skin-btn{
+padding:8px 14px;
+border-radius:20px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.24), rgba(255,31,61,0.06));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:600;
+cursor:pointer;
+}
+
+.shop-hint{
+font-family:'Inter', sans-serif;
+font-size:11px;
+color:var(--muted);
+line-height:1.4;
+margin-bottom:16px;
+}
+
+.skins-list{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.skins-empty{
+text-align:center;
+padding:40px 10px;
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+color:var(--muted);
+}
+
+.skin-card{
+display:flex;
+gap:12px;
+padding:10px;
+border-radius:10px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.02);
+align-items:center;
+}
+
+.skin-photo{
+width:56px;
+height:56px;
+border-radius:8px;
+object-fit:cover;
+background:rgba(255,31,61,0.08);
+flex-shrink:0;
+}
+
+.skin-photo.placeholder{
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+}
+
+.skin-info{
+flex:1;
+min-width:0;
+text-align:left;
+}
+
+.skin-title{
+font-family:'Inter', sans-serif;
+font-size:13px;
+font-weight:600;
+color:var(--silver);
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.skin-seller{
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.skin-price{
+font-family:'JetBrains Mono', monospace;
+font-size:13px;
+font-weight:700;
+color:var(--red);
+margin-top:4px;
+}
+
+.skin-action{
+flex-shrink:0;
+padding:8px 12px;
+border-radius:7px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+font-weight:600;
+cursor:pointer;
+}
+
+.skin-action.own{
+border-color:var(--muted);
+background:transparent;
+color:var(--muted);
+}
+
+/* ---------- buy confirmation sheet ---------- */
+.buy-overlay{
+position:fixed;
+inset:0;
+z-index:10;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(3px);
+display:none;
+align-items:flex-end;
+justify-content:center;
+}
+
+.buy-overlay.show{ display:flex; }
+
+.buy-sheet{
+width:100%;
+max-width:420px;
+background:#0a0a0c;
+border:1px solid var(--red-dim);
+border-bottom:none;
+border-radius:14px 14px 0 0;
+padding:20px 18px 28px;
+text-align:center;
+}
+
+.buy-photo{
+width:90px;
+height:90px;
+border-radius:10px;
+object-fit:cover;
+margin:0 auto 12px;
+display:block;
+background:rgba(255,31,61,0.08);
+}
+
+.buy-sheet h2{
+margin:0 0 6px;
+font-family:'Inter', sans-serif;
+font-size:15px;
+font-weight:600;
+color:var(--silver);
+}
+
+.buy-price{
+font-family:'JetBrains Mono', monospace;
+font-size:16px;
+font-weight:700;
+color:var(--red);
+margin-bottom:4px;
+}
+
+.buy-seller{
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+color:var(--muted);
+margin-bottom:6px;
+}
 </style>
 </head>
 <body>
@@ -424,7 +654,12 @@ min-height:14px;
 <div class="brand-tl"><span class="tag">{ <b>DGHOST</b> }</span></div>
 <div class="brand-tr"><span class="tag">CASE&nbsp;DROP</span></div>
 
-<div class="wrap">
+<div class="tabbar">
+<button class="tab-btn active" id="tabTimerBtn" type="button">⏱ Таймер</button>
+<button class="tab-btn" id="tabShopBtn" type="button">🛒 Магазин</button>
+</div>
+
+<div class="wrap" id="screenTimer">
 
 <div class="eyebrow">The ghost never sleeps</div>
 
@@ -455,6 +690,21 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="footer-note">Кто успел — <b>тот забрал</b></div>
+
+</div>
+
+<div class="screen-shop" id="screenShop">
+
+<div class="shop-header">
+<div class="balance-pill" id="balancePill">💰 —</div>
+<button class="add-skin-btn" id="addSkinBtn" type="button">+ Скин</button>
+</div>
+
+<div class="shop-hint">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
+
+<div class="skins-list" id="skinsList">
+<div class="skins-empty">Загрузка...</div>
+</div>
 
 </div>
 
@@ -490,6 +740,53 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="edit-status" id="editStatus"></div>
+</div>
+</div>
+
+<div class="edit-overlay" id="addSkinOverlay">
+<div class="edit-sheet">
+<h2>Выставить скин</h2>
+
+<div class="edit-field">
+<label for="sTitle">Название</label>
+<input id="sTitle" type="text" maxlength="80" placeholder="AK-47 | Redline (FT)">
+</div>
+
+<div class="edit-field">
+<label for="sDescription">Описание (необязательно)</label>
+<input id="sDescription" type="text" maxlength="300" placeholder="Float 0.20, наклейки...">
+</div>
+
+<div class="edit-field">
+<label for="sPrice">Цена, COINS</label>
+<input id="sPrice" type="number" min="1" placeholder="5000">
+</div>
+
+<div class="edit-field">
+<label for="sPhoto">Ссылка на фото (необязательно)</label>
+<input id="sPhoto" type="url" placeholder="https://...">
+</div>
+
+<div class="edit-actions">
+<button type="button" id="addSkinCancel">Отмена</button>
+<button type="button" id="addSkinSave" class="save">Выставить</button>
+</div>
+
+<div class="edit-status" id="addSkinStatus"></div>
+</div>
+</div>
+
+<div class="buy-overlay" id="buyOverlay">
+<div class="buy-sheet">
+<img id="buyPhoto" class="buy-photo" src="" alt="">
+<h2 id="buyTitle">—</h2>
+<div class="buy-price" id="buyPrice">—</div>
+<div class="buy-seller" id="buySeller">—</div>
+<div class="edit-actions">
+<button type="button" id="buyCancel">Отмена</button>
+<button type="button" id="buyConfirm" class="save">Купить</button>
+</div>
+<div class="edit-status" id="buyStatus"></div>
 </div>
 </div>
 
@@ -676,20 +973,8 @@ fetch(API_BASE + '/api/giveaway')
 // сервер бота недоступен — остаёмся на значениях из URL
 });
 
-// Проверяем, админ ли открыл мини-апп — только тогда
-// показываем кнопку редактирования
-if (tg && tg.initData){
-
-fetch(API_BASE + '/api/whoami?init_data=' + encodeURIComponent(tg.initData))
-.then(r => r.json())
-.then(data => {
-if (data && data.is_admin){
-editFab.classList.add('show');
-}
-})
-.catch(() => {});
-
-}
+// Админ-статус и баланс теперь приходят из loadMe() (см. ниже) —
+// оттуда же управляется видимость кнопки ✎ через updateFabVisibility().
 
 editFab.addEventListener('click', () => {
 editOverlay.classList.add('show');
@@ -742,6 +1027,333 @@ editStatus.textContent = err.message || 'Ошибка сохранения.';
 editSave.disabled = false;
 });
 });
+
+// ============================================================
+// ВКЛАДКИ (ТАЙМЕР / МАГАЗИН)
+// ============================================================
+
+const tabTimerBtn = document.getElementById('tabTimerBtn');
+const tabShopBtn = document.getElementById('tabShopBtn');
+const screenTimer = document.getElementById('screenTimer');
+const screenShop = document.getElementById('screenShop');
+
+let isAdmin = false;
+let currentUserId = null;
+let shopLoadedOnce = false;
+
+function showAlert(message){
+if (tg && tg.showAlert){ tg.showAlert(message); }
+else { alert(message); }
+}
+
+function showConfirm(message, onOk){
+if (tg && tg.showConfirm){ tg.showConfirm(message, ok => { if (ok) onOk(); }); }
+else if (confirm(message)) { onOk(); }
+}
+
+function updateFabVisibility(){
+const onTimerTab = screenTimer.style.display !== 'none';
+if (isAdmin && onTimerTab){ editFab.classList.add('show'); }
+else { editFab.classList.remove('show'); }
+}
+
+function switchTab(name){
+const showTimer = name === 'timer';
+screenTimer.style.display = showTimer ? '' : 'none';
+screenShop.style.display = showTimer ? 'none' : '';
+tabTimerBtn.classList.toggle('active', showTimer);
+tabShopBtn.classList.toggle('active', !showTimer);
+updateFabVisibility();
+if (!showTimer){
+loadMe();
+loadSkins();
+}
+}
+
+tabTimerBtn.addEventListener('click', () => switchTab('timer'));
+tabShopBtn.addEventListener('click', () => switchTab('shop'));
+
+// ============================================================
+// МАГАЗИН СКИНОВ
+// ============================================================
+
+const balancePill = document.getElementById('balancePill');
+const skinsList = document.getElementById('skinsList');
+const addSkinBtn = document.getElementById('addSkinBtn');
+const addSkinOverlay = document.getElementById('addSkinOverlay');
+const addSkinCancel = document.getElementById('addSkinCancel');
+const addSkinSave = document.getElementById('addSkinSave');
+const addSkinStatus = document.getElementById('addSkinStatus');
+const sTitle = document.getElementById('sTitle');
+const sDescription = document.getElementById('sDescription');
+const sPrice = document.getElementById('sPrice');
+const sPhoto = document.getElementById('sPhoto');
+
+const buyOverlay = document.getElementById('buyOverlay');
+const buyPhoto = document.getElementById('buyPhoto');
+const buyTitle = document.getElementById('buyTitle');
+const buyPrice = document.getElementById('buyPrice');
+const buySeller = document.getElementById('buySeller');
+const buyCancel = document.getElementById('buyCancel');
+const buyConfirm = document.getElementById('buyConfirm');
+const buyStatus = document.getElementById('buyStatus');
+
+let pendingBuySkin = null;
+
+const ERROR_MESSAGES = {
+unauthorized: 'Открой мини-апп через Telegram, а не в браузере.',
+not_available: 'Этот скин уже продан или снят с продажи.',
+own_listing: 'Нельзя купить собственный лот.',
+insufficient_funds: 'Недостаточно COINS на балансе.',
+race_lost: 'Кто-то купил этот скин на секунду раньше.',
+forbidden: 'Можно снять только свой лот.',
+not_found: 'Лот не найден.',
+invalid: 'Проверь название и цену.',
+};
+
+function errorMessage(code){
+return ERROR_MESSAGES[code] || 'Что-то пошло не так, попробуй ещё раз.';
+}
+
+function formatCoins(n){
+return Number(n || 0).toLocaleString('ru-RU') + ' COINS';
+}
+
+function loadMe(){
+if (!tg || !tg.initData){
+balancePill.textContent = '💰 —';
+return;
+}
+fetch(API_BASE + '/api/me?init_data=' + encodeURIComponent(tg.initData))
+.then(r => r.json())
+.then(data => {
+if (!data || data.error) return;
+balancePill.textContent = '💰 ' + formatCoins(data.available);
+isAdmin = !!data.is_admin;
+currentUserId = data.user_id;
+updateFabVisibility();
+})
+.catch(() => {
+balancePill.textContent = '💰 —';
+});
+}
+
+function skinCardHtml(skin){
+const photo = skin.photo_url
+? `<img class="skin-photo" src="${skin.photo_url}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'skin-photo placeholder',textContent:'🔫'}))">`
+: `<div class="skin-photo placeholder">🔫</div>`;
+
+const isOwn = currentUserId && skin.seller_id === currentUserId;
+
+const actionBtn = isOwn
+? `<button class="skin-action own" data-cancel="${skin.id}" type="button">Снять</button>`
+: `<button class="skin-action" data-buy="${skin.id}" type="button">Купить</button>`;
+
+const desc = skin.description
+? `<div class="skin-seller">${escapeHtml(skin.description)}</div>`
+: '';
+
+return `
+<div class="skin-card">
+${photo}
+<div class="skin-info">
+<div class="skin-title">${escapeHtml(skin.title)}</div>
+${desc}
+<div class="skin-seller">${escapeHtml(skin.seller_username || 'аноним')}</div>
+<div class="skin-price">${formatCoins(skin.price)}</div>
+</div>
+${actionBtn}
+</div>`;
+}
+
+function escapeHtml(str){
+const div = document.createElement('div');
+div.textContent = str == null ? '' : String(str);
+return div.innerHTML;
+}
+
+let lastSkins = [];
+
+function renderSkins(list){
+lastSkins = list || [];
+if (!lastSkins.length){
+skinsList.innerHTML = '<div class="skins-empty">Пока нет лотов — стань первым 🔫</div>';
+return;
+}
+skinsList.innerHTML = lastSkins.map(skinCardHtml).join('');
+}
+
+function loadSkins(){
+fetch(API_BASE + '/api/skins')
+.then(r => r.json())
+.then(renderSkins)
+.catch(() => {
+skinsList.innerHTML = '<div class="skins-empty">Не удалось загрузить каталог.</div>';
+});
+}
+
+skinsList.addEventListener('click', (e) => {
+const buyBtn = e.target.closest('[data-buy]');
+if (buyBtn){
+const skin = lastSkins.find(s => String(s.id) === buyBtn.dataset.buy);
+if (skin) openBuySheet(skin);
+return;
+}
+const cancelBtn = e.target.closest('[data-cancel]');
+if (cancelBtn){
+cancelListing(Number(cancelBtn.dataset.cancel));
+}
+});
+
+function openBuySheet(skin){
+if (!tg || !tg.initData){
+showAlert(errorMessage('unauthorized'));
+return;
+}
+pendingBuySkin = skin;
+buyPhoto.src = skin.photo_url || '';
+buyPhoto.style.display = skin.photo_url ? '' : 'none';
+buyTitle.textContent = skin.title;
+buyPrice.textContent = formatCoins(skin.price);
+buySeller.textContent = 'Продавец: ' + (skin.seller_username || 'аноним');
+buyStatus.textContent = '';
+buyOverlay.classList.add('show');
+}
+
+buyCancel.addEventListener('click', () => {
+buyOverlay.classList.remove('show');
+pendingBuySkin = null;
+});
+
+buyConfirm.addEventListener('click', () => {
+if (!pendingBuySkin || !tg || !tg.initData) return;
+
+const skinId = pendingBuySkin.id;
+buyConfirm.disabled = true;
+buyStatus.textContent = 'Покупаю...';
+
+fetch(API_BASE + '/api/skins/' + skinId + '/buy', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+return r.json();
+})
+.then(() => {
+buyStatus.textContent = 'Куплено ✓';
+loadMe();
+loadSkins();
+setTimeout(() => {
+buyOverlay.classList.remove('show');
+pendingBuySkin = null;
+}, 700);
+})
+.catch(err => {
+buyStatus.textContent = err.message;
+})
+.finally(() => {
+buyConfirm.disabled = false;
+});
+});
+
+function cancelListing(skinId){
+if (!tg || !tg.initData){
+showAlert(errorMessage('unauthorized'));
+return;
+}
+showConfirm('Снять этот лот с продажи?', () => {
+fetch(API_BASE + '/api/skins/' + skinId + '/cancel', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+loadSkins();
+})
+.catch(err => showAlert(err.message));
+});
+}
+
+addSkinBtn.addEventListener('click', () => {
+if (!tg || !tg.initData){
+showAlert(errorMessage('unauthorized'));
+return;
+}
+addSkinStatus.textContent = '';
+addSkinOverlay.classList.add('show');
+});
+
+addSkinCancel.addEventListener('click', () => {
+addSkinOverlay.classList.remove('show');
+});
+
+addSkinSave.addEventListener('click', () => {
+if (!tg || !tg.initData){
+addSkinStatus.textContent = errorMessage('unauthorized');
+return;
+}
+
+const title = sTitle.value.trim();
+const price = Number(sPrice.value);
+
+if (!title || !price || price <= 0){
+addSkinStatus.textContent = 'Заполни название и цену.';
+return;
+}
+
+addSkinSave.disabled = true;
+addSkinStatus.textContent = 'Публикую...';
+
+fetch(API_BASE + '/api/skins', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+init_data: tg.initData,
+title: title,
+description: sDescription.value.trim(),
+price: price,
+photo_url: sPhoto.value.trim(),
+})
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+return r.json();
+})
+.then(() => {
+addSkinStatus.textContent = 'Выставлено ✓';
+sTitle.value = '';
+sDescription.value = '';
+sPrice.value = '';
+sPhoto.value = '';
+loadSkins();
+setTimeout(() => {
+addSkinOverlay.classList.remove('show');
+addSkinStatus.textContent = '';
+}, 600);
+})
+.catch(err => {
+addSkinStatus.textContent = err.message;
+})
+.finally(() => {
+addSkinSave.disabled = false;
+});
+});
+
+// Баланс подтягиваем сразу, чтобы переключение на "Магазин"
+// было мгновенным
+loadMe();
 </script>
 </body>
 </html>

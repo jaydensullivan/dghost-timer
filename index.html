@@ -83,7 +83,7 @@ display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-padding:70px 20px 40px;
+padding:50px 20px 100px;
 text-align:center;
 }
 
@@ -300,7 +300,7 @@ color:var(--muted);
 .edit-fab{
 position:fixed;
 right:16px;
-bottom:16px;
+bottom:76px;
 z-index:5;
 width:44px;
 height:44px;
@@ -415,38 +415,184 @@ color:var(--muted);
 min-height:14px;
 }
 
-/* ---------- tab bar ---------- */
-.tabbar{
+/* ---------- bottom nav ---------- */
+.bottom-nav{
 position:fixed;
-top:16px;
-left:50%;
-transform:translateX(-50%);
+bottom:0;
+left:0;
+right:0;
 z-index:4;
 display:flex;
-gap:4px;
-padding:4px;
-border-radius:10px;
-border:1px solid var(--red-dim);
-background:rgba(0,0,0,0.6);
-backdrop-filter:blur(6px);
+border-top:1px solid var(--red-dim);
+background:rgba(5,3,4,0.92);
+backdrop-filter:blur(10px);
+padding-bottom:env(safe-area-inset-bottom, 0px);
 }
 
-.tab-btn{
-padding:7px 14px;
-border-radius:7px;
+.nav-btn{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:2px;
+padding:9px 4px 8px;
 border:none;
 background:transparent;
 color:var(--muted);
-font-family:'JetBrains Mono', monospace;
-font-size:11px;
-letter-spacing:0.04em;
-text-transform:uppercase;
 cursor:pointer;
 }
 
-.tab-btn.active{
-background:linear-gradient(180deg, rgba(255,31,61,0.28), rgba(255,31,61,0.08));
+.nav-icon{
+font-size:19px;
+line-height:1;
+filter:grayscale(1) opacity(0.7);
+}
+
+.nav-icon img{
+width:22px;
+height:22px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+}
+
+.nav-label{
+font-family:'JetBrains Mono', monospace;
+font-size:9px;
+letter-spacing:0.04em;
+text-transform:uppercase;
+}
+
+.nav-btn.active{ color:var(--red); }
+
+.nav-btn.active .nav-icon{ filter:none; }
+
+.nav-btn.active .nav-icon img{
+box-shadow:0 0 0 2px var(--red);
+}
+
+/* ---------- profile screen ---------- */
+.screen-profile{
+display:none;
+position:relative;
+z-index:2;
+min-height:100vh;
+padding:50px 16px 100px;
+}
+
+.profile-card{
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+padding:22px 16px;
+margin-bottom:14px;
+border-radius:12px;
+border:1px solid var(--red-dim);
+background:rgba(255,31,61,0.04);
+}
+
+.profile-avatar{
+width:64px;
+height:64px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+background:rgba(255,31,61,0.12);
+border:1px solid var(--red-dim);
+margin-bottom:10px;
+overflow:hidden;
+}
+
+.profile-avatar img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.profile-name{
+font-family:'Inter', sans-serif;
+font-size:15px;
+font-weight:600;
 color:var(--silver);
+margin-bottom:6px;
+}
+
+.profile-balance{
+font-family:'JetBrains Mono', monospace;
+font-size:18px;
+font-weight:700;
+color:var(--red);
+}
+
+.profile-held{
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.profile-stats{
+display:grid;
+grid-template-columns:repeat(3, 1fr);
+gap:8px;
+margin-bottom:14px;
+}
+
+.stat-box{
+padding:12px 6px;
+border-radius:10px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.02);
+text-align:center;
+}
+
+.stat-value{
+font-family:'JetBrains Mono', monospace;
+font-size:15px;
+font-weight:700;
+color:var(--silver);
+}
+
+.stat-label{
+font-family:'JetBrains Mono', monospace;
+font-size:8px;
+letter-spacing:0.04em;
+text-transform:uppercase;
+color:var(--muted);
+margin-top:3px;
+}
+
+.profile-section{
+padding:14px;
+border-radius:10px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.02);
+text-align:left;
+}
+
+.profile-section-title{
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--red);
+margin-bottom:10px;
+}
+
+.profile-steam-status{
+font-family:'Inter', sans-serif;
+font-size:12px;
+color:var(--silver);
+margin-bottom:8px;
+}
+
+.steam-link-btn.secondary{
+background:transparent;
+color:var(--muted);
+border-color:var(--muted);
 }
 
 /* ---------- shop screen ---------- */
@@ -455,7 +601,7 @@ display:none;
 position:relative;
 z-index:2;
 min-height:100vh;
-padding:78px 16px 100px;
+padding:50px 16px 100px;
 }
 
 .shop-header{
@@ -549,9 +695,19 @@ flex-direction:column;
 padding:9px;
 border-radius:10px;
 border:1px solid var(--red-dim);
+border-top-width:3px;
 background:rgba(255,255,255,0.02);
 text-align:left;
 }
+
+.skin-card.rarity-consumer{ border-top-color:#b0c3d9; }
+.skin-card.rarity-industrial{ border-top-color:#5e98d9; }
+.skin-card.rarity-milspec{ border-top-color:#4b69ff; }
+.skin-card.rarity-restricted{ border-top-color:#8847ff; }
+.skin-card.rarity-classified{ border-top-color:#d32ce6; }
+.skin-card.rarity-covert{ border-top-color:#eb4b4b; }
+.skin-card.rarity-contraband{ border-top-color:#e4ae39; }
+.skin-card.rarity-extraordinary{ border-top-color:#e4ae39; }
 
 .skin-photo-wrap{
 position:relative;
@@ -709,6 +865,76 @@ height:16px;
 accent-color:var(--red);
 }
 
+/* ---------- steam link / inventory ---------- */
+.steam-block{
+margin-bottom:14px;
+padding-bottom:14px;
+border-bottom:1px dashed var(--red-dim);
+}
+
+.steam-link-btn, .steam-inv-btn{
+width:100%;
+padding:10px;
+border-radius:7px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.2), rgba(255,31,61,0.04));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:600;
+cursor:pointer;
+}
+
+.inventory-sheet{
+max-height:80vh;
+}
+
+.inventory-grid{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:8px;
+max-height:50vh;
+overflow-y:auto;
+margin:10px 0;
+}
+
+.inv-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:6px;
+border-radius:8px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.02);
+cursor:pointer;
+text-align:center;
+}
+
+.inv-item img{
+width:100%;
+aspect-ratio:1/1;
+object-fit:contain;
+margin-bottom:4px;
+}
+
+.inv-item-name{
+font-family:'Inter', sans-serif;
+font-size:9px;
+color:var(--silver);
+line-height:1.2;
+display:-webkit-box;
+-webkit-line-clamp:2;
+-webkit-box-orient:vertical;
+overflow:hidden;
+}
+
+.inv-item-wear{
+font-family:'JetBrains Mono', monospace;
+font-size:8px;
+color:var(--muted);
+margin-top:2px;
+}
+
 /* ---------- buy confirmation sheet ---------- */
 .buy-overlay{
 position:fixed;
@@ -776,9 +1002,19 @@ margin-bottom:6px;
 <div class="brand-tl"><span class="tag">{ <b>DGHOST</b> }</span></div>
 <div class="brand-tr"><span class="tag">CASE&nbsp;DROP</span></div>
 
-<div class="tabbar">
-<button class="tab-btn active" id="tabTimerBtn" type="button">⏱ Таймер</button>
-<button class="tab-btn" id="tabShopBtn" type="button">🛒 Магазин</button>
+<div class="bottom-nav">
+<button class="nav-btn active" id="tabTimerBtn" type="button">
+<span class="nav-icon">⏱</span>
+<span class="nav-label">Таймер</span>
+</button>
+<button class="nav-btn" id="tabShopBtn" type="button">
+<span class="nav-icon">🛒</span>
+<span class="nav-label">Магазин</span>
+</button>
+<button class="nav-btn" id="tabProfileBtn" type="button">
+<span class="nav-icon" id="navAvatarIcon">👤</span>
+<span class="nav-label">Профиль</span>
+</button>
 </div>
 
 <div class="wrap" id="screenTimer">
@@ -839,7 +1075,49 @@ transform="rotate(-90 100 100)"></circle>
 
 </div>
 
+<div class="screen-profile" id="screenProfile">
+
+<div class="profile-card">
+<div class="profile-avatar" id="profileAvatar">👤</div>
+<div class="profile-name" id="profileName">—</div>
+<div class="profile-balance" id="profileBalance">💰 —</div>
+<div class="profile-held" id="profileHeld"></div>
+</div>
+
+<div class="profile-stats">
+<div class="stat-box">
+<div class="stat-value" id="statSold">—</div>
+<div class="stat-label">Продано</div>
+</div>
+<div class="stat-box">
+<div class="stat-value" id="statBought">—</div>
+<div class="stat-label">Куплено</div>
+</div>
+<div class="stat-box">
+<div class="stat-value" id="statActive">—</div>
+<div class="stat-label">Активных лотов</div>
+</div>
+</div>
+
+<div class="profile-section" id="profileSteamSection">
+<div class="profile-section-title">Steam</div>
+<div id="profileSteamLinked" style="display:none;">
+<div class="profile-steam-status">✅ Трейд-ссылка привязана</div>
+<button type="button" id="profileRelinkBtn" class="steam-link-btn secondary">Изменить ссылку</button>
+</div>
+<div id="profileSteamUnlinked">
+<div class="edit-field">
+<input id="pTradeLink" type="text" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=...&token=...">
+</div>
+<button type="button" id="profileLinkBtn" class="steam-link-btn">Привязать трейд-ссылку</button>
+</div>
+<div class="edit-status" id="profileSteamStatus"></div>
+</div>
+
+</div>
+
 <button class="edit-fab" id="editFab" type="button">✎</button>
+
 
 <div class="edit-overlay" id="editOverlay">
 <div class="edit-sheet">
@@ -878,6 +1156,14 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-sheet">
 <h2>Выставить скин</h2>
 
+<div class="steam-block" id="steamLinkBlock">
+<div class="shop-hint" style="margin-bottom:0;">Привяжи трейд-ссылку во вкладке «Профиль», чтобы подставлять предметы из инвентаря Steam одним тапом.</div>
+</div>
+
+<div class="steam-block" id="steamInventoryBlock" style="display:none;">
+<button type="button" id="openInventoryBtn" class="steam-inv-btn">📦 Выбрать из инвентаря Steam</button>
+</div>
+
 <div class="edit-field">
 <label for="sWeaponType">Оружие / категория</label>
 <input id="sWeaponType" type="text" maxlength="40" placeholder="AK-47, AWP, Ножи...">
@@ -886,6 +1172,21 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-field">
 <label for="sTitle">Название скина</label>
 <input id="sTitle" type="text" maxlength="80" placeholder="Redline">
+</div>
+
+<div class="edit-field">
+<label for="sRarity">Редкость</label>
+<select id="sRarity">
+<option value="">—</option>
+<option value="Consumer Grade">Consumer Grade</option>
+<option value="Industrial Grade">Industrial Grade</option>
+<option value="Mil-Spec Grade">Mil-Spec Grade</option>
+<option value="Restricted">Restricted</option>
+<option value="Classified">Classified</option>
+<option value="Covert">Covert</option>
+<option value="Contraband">Contraband</option>
+<option value="Extraordinary">Extraordinary (нож/перчатки)</option>
+</select>
 </div>
 
 <div class="edit-row">
@@ -948,6 +1249,17 @@ transform="rotate(-90 100 100)"></circle>
 <button type="button" id="buyConfirm" class="save">Купить</button>
 </div>
 <div class="edit-status" id="buyStatus"></div>
+</div>
+</div>
+
+<div class="edit-overlay" id="inventoryOverlay">
+<div class="edit-sheet inventory-sheet">
+<h2>Инвентарь Steam</h2>
+<div class="edit-status" id="inventoryStatus">Загрузка...</div>
+<div class="inventory-grid" id="inventoryGrid"></div>
+<div class="edit-actions">
+<button type="button" id="inventoryCancel">Закрыть</button>
+</div>
 </div>
 </div>
 
@@ -1190,17 +1502,19 @@ editSave.disabled = false;
 });
 
 // ============================================================
-// ВКЛАДКИ (ТАЙМЕР / МАГАЗИН)
+// ВКЛАДКИ (ТАЙМЕР / МАГАЗИН / ПРОФИЛЬ)
 // ============================================================
 
 const tabTimerBtn = document.getElementById('tabTimerBtn');
 const tabShopBtn = document.getElementById('tabShopBtn');
+const tabProfileBtn = document.getElementById('tabProfileBtn');
 const screenTimer = document.getElementById('screenTimer');
 const screenShop = document.getElementById('screenShop');
+const screenProfile = document.getElementById('screenProfile');
 
 let isAdmin = false;
 let currentUserId = null;
-let shopLoadedOnce = false;
+let currentTab = 'timer';
 
 function showAlert(message){
 if (tg && tg.showAlert){ tg.showAlert(message); }
@@ -1213,26 +1527,36 @@ else if (confirm(message)) { onOk(); }
 }
 
 function updateFabVisibility(){
-const onTimerTab = screenTimer.style.display !== 'none';
-if (isAdmin && onTimerTab){ editFab.classList.add('show'); }
+if (isAdmin && currentTab === 'timer'){ editFab.classList.add('show'); }
 else { editFab.classList.remove('show'); }
 }
 
 function switchTab(name){
-const showTimer = name === 'timer';
-screenTimer.style.display = showTimer ? '' : 'none';
-screenShop.style.display = showTimer ? 'none' : 'block';
-tabTimerBtn.classList.toggle('active', showTimer);
-tabShopBtn.classList.toggle('active', !showTimer);
+currentTab = name;
+screenTimer.style.display = name === 'timer' ? '' : 'none';
+screenShop.style.display = name === 'shop' ? 'block' : 'none';
+screenProfile.style.display = name === 'profile' ? 'block' : 'none';
+tabTimerBtn.classList.toggle('active', name === 'timer');
+tabShopBtn.classList.toggle('active', name === 'shop');
+tabProfileBtn.classList.toggle('active', name === 'profile');
 updateFabVisibility();
-if (!showTimer){
+if (name === 'shop'){
 loadMe();
 loadSkins();
+} else if (name === 'profile'){
+loadProfile();
 }
 }
 
 tabTimerBtn.addEventListener('click', () => switchTab('timer'));
 tabShopBtn.addEventListener('click', () => switchTab('shop'));
+tabProfileBtn.addEventListener('click', () => switchTab('profile'));
+
+// Аватар Telegram-пользователя в нижней навигации, если доступен
+if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.photo_url){
+document.getElementById('navAvatarIcon').innerHTML =
+`<img src="${tg.initDataUnsafe.user.photo_url}" alt="">`;
+}
 
 // ============================================================
 // МАГАЗИН СКИНОВ
@@ -1251,6 +1575,7 @@ const sPrice = document.getElementById('sPrice');
 const sPhoto = document.getElementById('sPhoto');
 const sWeaponType = document.getElementById('sWeaponType');
 const sWear = document.getElementById('sWear');
+const sRarity = document.getElementById('sRarity');
 const sFloat = document.getElementById('sFloat');
 const sStattrak = document.getElementById('sStattrak');
 
@@ -1289,6 +1614,13 @@ function formatCoins(n){
 return Number(n || 0).toLocaleString('ru-RU') + ' COINS';
 }
 
+let hasSteamLink = false;
+
+function updateSteamBlockVisibility(){
+document.getElementById('steamLinkBlock').style.display = hasSteamLink ? 'none' : 'block';
+document.getElementById('steamInventoryBlock').style.display = hasSteamLink ? 'block' : 'none';
+}
+
 function loadMe(){
 if (!tg || !tg.initData){
 balancePill.textContent = '💰 —';
@@ -1301,12 +1633,72 @@ if (!data || data.error) return;
 balancePill.textContent = '💰 ' + formatCoins(data.available);
 isAdmin = !!data.is_admin;
 currentUserId = data.user_id;
+hasSteamLink = !!data.has_steam_link;
 updateFabVisibility();
+updateSteamBlockVisibility();
 })
 .catch(() => {
 balancePill.textContent = '💰 —';
 });
 }
+
+function loadProfile(){
+const profileAvatar = document.getElementById('profileAvatar');
+const profileName = document.getElementById('profileName');
+const profileBalance = document.getElementById('profileBalance');
+const profileHeld = document.getElementById('profileHeld');
+
+if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.photo_url){
+profileAvatar.innerHTML = `<img src="${tg.initDataUnsafe.user.photo_url}" alt="">`;
+}
+
+if (!tg || !tg.initData){
+profileName.textContent = 'Открой через Telegram';
+profileBalance.textContent = '💰 —';
+return;
+}
+
+fetch(API_BASE + '/api/profile?init_data=' + encodeURIComponent(tg.initData))
+.then(async r => {
+if (!r.ok) throw new Error();
+return r.json();
+})
+.then(data => {
+if (!data || data.error) throw new Error();
+
+isAdmin = !!data.is_admin;
+currentUserId = data.user_id;
+hasSteamLink = !!data.has_steam_link;
+updateFabVisibility();
+updateSteamBlockVisibility();
+updateProfileSteamBlock();
+
+profileName.textContent = data.username || ('ID ' + data.user_id);
+profileBalance.textContent = '💰 ' + formatCoins(data.available);
+profileHeld.textContent = data.held > 0
+? ('🔒 В холде: ' + formatCoins(data.held))
+: '';
+
+document.getElementById('statSold').textContent = data.sold_count;
+document.getElementById('statBought').textContent = data.bought_count;
+document.getElementById('statActive').textContent = data.active_count;
+})
+.catch(() => {
+profileName.textContent = 'Не удалось загрузить';
+profileBalance.textContent = '💰 —';
+});
+}
+
+const RARITY_CLASS = {
+'Consumer Grade': 'rarity-consumer',
+'Industrial Grade': 'rarity-industrial',
+'Mil-Spec Grade': 'rarity-milspec',
+'Restricted': 'rarity-restricted',
+'Classified': 'rarity-classified',
+'Covert': 'rarity-covert',
+'Contraband': 'rarity-contraband',
+'Extraordinary': 'rarity-extraordinary',
+};
 
 function skinCardHtml(skin){
 const photo = skin.photo_url
@@ -1320,6 +1712,8 @@ const wearBadge = skin.wear && WEAR_LABELS[skin.wear]
 const stBadge = skin.stattrak
 ? `<div class="skin-badge stattrak">ST™</div>`
 : '';
+
+const rarityClass = RARITY_CLASS[skin.rarity] || '';
 
 const isOwn = currentUserId && skin.seller_id === currentUserId;
 
@@ -1340,7 +1734,7 @@ const title = skin.stattrak
 : escapeHtml(skin.title);
 
 return `
-<div class="skin-card">
+<div class="skin-card ${rarityClass}">
 <div class="skin-photo-wrap">
 ${photo}
 ${wearBadge}
@@ -1512,12 +1906,163 @@ loadSkins();
 });
 }
 
+// ============================================================
+// STEAM — ТРЕЙД-ССЫЛКА И ИНВЕНТАРЬ
+// ============================================================
+
+const openInventoryBtn = document.getElementById('openInventoryBtn');
+
+const inventoryOverlay = document.getElementById('inventoryOverlay');
+const inventoryGrid = document.getElementById('inventoryGrid');
+const inventoryStatus = document.getElementById('inventoryStatus');
+const inventoryCancel = document.getElementById('inventoryCancel');
+
+const pTradeLink = document.getElementById('pTradeLink');
+const profileLinkBtn = document.getElementById('profileLinkBtn');
+const profileRelinkBtn = document.getElementById('profileRelinkBtn');
+const profileSteamStatus = document.getElementById('profileSteamStatus');
+const profileSteamLinked = document.getElementById('profileSteamLinked');
+const profileSteamUnlinked = document.getElementById('profileSteamUnlinked');
+
+const STEAM_ERROR_MESSAGES = {
+bad_trade_link: 'Не похоже на трейд-ссылку — проверь, что скопировал целиком.',
+not_linked: 'Сначала привяжи трейд-ссылку.',
+inventory_private: 'Инвентарь закрыт. В настройках приватности Steam выставь инвентарь на "Открытый".',
+inventory_private_or_empty: 'Инвентарь закрыт или пуст (или в нём нет предметов CS2).',
+steam_unavailable: 'Steam сейчас не отвечает, попробуй чуть позже.',
+};
+
+function steamErrorMessage(code){
+return STEAM_ERROR_MESSAGES[code] || errorMessage(code);
+}
+
+function updateProfileSteamBlock(){
+profileSteamLinked.style.display = hasSteamLink ? 'block' : 'none';
+profileSteamUnlinked.style.display = hasSteamLink ? 'none' : 'block';
+}
+
+function submitTradeLink(){
+if (!tg || !tg.initData){
+profileSteamStatus.textContent = errorMessage('unauthorized');
+return;
+}
+const link = pTradeLink.value.trim();
+if (!link){
+profileSteamStatus.textContent = 'Вставь трейд-ссылку.';
+return;
+}
+profileLinkBtn.disabled = true;
+profileSteamStatus.textContent = 'Привязываю...';
+fetch(API_BASE + '/api/steam/link', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData, trade_link: link })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(steamErrorMessage(data.error));
+}
+return r.json();
+})
+.then(() => {
+hasSteamLink = true;
+profileSteamStatus.textContent = 'Привязано ✓';
+pTradeLink.value = '';
+setTimeout(() => {
+updateProfileSteamBlock();
+updateSteamBlockVisibility();
+profileSteamStatus.textContent = '';
+}, 500);
+})
+.catch(err => {
+profileSteamStatus.textContent = err.message;
+})
+.finally(() => {
+profileLinkBtn.disabled = false;
+});
+}
+
+profileLinkBtn.addEventListener('click', submitTradeLink);
+
+profileRelinkBtn.addEventListener('click', () => {
+profileSteamLinked.style.display = 'none';
+profileSteamUnlinked.style.display = 'block';
+});
+
+function renderInventory(items){
+if (!items || !items.length){
+inventoryStatus.textContent = 'В инвентаре нет предметов CS2 (или они не отображаются).';
+inventoryGrid.innerHTML = '';
+return;
+}
+inventoryStatus.textContent = '';
+inventoryGrid.innerHTML = items.map((item, i) => {
+const photo = item.photo_url
+? `<img src="${item.photo_url}" alt="">`
+: '';
+const wearText = item.wear ? WEAR_LABELS[item.wear] || '' : '';
+const stText = item.stattrak ? 'ST™ ' : '';
+return `
+<div class="inv-item" data-idx="${i}">
+${photo}
+<div class="inv-item-name">${stText}${escapeHtml(item.title)}</div>
+${wearText ? `<div class="inv-item-wear">${wearText}</div>` : ''}
+</div>`;
+}).join('');
+}
+
+let lastInventoryItems = [];
+
+openInventoryBtn.addEventListener('click', () => {
+if (!tg || !tg.initData) return;
+inventoryOverlay.classList.add('show');
+inventoryStatus.textContent = 'Загрузка...';
+inventoryGrid.innerHTML = '';
+fetch(API_BASE + '/api/steam/inventory?init_data=' + encodeURIComponent(tg.initData))
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(steamErrorMessage(data.error));
+}
+return r.json();
+})
+.then(data => {
+lastInventoryItems = data.items || [];
+renderInventory(lastInventoryItems);
+})
+.catch(err => {
+inventoryStatus.textContent = err.message;
+});
+});
+
+inventoryCancel.addEventListener('click', () => {
+inventoryOverlay.classList.remove('show');
+});
+
+inventoryGrid.addEventListener('click', (e) => {
+const card = e.target.closest('.inv-item');
+if (!card) return;
+const item = lastInventoryItems[Number(card.dataset.idx)];
+if (!item) return;
+
+sTitle.value = item.title || '';
+sWeaponType.value = item.weapon_type || '';
+sWear.value = item.wear || '';
+sRarity.value = item.rarity || '';
+sStattrak.checked = !!item.stattrak;
+if (item.photo_url) sPhoto.value = item.photo_url;
+
+inventoryOverlay.classList.remove('show');
+});
+
 addSkinBtn.addEventListener('click', () => {
 if (!tg || !tg.initData){
 showAlert(errorMessage('unauthorized'));
 return;
 }
 addSkinStatus.textContent = '';
+updateSteamBlockVisibility();
 addSkinOverlay.classList.add('show');
 });
 
@@ -1553,6 +2098,7 @@ price: price,
 photo_url: sPhoto.value.trim(),
 weapon_type: sWeaponType.value.trim(),
 wear: sWear.value,
+rarity: sRarity.value,
 float_value: sFloat.value ? Number(sFloat.value) : null,
 stattrak: sStattrak.checked,
 })
@@ -1572,6 +2118,7 @@ sPrice.value = '';
 sPhoto.value = '';
 sWeaponType.value = '';
 sWear.value = '';
+sRarity.value = '';
 sFloat.value = '';
 sStattrak.checked = false;
 loadSkins();

@@ -494,16 +494,48 @@ font-family:'Inter', sans-serif;
 font-size:11px;
 color:var(--muted);
 line-height:1.4;
-margin-bottom:16px;
+margin-bottom:14px;
 }
 
-.skins-list{
+.shop-controls{
 display:flex;
-flex-direction:column;
+gap:8px;
+margin-bottom:14px;
+}
+
+.skin-search{
+flex:1;
+min-width:0;
+padding:9px 12px;
+border-radius:8px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.03);
+color:var(--silver);
+font-family:'Inter', sans-serif;
+font-size:12px;
+}
+
+.skin-search:focus{ outline:none; border-color:var(--red); }
+
+.skin-sort{
+padding:9px 8px;
+border-radius:8px;
+border:1px solid var(--red-dim);
+background:#0a0a0c;
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+max-width:118px;
+}
+
+.skins-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
 gap:10px;
 }
 
 .skins-empty{
+grid-column:1 / -1;
 text-align:center;
 padding:40px 10px;
 font-family:'JetBrains Mono', monospace;
@@ -513,51 +545,100 @@ color:var(--muted);
 
 .skin-card{
 display:flex;
-gap:12px;
-padding:10px;
+flex-direction:column;
+padding:9px;
 border-radius:10px;
 border:1px solid var(--red-dim);
 background:rgba(255,255,255,0.02);
-align-items:center;
+text-align:left;
+}
+
+.skin-photo-wrap{
+position:relative;
+width:100%;
+aspect-ratio:1/1;
+border-radius:8px;
+overflow:hidden;
+background:rgba(255,31,61,0.08);
+margin-bottom:8px;
 }
 
 .skin-photo{
-width:56px;
-height:56px;
-border-radius:8px;
+width:100%;
+height:100%;
 object-fit:cover;
-background:rgba(255,31,61,0.08);
-flex-shrink:0;
+display:block;
 }
 
 .skin-photo.placeholder{
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:20px;
+font-size:24px;
+height:100%;
 }
 
-.skin-info{
-flex:1;
-min-width:0;
-text-align:left;
+.skin-badge{
+position:absolute;
+top:5px;
+font-family:'JetBrains Mono', monospace;
+font-size:9px;
+font-weight:700;
+padding:2px 6px;
+border-radius:4px;
+letter-spacing:0.03em;
+}
+
+.skin-badge.wear{
+right:5px;
+background:rgba(0,0,0,0.75);
+color:var(--silver);
+border:1px solid var(--red-dim);
+}
+
+.skin-badge.stattrak{
+left:5px;
+background:rgba(255,140,0,0.9);
+color:#1a0d00;
+}
+
+.skin-weapon-type{
+font-family:'JetBrains Mono', monospace;
+font-size:9px;
+letter-spacing:0.05em;
+text-transform:uppercase;
+color:var(--muted);
 }
 
 .skin-title{
 font-family:'Inter', sans-serif;
-font-size:13px;
+font-size:12px;
 font-weight:600;
 color:var(--silver);
-white-space:nowrap;
+line-height:1.25;
+margin-top:2px;
+display:-webkit-box;
+-webkit-line-clamp:2;
+-webkit-box-orient:vertical;
 overflow:hidden;
-text-overflow:ellipsis;
+min-height:30px;
+}
+
+.skin-float{
+font-family:'JetBrains Mono', monospace;
+font-size:9px;
+color:var(--muted);
+margin-top:3px;
 }
 
 .skin-seller{
 font-family:'JetBrains Mono', monospace;
-font-size:10px;
+font-size:9px;
 color:var(--muted);
 margin-top:2px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .skin-price{
@@ -565,19 +646,22 @@ font-family:'JetBrains Mono', monospace;
 font-size:13px;
 font-weight:700;
 color:var(--red);
-margin-top:4px;
+margin-top:5px;
 }
 
 .skin-action{
-flex-shrink:0;
-padding:8px 12px;
+margin-top:7px;
+width:100%;
+padding:7px;
 border-radius:7px;
 border:1px solid var(--red);
 background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
-font-size:11px;
+font-size:10px;
 font-weight:600;
+letter-spacing:0.03em;
+text-transform:uppercase;
 cursor:pointer;
 }
 
@@ -585,6 +669,44 @@ cursor:pointer;
 border-color:var(--muted);
 background:transparent;
 color:var(--muted);
+}
+
+/* ---------- add-skin form extras ---------- */
+.edit-sheet{
+max-height:85vh;
+overflow-y:auto;
+}
+
+.edit-row{
+display:flex;
+gap:10px;
+}
+
+.edit-row .edit-field{
+flex:1;
+min-width:0;
+}
+
+.edit-checkbox-field{
+margin-bottom:14px;
+}
+
+.checkbox-label{
+display:flex !important;
+align-items:center;
+gap:8px;
+font-family:'Inter', sans-serif !important;
+font-size:13px !important;
+color:var(--silver) !important;
+text-transform:none !important;
+letter-spacing:0 !important;
+cursor:pointer;
+}
+
+.checkbox-label input{
+width:16px;
+height:16px;
+accent-color:var(--red);
 }
 
 /* ---------- buy confirmation sheet ---------- */
@@ -702,7 +824,16 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="shop-hint">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
 
-<div class="skins-list" id="skinsList">
+<div class="shop-controls">
+<input id="skinSearch" class="skin-search" type="text" placeholder="Поиск по названию или оружию...">
+<select id="skinSort" class="skin-sort">
+<option value="new">Сначала новые</option>
+<option value="price_asc">Цена: сначала дешёвые</option>
+<option value="price_desc">Цена: сначала дорогие</option>
+</select>
+</div>
+
+<div class="skins-grid" id="skinsList">
 <div class="skins-empty">Загрузка...</div>
 </div>
 
@@ -748,13 +879,43 @@ transform="rotate(-90 100 100)"></circle>
 <h2>Выставить скин</h2>
 
 <div class="edit-field">
-<label for="sTitle">Название</label>
-<input id="sTitle" type="text" maxlength="80" placeholder="AK-47 | Redline (FT)">
+<label for="sWeaponType">Оружие / категория</label>
+<input id="sWeaponType" type="text" maxlength="40" placeholder="AK-47, AWP, Ножи...">
+</div>
+
+<div class="edit-field">
+<label for="sTitle">Название скина</label>
+<input id="sTitle" type="text" maxlength="80" placeholder="Redline">
+</div>
+
+<div class="edit-row">
+<div class="edit-field">
+<label for="sWear">Износ</label>
+<select id="sWear">
+<option value="">—</option>
+<option value="FN">Factory New (FN)</option>
+<option value="MW">Minimal Wear (MW)</option>
+<option value="FT">Field-Tested (FT)</option>
+<option value="WW">Well-Worn (WW)</option>
+<option value="BS">Battle-Scarred (BS)</option>
+</select>
+</div>
+<div class="edit-field">
+<label for="sFloat">Float (0.00–1.00)</label>
+<input id="sFloat" type="number" min="0" max="1" step="0.000001" placeholder="0.1834">
+</div>
+</div>
+
+<div class="edit-field edit-checkbox-field">
+<label class="checkbox-label">
+<input id="sStattrak" type="checkbox">
+<span>StatTrak™</span>
+</label>
 </div>
 
 <div class="edit-field">
 <label for="sDescription">Описание (необязательно)</label>
-<input id="sDescription" type="text" maxlength="300" placeholder="Float 0.20, наклейки...">
+<input id="sDescription" type="text" maxlength="300" placeholder="Наклейки, паттерн...">
 </div>
 
 <div class="edit-field">
@@ -1088,6 +1249,13 @@ const sTitle = document.getElementById('sTitle');
 const sDescription = document.getElementById('sDescription');
 const sPrice = document.getElementById('sPrice');
 const sPhoto = document.getElementById('sPhoto');
+const sWeaponType = document.getElementById('sWeaponType');
+const sWear = document.getElementById('sWear');
+const sFloat = document.getElementById('sFloat');
+const sStattrak = document.getElementById('sStattrak');
+
+const skinSearch = document.getElementById('skinSearch');
+const skinSort = document.getElementById('skinSort');
 
 const buyOverlay = document.getElementById('buyOverlay');
 const buyPhoto = document.getElementById('buyPhoto');
@@ -1099,6 +1267,8 @@ const buyConfirm = document.getElementById('buyConfirm');
 const buyStatus = document.getElementById('buyStatus');
 
 let pendingBuySkin = null;
+
+const WEAR_LABELS = { FN: 'FN', MW: 'MW', FT: 'FT', WW: 'WW', BS: 'BS' };
 
 const ERROR_MESSAGES = {
 unauthorized: 'Открой мини-апп через Telegram, а не в браузере.',
@@ -1143,25 +1313,44 @@ const photo = skin.photo_url
 ? `<img class="skin-photo" src="${skin.photo_url}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'skin-photo placeholder',textContent:'🔫'}))">`
 : `<div class="skin-photo placeholder">🔫</div>`;
 
+const wearBadge = skin.wear && WEAR_LABELS[skin.wear]
+? `<div class="skin-badge wear">${WEAR_LABELS[skin.wear]}</div>`
+: '';
+
+const stBadge = skin.stattrak
+? `<div class="skin-badge stattrak">ST™</div>`
+: '';
+
 const isOwn = currentUserId && skin.seller_id === currentUserId;
 
 const actionBtn = isOwn
 ? `<button class="skin-action own" data-cancel="${skin.id}" type="button">Снять</button>`
 : `<button class="skin-action" data-buy="${skin.id}" type="button">Купить</button>`;
 
-const desc = skin.description
-? `<div class="skin-seller">${escapeHtml(skin.description)}</div>`
+const weaponType = skin.weapon_type
+? `<div class="skin-weapon-type">${escapeHtml(skin.weapon_type)}</div>`
 : '';
+
+const floatLine = (skin.float_value !== null && skin.float_value !== undefined)
+? `<div class="skin-float">Float: ${Number(skin.float_value).toFixed(4)}</div>`
+: '';
+
+const title = skin.stattrak
+? `StatTrak™ ${escapeHtml(skin.title)}`
+: escapeHtml(skin.title);
 
 return `
 <div class="skin-card">
+<div class="skin-photo-wrap">
 ${photo}
-<div class="skin-info">
-<div class="skin-title">${escapeHtml(skin.title)}</div>
-${desc}
+${wearBadge}
+${stBadge}
+</div>
+${weaponType}
+<div class="skin-title">${title}</div>
+${floatLine}
 <div class="skin-seller">${escapeHtml(skin.seller_username || 'аноним')}</div>
 <div class="skin-price">${formatCoins(skin.price)}</div>
-</div>
 ${actionBtn}
 </div>`;
 }
@@ -1174,13 +1363,40 @@ return div.innerHTML;
 
 let lastSkins = [];
 
-function renderSkins(list){
-lastSkins = list || [];
-if (!lastSkins.length){
-skinsList.innerHTML = '<div class="skins-empty">Пока нет лотов — стань первым 🔫</div>';
+function applyFiltersAndRender(){
+const q = skinSearch.value.trim().toLowerCase();
+const sort = skinSort.value;
+
+let filtered = lastSkins;
+
+if (q){
+filtered = filtered.filter(s =>
+(s.title || '').toLowerCase().includes(q) ||
+(s.weapon_type || '').toLowerCase().includes(q)
+);
+}
+
+filtered = filtered.slice();
+
+if (sort === 'price_asc'){
+filtered.sort((a, b) => a.price - b.price);
+} else if (sort === 'price_desc'){
+filtered.sort((a, b) => b.price - a.price);
+} else {
+filtered.sort((a, b) => b.id - a.id);
+}
+
+if (!filtered.length){
+skinsList.innerHTML = `<div class="skins-empty">${lastSkins.length ? 'Ничего не нашлось' : 'Пока нет лотов — стань первым 🔫'}</div>`;
 return;
 }
-skinsList.innerHTML = lastSkins.map(skinCardHtml).join('');
+
+skinsList.innerHTML = filtered.map(skinCardHtml).join('');
+}
+
+function renderSkins(list){
+lastSkins = list || [];
+applyFiltersAndRender();
 }
 
 function loadSkins(){
@@ -1191,6 +1407,9 @@ fetch(API_BASE + '/api/skins')
 skinsList.innerHTML = '<div class="skins-empty">Не удалось загрузить каталог.</div>';
 });
 }
+
+skinSearch.addEventListener('input', applyFiltersAndRender);
+skinSort.addEventListener('change', applyFiltersAndRender);
 
 skinsList.addEventListener('click', (e) => {
 const buyBtn = e.target.closest('[data-buy]');
@@ -1213,9 +1432,19 @@ return;
 pendingBuySkin = skin;
 buyPhoto.src = skin.photo_url || '';
 buyPhoto.style.display = skin.photo_url ? '' : 'none';
-buyTitle.textContent = skin.title;
+
+let titleText = skin.stattrak ? 'StatTrak™ ' + skin.title : skin.title;
+if (skin.wear && WEAR_LABELS[skin.wear]) titleText += ' (' + WEAR_LABELS[skin.wear] + ')';
+buyTitle.textContent = titleText;
+
 buyPrice.textContent = formatCoins(skin.price);
-buySeller.textContent = 'Продавец: ' + (skin.seller_username || 'аноним');
+
+let sellerText = 'Продавец: ' + (skin.seller_username || 'аноним');
+if (skin.float_value !== null && skin.float_value !== undefined){
+sellerText += ' · Float: ' + Number(skin.float_value).toFixed(4);
+}
+buySeller.textContent = sellerText;
+
 buyStatus.textContent = '';
 buyOverlay.classList.add('show');
 }
@@ -1322,6 +1551,10 @@ title: title,
 description: sDescription.value.trim(),
 price: price,
 photo_url: sPhoto.value.trim(),
+weapon_type: sWeaponType.value.trim(),
+wear: sWear.value,
+float_value: sFloat.value ? Number(sFloat.value) : null,
+stattrak: sStattrak.checked,
 })
 })
 .then(async r => {
@@ -1337,6 +1570,10 @@ sTitle.value = '';
 sDescription.value = '';
 sPrice.value = '';
 sPhoto.value = '';
+sWeaponType.value = '';
+sWear.value = '';
+sFloat.value = '';
+sStattrak.checked = false;
 loadSkins();
 setTimeout(() => {
 addSkinOverlay.classList.remove('show');

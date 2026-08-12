@@ -1060,7 +1060,7 @@ else { editFab.classList.remove('show'); }
 function switchTab(name){
 const showTimer = name === 'timer';
 screenTimer.style.display = showTimer ? '' : 'none';
-screenShop.style.display = showTimer ? 'none' : '';
+screenShop.style.display = showTimer ? 'none' : 'block';
 tabTimerBtn.classList.toggle('active', showTimer);
 tabShopBtn.classList.toggle('active', !showTimer);
 updateFabVisibility();

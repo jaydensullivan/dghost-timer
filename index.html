@@ -1202,10 +1202,11 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="profile-section" id="profileWithdrawSection" style="margin-top:10px;">
 <div class="profile-section-title">Вывод средств</div>
-<div class="shop-hint" style="margin-bottom:10px;">Минимум — <span id="withdrawMinLabel">5,000</span> сум. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
+<div class="shop-hint" style="margin-bottom:10px;">Минимум — <span id="withdrawMinLabel">5,000</span> сум. Комиссия за вывод — <span id="withdrawFeeLabel">2.5</span>%. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
 <div class="edit-field">
 <label for="wAmount">Сумма, сум</label>
 <input id="wAmount" type="number" min="1" placeholder="5000">
+<div class="shop-hint" id="withdrawPayoutPreview" style="margin-top:6px;"></div>
 </div>
 <div class="edit-field">
 <label for="wDetails">Карта Uzcard/Humo</label>
@@ -2324,6 +2325,21 @@ const wAmount = document.getElementById('wAmount');
 const wDetails = document.getElementById('wDetails');
 const withdrawSubmitBtn = document.getElementById('withdrawSubmitBtn');
 const withdrawStatus = document.getElementById('withdrawStatus');
+const withdrawPayoutPreview = document.getElementById('withdrawPayoutPreview');
+
+const WITHDRAW_FEE_PERCENT = 2.5;
+
+function updateWithdrawPayoutPreview(){
+const amount = Number(wAmount.value);
+if (!amount || amount <= 0){
+withdrawPayoutPreview.textContent = '';
+return;
+}
+const payout = Math.round(amount * (100 - WITHDRAW_FEE_PERCENT) / 100);
+withdrawPayoutPreview.textContent = `На карту придёт: ${formatCoins(payout)} (после комиссии ${WITHDRAW_FEE_PERCENT}%)`;
+}
+
+wAmount.addEventListener('input', updateWithdrawPayoutPreview);
 
 const WITHDRAW_ERROR_MESSAGES = {
 no_payment_details: 'Укажи карту и Ф.И.О. владельца карты.',
@@ -2373,9 +2389,11 @@ throw new Error(WITHDRAW_ERROR_MESSAGES[data.error] || errorMessage(data.error))
 return r.json();
 })
 .then(data => {
-withdrawStatus.textContent = `Заявка #${data.id} отправлена ✓ Ожидай перевод.`;
+const payoutText = data.payout ? ` На карту придёт ${formatCoins(data.payout)}.` : '';
+withdrawStatus.textContent = `Заявка #${data.id} отправлена ✓ Ожидай перевод.${payoutText}`;
 wAmount.value = '';
 wDetails.value = '';
+withdrawPayoutPreview.textContent = '';
 loadProfile();
 })
 .catch(err => {

@@ -594,6 +594,76 @@ color:var(--muted);
 border-color:var(--muted);
 }
 
+/* ---------- deal cards ---------- */
+.deal-card{
+display:flex;
+gap:10px;
+padding:10px;
+border-radius:10px;
+border:1px solid var(--red-dim);
+background:rgba(255,255,255,0.02);
+margin-bottom:8px;
+align-items:center;
+}
+
+.deal-photo{
+width:44px;
+height:44px;
+border-radius:8px;
+object-fit:cover;
+background:rgba(255,31,61,0.08);
+flex-shrink:0;
+}
+
+.deal-info{
+flex:1;
+min-width:0;
+text-align:left;
+}
+
+.deal-title{
+font-family:'Inter', sans-serif;
+font-size:12px;
+font-weight:600;
+color:var(--silver);
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.deal-meta{
+font-family:'JetBrains Mono', monospace;
+font-size:9px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.deal-status{
+font-family:'JetBrains Mono', monospace;
+font-size:9px;
+margin-top:3px;
+letter-spacing:0.03em;
+text-transform:uppercase;
+}
+
+.deal-status.pending{ color:#e4ae39; }
+.deal-status.sent{ color:#5e98d9; }
+.deal-status.done{ color:#4caf50; }
+
+.deal-action{
+flex-shrink:0;
+padding:7px 10px;
+border-radius:7px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+font-weight:600;
+cursor:pointer;
+white-space:nowrap;
+}
+
 /* ---------- shop screen ---------- */
 .screen-shop{
 display:none;
@@ -1112,6 +1182,13 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-status" id="profileSteamStatus"></div>
 </div>
 
+<div class="profile-section" id="profileDealsSection" style="margin-top:10px;">
+<div class="profile-section-title">Мои сделки</div>
+<div id="dealsList">
+<div class="skins-empty" style="padding:16px 4px;">Загрузка...</div>
+</div>
+</div>
+
 <div class="profile-section" id="profileWithdrawSection" style="margin-top:10px;">
 <div class="profile-section-title">Вывод средств</div>
 <div class="shop-hint" style="margin-bottom:10px;">Минимум — <span id="withdrawMinLabel">5,000</span> COINS. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
@@ -1253,7 +1330,7 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="buy-overlay" id="buyOverlay">
 <div class="buy-sheet">
-<img id="buyPhoto" class="buy-photo" src="" alt="">
+<img id="buyPhoto" class="buy-photo" alt="" style="display:none;">
 <h2 id="buyTitle">—</h2>
 <div class="buy-price" id="buyPrice">—</div>
 <div class="buy-seller" id="buySeller">—</div>
@@ -1711,7 +1788,110 @@ document.getElementById('statActive').textContent = data.active_count;
 profileName.textContent = 'Не удалось загрузить';
 profileBalanceAmount.textContent = '—';
 });
+
+loadDeals();
 }
+
+// ============================================================
+// МОИ СДЕЛКИ (трекинг без кастодии)
+// ============================================================
+
+function dealCardHtml(deal){
+const photo = deal.photo_url
+? `<img class="deal-photo" src="${deal.photo_url}" alt="">`
+: `<div class="deal-photo" style="display:flex;align-items:center;justify-content:center;">${TARGET_ICON}</div>`;
+
+let statusHtml = '';
+let actionHtml = '';
+
+if (deal.role === 'selling'){
+if (deal.sent_at){
+statusHtml = '<div class="deal-status sent">Отправлено, ждём холд</div>';
+} else {
+statusHtml = '<div class="deal-status pending">Нужно отправить</div>';
+actionHtml = `<button class="deal-action" data-mark-sent="${deal.id}" type="button">Отправил</button>`;
+}
+} else {
+if (deal.confirmed_at){
+statusHtml = '<div class="deal-status done">Подтверждено</div>';
+} else if (deal.sent_at){
+statusHtml = '<div class="deal-status sent">Продавец отправил</div>';
+actionHtml = `<button class="deal-action" data-mark-received="${deal.id}" type="button">Получил</button>`;
+} else {
+statusHtml = '<div class="deal-status pending">Ждём отправки</div>';
+}
+}
+
+const roleLabel = deal.role === 'selling' ? 'Продаю' : 'Покупаю';
+const counterparty = deal.counterparty || 'аноним';
+
+return `
+<div class="deal-card">
+${photo}
+<div class="deal-info">
+<div class="deal-title">${escapeHtml(deal.title)}</div>
+<div class="deal-meta">${roleLabel} · ${escapeHtml(counterparty)} · ${formatCoins(deal.price)}</div>
+${statusHtml}
+</div>
+${actionHtml}
+</div>`;
+}
+
+let lastDeals = [];
+
+function loadDeals(){
+const dealsList = document.getElementById('dealsList');
+if (!tg || !tg.initData){
+dealsList.innerHTML = '<div class="skins-empty" style="padding:16px 4px;">Открой через Telegram</div>';
+return;
+}
+fetch(API_BASE + '/api/deals?init_data=' + encodeURIComponent(tg.initData))
+.then(r => r.json())
+.then(data => {
+lastDeals = (data && data.items) || [];
+if (!lastDeals.length){
+dealsList.innerHTML = '<div class="skins-empty" style="padding:16px 4px;">Активных сделок нет</div>';
+return;
+}
+dealsList.innerHTML = lastDeals.map(dealCardHtml).join('');
+})
+.catch(() => {
+dealsList.innerHTML = '<div class="skins-empty" style="padding:16px 4px;">Не удалось загрузить</div>';
+});
+}
+
+document.getElementById('dealsList').addEventListener('click', (e) => {
+const sentBtn = e.target.closest('[data-mark-sent]');
+const receivedBtn = e.target.closest('[data-mark-received]');
+
+if (sentBtn){
+const id = sentBtn.dataset.markSent;
+showConfirm('Отметить, что скин отправлен покупателю?', () => {
+fetch(API_BASE + '/api/skins/' + id + '/mark_sent', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData })
+})
+.then(r => { if (!r.ok) throw new Error(); return r.json(); })
+.then(() => loadDeals())
+.catch(() => showAlert('Не удалось обновить статус.'));
+});
+}
+
+if (receivedBtn){
+const id = receivedBtn.dataset.markReceived;
+showConfirm('Подтвердить получение? Продавцу сразу зачислятся деньги.', () => {
+fetch(API_BASE + '/api/skins/' + id + '/mark_received', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData })
+})
+.then(r => { if (!r.ok) throw new Error(); return r.json(); })
+.then(() => loadDeals())
+.catch(() => showAlert('Не удалось обновить статус.'));
+});
+}
+});
 
 const RARITY_CLASS = {
 'Consumer Grade': 'rarity-consumer',
@@ -1848,8 +2028,13 @@ showAlert(errorMessage('unauthorized'));
 return;
 }
 pendingBuySkin = skin;
-buyPhoto.src = skin.photo_url || '';
-buyPhoto.style.display = skin.photo_url ? '' : 'none';
+if (skin.photo_url){
+buyPhoto.src = skin.photo_url;
+buyPhoto.style.display = '';
+} else {
+buyPhoto.removeAttribute('src');
+buyPhoto.style.display = 'none';
+}
 
 let titleText = skin.stattrak ? 'StatTrak™ ' + skin.title : skin.title;
 if (skin.wear && WEAR_LABELS[skin.wear]) titleText += ' (' + WEAR_LABELS[skin.wear] + ')';

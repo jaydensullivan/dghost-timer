@@ -1092,7 +1092,7 @@ margin-bottom:6px;
 <h1 id="title" data-text="DIGITAL GHOST">DIGITAL GHOST</h1>
 <div class="lot" id="subtitle">Розыгрыш кейсов в канале</div>
 
-<div class="prize" id="prize"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.8 2.5-1.8s2.5.7 2.5 1.7c0 2.3-5 1.3-5 3.6 0 1 1 1.8 2.5 1.8s2.5-.8 2.5-1.8"/></svg> <b>250 000</b>&nbsp;COINS</div>
+<div class="prize" id="prize"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.8 2.5-1.8s2.5.7 2.5 1.7c0 2.3-5 1.3-5 3.6 0 1 1 1.8 2.5 1.8s2.5-.8 2.5-1.8"/></svg> <b>250 000</b>&nbsp;сум</div>
 
 <div class="crystal">
 <svg viewBox="0 0 200 200">
@@ -1182,6 +1182,17 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-status" id="profileSteamStatus"></div>
 </div>
 
+<div class="profile-section" id="profileTopupSection" style="margin-top:10px;">
+<div class="profile-section-title">Пополнить баланс</div>
+<div class="shop-hint" id="topupDetailsText" style="margin-bottom:10px;">Загрузка реквизитов...</div>
+<div class="edit-field">
+<label for="tAmount">Сумма перевода, сум</label>
+<input id="tAmount" type="number" min="1" placeholder="10000">
+</div>
+<button type="button" id="topupSubmitBtn" class="steam-link-btn">Я оплатил</button>
+<div class="edit-status" id="topupStatus"></div>
+</div>
+
 <div class="profile-section" id="profileDealsSection" style="margin-top:10px;">
 <div class="profile-section-title">Мои сделки</div>
 <div id="dealsList">
@@ -1191,14 +1202,15 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="profile-section" id="profileWithdrawSection" style="margin-top:10px;">
 <div class="profile-section-title">Вывод средств</div>
-<div class="shop-hint" style="margin-bottom:10px;">Минимум — <span id="withdrawMinLabel">5,000</span> COINS. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
+<div class="shop-hint" style="margin-bottom:10px;">Минимум — <span id="withdrawMinLabel">5,000</span> сум. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
 <div class="edit-field">
-<label for="wAmount">Сумма, COINS</label>
+<label for="wAmount">Сумма, сум</label>
 <input id="wAmount" type="number" min="1" placeholder="5000">
 </div>
 <div class="edit-field">
-<label for="wDetails">Карта Uzcard/Humo/Visa или номер Payme/Click</label>
-<input id="wDetails" type="text" placeholder="8600 1234 5678 9012">
+<label for="wDetails">Карта Uzcard/Humo</label>
+<div style="color:var(--red); font-family:'Inter', sans-serif; font-size:12px; font-weight:600; margin-bottom:6px;">⚠️ Обязательно укажи Ф.И.О. владельца карты — без этого заявку не обработают</div>
+<input id="wDetails" type="text" placeholder="8600 1234 5678 9012, Иванов И.И.">
 </div>
 <button type="button" id="withdrawSubmitBtn" class="steam-link-btn">Подать заявку на вывод</button>
 <div class="edit-status" id="withdrawStatus"></div>
@@ -1225,7 +1237,7 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="edit-field">
 <label for="fPrize">Приз</label>
-<input id="fPrize" type="text" maxlength="60" placeholder="250 000 COINS">
+<input id="fPrize" type="text" maxlength="60" placeholder="250 000 сум">
 </div>
 
 <div class="edit-field">
@@ -1310,7 +1322,7 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="edit-field">
-<label for="sPrice">Цена, COINS</label>
+<label for="sPrice">Цена, сум</label>
 <input id="sPrice" type="number" min="1" placeholder="5000">
 </div>
 
@@ -1700,7 +1712,7 @@ const ERROR_MESSAGES = {
 unauthorized: 'Открой мини-апп через Telegram, а не в браузере.',
 not_available: 'Этот скин уже продан или снят с продажи.',
 own_listing: 'Нельзя купить собственный лот.',
-insufficient_funds: 'Недостаточно COINS на балансе.',
+insufficient_funds: 'Недостаточно сум на балансе.',
 race_lost: 'Кто-то купил этот скин на секунду раньше.',
 forbidden: 'Можно снять только свой лот.',
 not_found: 'Лот не найден.',
@@ -1712,7 +1724,7 @@ return ERROR_MESSAGES[code] || 'Что-то пошло не так, попроб
 }
 
 function formatCoins(n){
-return Number(n || 0).toLocaleString('ru-RU') + ' COINS';
+return Number(n || 0).toLocaleString('ru-RU') + ' сум';
 }
 
 let hasSteamLink = false;
@@ -2231,6 +2243,80 @@ profileSteamUnlinked.style.display = 'block';
 });
 
 // ============================================================
+// ПОПОЛНЕНИЕ БАЛАНСА
+// ============================================================
+
+const tAmount = document.getElementById('tAmount');
+const topupSubmitBtn = document.getElementById('topupSubmitBtn');
+const topupStatus = document.getElementById('topupStatus');
+const topupDetailsText = document.getElementById('topupDetailsText');
+
+const TOPUP_ERROR_MESSAGES = {
+below_minimum: 'Сумма меньше минимальной для пополнения.',
+};
+
+function loadTopupInfo(){
+fetch(API_BASE + '/api/topup_info')
+.then(r => r.json())
+.then(data => {
+topupDetailsText.textContent = data.details;
+if (data.min_amount) tAmount.placeholder = String(data.min_amount);
+})
+.catch(() => {
+topupDetailsText.textContent = 'Не удалось загрузить реквизиты.';
+});
+}
+
+loadTopupInfo();
+
+topupSubmitBtn.addEventListener('click', () => {
+if (!tg || !tg.initData){
+topupStatus.textContent = errorMessage('unauthorized');
+return;
+}
+
+const amount = Number(tAmount.value);
+
+if (!amount || amount <= 0){
+topupStatus.textContent = 'Укажи сумму.';
+return;
+}
+
+topupSubmitBtn.disabled = true;
+topupStatus.textContent = 'Отправляю заявку...';
+
+fetch(API_BASE + '/api/topup', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+init_data: tg.initData,
+amount: amount,
+})
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(TOPUP_ERROR_MESSAGES[data.error] || errorMessage(data.error));
+}
+return r.json();
+})
+.then(data => {
+topupStatus.textContent = `Заявка #${data.id} создана ✓ Теперь пришли скриншот чека прямо в чат с ботом.`;
+tAmount.value = '';
+if (tg.close) {
+// оставляем мини-апп открытым — пользователь сам
+// переключится в чат, чтобы отправить фото
+}
+})
+.catch(err => {
+topupStatus.textContent = err.message;
+})
+.finally(() => {
+topupSubmitBtn.disabled = false;
+});
+});
+
+// ============================================================
 // ВЫВОД СРЕДСТВ
 // ============================================================
 
@@ -2240,7 +2326,7 @@ const withdrawSubmitBtn = document.getElementById('withdrawSubmitBtn');
 const withdrawStatus = document.getElementById('withdrawStatus');
 
 const WITHDRAW_ERROR_MESSAGES = {
-no_payment_details: 'Укажи карту или номер Payme/Click.',
+no_payment_details: 'Укажи карту и Ф.И.О. владельца карты.',
 below_minimum: 'Сумма меньше минимальной для вывода.',
 insufficient_funds: 'Недостаточно средств на балансе.',
 };
@@ -2259,7 +2345,11 @@ withdrawStatus.textContent = 'Укажи сумму.';
 return;
 }
 if (!details){
-withdrawStatus.textContent = 'Укажи карту или номер Payme/Click.';
+withdrawStatus.textContent = 'Укажи карту и Ф.И.О. владельца карты.';
+return;
+}
+if (details.length < 10){
+withdrawStatus.textContent = 'Не забудь указать Ф.И.О. владельца карты рядом с номером.';
 return;
 }
 

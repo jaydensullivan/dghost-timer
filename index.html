@@ -1796,6 +1796,19 @@ loadDeals();
 // МОИ СДЕЛКИ (трекинг без кастодии)
 // ============================================================
 
+function formatDealCountdown(releaseAtIso){
+if (!releaseAtIso) return '';
+const remainingMs = new Date(releaseAtIso).getTime() - Date.now();
+if (remainingMs <= 0) return 'с минуты на минуту';
+const totalMinutes = Math.floor(remainingMs / 60000);
+const days = Math.floor(totalMinutes / 1440);
+const hours = Math.floor((totalMinutes % 1440) / 60);
+const minutes = totalMinutes % 60;
+if (days > 0) return `${days}д ${hours}ч`;
+if (hours > 0) return `${hours}ч ${minutes}м`;
+return `${minutes}м`;
+}
+
 function dealCardHtml(deal){
 const photo = deal.photo_url
 ? `<img class="deal-photo" src="${deal.photo_url}" alt="">`
@@ -1822,6 +1835,13 @@ statusHtml = '<div class="deal-status pending">Ждём отправки</div>';
 }
 }
 
+const countdownLabel = deal.role === 'selling'
+? 'Зачисление через: '
+: 'Холд снимется через: ';
+const countdownHtml = deal.release_at
+? `<div class="deal-meta">${countdownLabel}${formatDealCountdown(deal.release_at)}</div>`
+: '';
+
 const roleLabel = deal.role === 'selling' ? 'Продаю' : 'Покупаю';
 const counterparty = deal.counterparty || 'аноним';
 
@@ -1831,6 +1851,7 @@ ${photo}
 <div class="deal-info">
 <div class="deal-title">${escapeHtml(deal.title)}</div>
 <div class="deal-meta">${roleLabel} · ${escapeHtml(counterparty)} · ${formatCoins(deal.price)}</div>
+${countdownHtml}
 ${statusHtml}
 </div>
 ${actionHtml}
@@ -1860,6 +1881,14 @@ dealsList.innerHTML = '<div class="skins-empty" style="padding:16px 4px;">Не �
 });
 }
 
+// Раз в минуту перерисовываем отсчёт по уже загруженным сделкам —
+// без лишних запросов к серверу
+setInterval(() => {
+if (lastDeals.length && currentTab === 'profile'){
+document.getElementById('dealsList').innerHTML = lastDeals.map(dealCardHtml).join('');
+}
+}, 60000);
+
 document.getElementById('dealsList').addEventListener('click', (e) => {
 const sentBtn = e.target.closest('[data-mark-sent]');
 const receivedBtn = e.target.closest('[data-mark-received]');
@@ -1880,7 +1909,7 @@ body: JSON.stringify({ init_data: tg.initData })
 
 if (receivedBtn){
 const id = receivedBtn.dataset.markReceived;
-showConfirm('Подтвердить получение? Продавцу сразу зачислятся деньги.', () => {
+showConfirm('Подтвердить получение? Это просто отметка для истории — деньги продавцу всё равно уйдут по истечении 8-дневного холда.', () => {
 fetch(API_BASE + '/api/skins/' + id + '/mark_received', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },

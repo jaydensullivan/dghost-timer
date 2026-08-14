@@ -1357,7 +1357,10 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="edit-overlay" id="inventoryOverlay">
 <div class="edit-sheet inventory-sheet">
-<h2>Инвентарь Steam</h2>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+<h2 style="margin:0;">Инвентарь Steam</h2>
+<button type="button" id="inventoryRefreshBtn" class="steam-link-btn secondary" style="padding:6px 10px;font-size:11px;width:auto;">🔄 Обновить</button>
+</div>
 <div class="edit-status" id="inventoryStatus">Загрузка...</div>
 <div class="inventory-grid" id="inventoryGrid"></div>
 <div class="edit-actions">
@@ -2162,6 +2165,7 @@ loadSkins();
 // ============================================================
 
 const openInventoryBtn = document.getElementById('openInventoryBtn');
+const inventoryRefreshBtn = document.getElementById('inventoryRefreshBtn');
 
 const inventoryOverlay = document.getElementById('inventoryOverlay');
 const inventoryGrid = document.getElementById('inventoryGrid');
@@ -2428,12 +2432,12 @@ ${wearText ? `<div class="inv-item-wear">${wearText}</div>` : ''}
 
 let lastInventoryItems = [];
 
-openInventoryBtn.addEventListener('click', () => {
-if (!tg || !tg.initData) return;
-inventoryOverlay.classList.add('show');
-inventoryStatus.textContent = 'Загрузка...';
+function loadInventory(forceRefresh){
+inventoryStatus.textContent = forceRefresh ? 'Обновляю...' : 'Загрузка...';
 inventoryGrid.innerHTML = '';
-fetch(API_BASE + '/api/steam/inventory?init_data=' + encodeURIComponent(tg.initData))
+let url = API_BASE + '/api/steam/inventory?init_data=' + encodeURIComponent(tg.initData);
+if (forceRefresh) url += '&refresh=1';
+fetch(url)
 .then(async r => {
 if (!r.ok){
 const data = await r.json().catch(() => ({}));
@@ -2448,6 +2452,17 @@ renderInventory(lastInventoryItems);
 .catch(err => {
 inventoryStatus.textContent = err.message;
 });
+}
+
+openInventoryBtn.addEventListener('click', () => {
+if (!tg || !tg.initData) return;
+inventoryOverlay.classList.add('show');
+loadInventory(false);
+});
+
+inventoryRefreshBtn.addEventListener('click', () => {
+if (!tg || !tg.initData) return;
+loadInventory(true);
 });
 
 inventoryCancel.addEventListener('click', () => {

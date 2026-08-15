@@ -720,6 +720,19 @@ cursor:pointer;
 white-space:nowrap;
 }
 
+.deal-actions{
+display:flex;
+flex-direction:column;
+gap:6px;
+flex-shrink:0;
+}
+
+.deal-action.secondary{
+border-color:var(--muted);
+background:transparent;
+color:var(--muted);
+}
+
 /* ---------- shop screen ---------- */
 .screen-shop{
 display:none;
@@ -1901,7 +1914,8 @@ if (deal.sent_at){
 statusHtml = '<div class="deal-status sent">Отправлено, ждём холд</div>';
 } else {
 statusHtml = '<div class="deal-status pending">Нужно отправить</div>';
-actionHtml = `<button class="deal-action" data-mark-sent="${deal.id}" type="button">Отправил</button>`;
+actionHtml = `<button class="deal-action" data-mark-sent="${deal.id}" type="button">Отправил</button>
+<button class="deal-action secondary" data-cancel-sale="${deal.id}" type="button">Отменить</button>`;
 }
 } else {
 if (deal.confirmed_at){
@@ -1933,7 +1947,7 @@ ${photo}
 ${countdownHtml}
 ${statusHtml}
 </div>
-${actionHtml}
+<div class="deal-actions">${actionHtml}</div>
 </div>`;
 }
 
@@ -1971,6 +1985,7 @@ document.getElementById('dealsList').innerHTML = lastDeals.map(dealCardHtml).joi
 document.getElementById('dealsList').addEventListener('click', (e) => {
 const sentBtn = e.target.closest('[data-mark-sent]');
 const receivedBtn = e.target.closest('[data-mark-received]');
+const cancelBtn = e.target.closest('[data-cancel-sale]');
 
 if (sentBtn){
 const id = sentBtn.dataset.markSent;
@@ -1997,6 +2012,27 @@ body: JSON.stringify({ init_data: tg.initData })
 .then(r => { if (!r.ok) throw new Error(); return r.json(); })
 .then(() => loadDeals())
 .catch(() => showAlert('Не удалось обновить статус.'));
+});
+}
+
+if (cancelBtn){
+const id = cancelBtn.dataset.cancelSale;
+showConfirm('Отменить продажу? Деньги вернутся покупателю, лот больше не будет считаться проданным. Отменить можно только пока предмет ещё не отправлен.', () => {
+fetch(API_BASE + '/api/skins/' + id + '/cancel_sale', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+if (data.error === 'already_sent') throw new Error('Уже отмечено как отправленное — отменить нельзя.');
+throw new Error('Не удалось отменить продажу.');
+}
+return r.json();
+})
+.then(() => loadDeals())
+.catch(err => showAlert(err.message));
 });
 }
 });
@@ -2669,4 +2705,3 @@ loadSkins();
 </script>
 </body>
 </html>
- 

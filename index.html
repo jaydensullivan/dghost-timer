@@ -594,6 +594,62 @@ color:var(--muted);
 border-color:var(--muted);
 }
 
+/* ---------- topup details ---------- */
+.topup-details-box{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:14px;
+border-radius:10px;
+border:1.5px solid var(--red);
+background:rgba(255,31,61,0.08);
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.topup-details-text{
+font-family:'JetBrains Mono', monospace;
+font-size:16px;
+font-weight:700;
+color:var(--silver);
+letter-spacing:0.02em;
+line-height:1.4;
+word-break:break-word;
+}
+
+.topup-copy-btn{
+flex-shrink:0;
+display:flex;
+align-items:center;
+gap:5px;
+padding:8px 12px;
+border-radius:7px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+font-weight:600;
+text-transform:uppercase;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.topup-copy-btn.copied{
+border-color:#4caf50;
+color:#4caf50;
+}
+
+.topup-warning{
+font-family:'Inter', sans-serif;
+font-size:12px;
+font-weight:600;
+color:var(--red);
+margin-bottom:12px;
+line-height:1.4;
+}
+
 /* ---------- deal cards ---------- */
 .deal-card{
 display:flex;
@@ -1184,7 +1240,14 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="profile-section" id="profileTopupSection" style="margin-top:10px;">
 <div class="profile-section-title">Пополнить баланс</div>
-<div class="shop-hint" id="topupDetailsText" style="margin-bottom:10px;">Загрузка реквизитов...</div>
+<div class="topup-details-box" id="topupDetailsBox">
+<div class="topup-details-text" id="topupDetailsText">Загрузка реквизитов...</div>
+<button type="button" id="topupCopyBtn" class="topup-copy-btn">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+Скопировать
+</button>
+</div>
+<div class="topup-warning">⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.</div>
 <div class="edit-field">
 <label for="tAmount">Сумма перевода, сум</label>
 <input id="tAmount" type="number" min="1" placeholder="10000">
@@ -2255,6 +2318,10 @@ const tAmount = document.getElementById('tAmount');
 const topupSubmitBtn = document.getElementById('topupSubmitBtn');
 const topupStatus = document.getElementById('topupStatus');
 const topupDetailsText = document.getElementById('topupDetailsText');
+const topupDetailsBox = document.getElementById('topupDetailsBox');
+const topupCopyBtn = document.getElementById('topupCopyBtn');
+
+let topupDetailsRaw = '';
 
 const TOPUP_ERROR_MESSAGES = {
 below_minimum: 'Сумма меньше минимальной для пополнения.',
@@ -2264,13 +2331,42 @@ function loadTopupInfo(){
 fetch(API_BASE + '/api/topup_info')
 .then(r => r.json())
 .then(data => {
-topupDetailsText.textContent = data.details;
+topupDetailsRaw = data.details || '';
+topupDetailsText.textContent = topupDetailsRaw;
 if (data.min_amount) tAmount.placeholder = String(data.min_amount);
 })
 .catch(() => {
 topupDetailsText.textContent = 'Не удалось загрузить реквизиты.';
 });
 }
+
+function copyTopupDetails(){
+if (!topupDetailsRaw) return;
+
+const done = () => {
+const originalHtml = topupCopyBtn.innerHTML;
+topupCopyBtn.classList.add('copied');
+topupCopyBtn.textContent = 'Скопировано ✓';
+setTimeout(() => {
+topupCopyBtn.classList.remove('copied');
+topupCopyBtn.innerHTML = originalHtml;
+}, 1500);
+};
+
+if (navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(topupDetailsRaw).then(done).catch(() => {
+if (tg && tg.showAlert) tg.showAlert(topupDetailsRaw);
+});
+} else if (tg && tg.showAlert){
+tg.showAlert(topupDetailsRaw);
+}
+}
+
+topupDetailsBox.addEventListener('click', copyTopupDetails);
+topupCopyBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+copyTopupDetails();
+});
 
 loadTopupInfo();
 

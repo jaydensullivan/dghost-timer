@@ -1270,6 +1270,19 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-status" id="topupStatus"></div>
 </div>
 
+<div class="profile-section" id="profileReferralSection" style="margin-top:10px;">
+<div class="profile-section-title">Пригласить друга</div>
+<div class="shop-hint" id="referralBonusText" style="margin-bottom:10px;">Загрузка...</div>
+<div class="topup-details-box" id="referralLinkBox">
+<div class="topup-details-text" id="referralLinkText" style="font-size:13px; word-break:break-all;">Загрузка...</div>
+<button type="button" id="referralCopyBtn" class="topup-copy-btn">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+Скопировать
+</button>
+</div>
+<div class="shop-hint" style="margin-top:10px;">Приглашено: <span id="referralInvitedCount">—</span></div>
+</div>
+
 <div class="profile-section" id="profileDealsSection" style="margin-top:10px;">
 <div class="profile-section-title">Мои сделки</div>
 <div id="dealsList">
@@ -2406,6 +2419,71 @@ copyTopupDetails();
 });
 
 loadTopupInfo();
+
+// ============================================================
+// ПРИГЛАСИТЬ ДРУГА
+// ============================================================
+
+const referralLinkBox = document.getElementById('referralLinkBox');
+const referralLinkText = document.getElementById('referralLinkText');
+const referralCopyBtn = document.getElementById('referralCopyBtn');
+const referralBonusText = document.getElementById('referralBonusText');
+const referralInvitedCount = document.getElementById('referralInvitedCount');
+
+let referralLinkRaw = '';
+
+function loadReferralInfo(){
+if (!tg || !tg.initData){
+referralLinkText.textContent = 'Открой через Telegram';
+return;
+}
+fetch(API_BASE + '/api/referral_info?init_data=' + encodeURIComponent(tg.initData))
+.then(r => r.json())
+.then(data => {
+if (!data || data.error) throw new Error();
+referralLinkRaw = data.link;
+referralLinkText.textContent = referralLinkRaw;
+referralInvitedCount.textContent = data.invited_count;
+if (data.bonus_referrer > 0 || data.bonus_referred > 0){
+referralBonusText.textContent = `Пригласи друга — получи ${formatCoins(data.bonus_referrer)} после его первой покупки, а он получит ${formatCoins(data.bonus_referred)}.`;
+} else {
+referralBonusText.textContent = 'Делись ссылкой — приглашённые друзья появятся в счётчике ниже.';
+}
+})
+.catch(() => {
+referralLinkText.textContent = 'Не удалось загрузить';
+});
+}
+
+function copyReferralLink(){
+if (!referralLinkRaw) return;
+
+const done = () => {
+const originalHtml = referralCopyBtn.innerHTML;
+referralCopyBtn.classList.add('copied');
+referralCopyBtn.textContent = 'Скопировано ✓';
+setTimeout(() => {
+referralCopyBtn.classList.remove('copied');
+referralCopyBtn.innerHTML = originalHtml;
+}, 1500);
+};
+
+if (navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(referralLinkRaw).then(done).catch(() => {
+if (tg && tg.showAlert) tg.showAlert(referralLinkRaw);
+});
+} else if (tg && tg.showAlert){
+tg.showAlert(referralLinkRaw);
+}
+}
+
+referralLinkBox.addEventListener('click', copyReferralLink);
+referralCopyBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+copyReferralLink();
+});
+
+loadReferralInfo();
 
 topupSubmitBtn.addEventListener('click', () => {
 if (!tg || !tg.initData){

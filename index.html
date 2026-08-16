@@ -2564,6 +2564,11 @@ ${wearText ? `<div class="inv-item-wear">${wearText}</div>` : ''}
 
 let lastInventoryItems = [];
 
+function formatWaitHours(hours){
+if (hours >= 1) return `${Math.ceil(hours)} ч`;
+return `${Math.max(1, Math.ceil(hours * 60))} мин`;
+}
+
 function loadInventory(forceRefresh){
 inventoryStatus.textContent = forceRefresh ? 'Обновляю...' : 'Загрузка...';
 inventoryGrid.innerHTML = '';
@@ -2573,6 +2578,9 @@ fetch(url)
 .then(async r => {
 if (!r.ok){
 const data = await r.json().catch(() => ({}));
+if (data.error === 'refresh_limited'){
+throw new Error(`Обновлять инвентарь можно раз в сутки. Попробуй ещё раз через ${formatWaitHours(data.wait_hours)}.`);
+}
 throw new Error(steamErrorMessage(data.error));
 }
 return r.json();

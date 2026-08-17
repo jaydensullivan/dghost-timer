@@ -1550,9 +1550,20 @@ transform="rotate(-90 100 100)"></circle>
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
 <span>Поделиться</span>
 </button>
+<button type="button" id="buyRemoveBtn" class="buy-action-btn" style="display:none;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>
+<span>Снять с продажи</span>
+</button>
 </div>
 
 <div class="buy-details-table" id="buyDetailsTable"></div>
+
+<div class="buy-price-edit" id="buyPriceEdit" style="display:none;">
+<div class="edit-field" style="margin:14px 20px 0;">
+<label for="buyNewPriceInput">Новая цена, сум</label>
+<input id="buyNewPriceInput" type="number" min="1">
+</div>
+</div>
 
 <div class="edit-status" id="buyStatus"></div>
 </div>
@@ -1560,6 +1571,8 @@ transform="rotate(-90 100 100)"></circle>
 <div class="buy-sticky-bar">
 <button type="button" id="buyCancel">Отмена</button>
 <button type="button" id="buyConfirm" class="save">Купить · <span id="buyPrice">—</span></button>
+<button type="button" id="buyEditPriceBtn" class="save" style="display:none;">Изменить цену</button>
+<button type="button" id="buySavePriceBtn" class="save" style="display:none;">Сохранить цену</button>
 </div>
 </div>
 
@@ -1915,10 +1928,15 @@ const buySubtitle = document.getElementById('buySubtitle');
 const buyHero = document.getElementById('buyHero');
 const buyDetailsTable = document.getElementById('buyDetailsTable');
 const buyShareBtn = document.getElementById('buyShareBtn');
+const buyRemoveBtn = document.getElementById('buyRemoveBtn');
 const buyClose = document.getElementById('buyClose');
 const buyPrice = document.getElementById('buyPrice');
 const buyCancel = document.getElementById('buyCancel');
 const buyConfirm = document.getElementById('buyConfirm');
+const buyEditPriceBtn = document.getElementById('buyEditPriceBtn');
+const buySavePriceBtn = document.getElementById('buySavePriceBtn');
+const buyPriceEdit = document.getElementById('buyPriceEdit');
+const buyNewPriceInput = document.getElementById('buyNewPriceInput');
 const buyStatus = document.getElementById('buyStatus');
 
 let pendingBuySkin = null;
@@ -1934,6 +1952,7 @@ race_lost: 'Кто-то купил этот скин на секунду ран�
 forbidden: 'Можно снять только свой лот.',
 not_found: 'Лот не найден.',
 invalid: 'Проверь название и цену.',
+bad_price: 'Укажи корректную цену.',
 };
 
 function errorMessage(code){
@@ -2214,7 +2233,7 @@ const rarityClass = RARITY_CLASS[skin.rarity] || '';
 const isOwn = currentUserId && skin.seller_id === currentUserId;
 
 const actionBtn = isOwn
-? `<button class="skin-action own" data-cancel="${skin.id}" type="button">Снять</button>`
+? `<button class="skin-action own" data-open="${skin.id}" type="button">Управлять</button>`
 : `<button class="skin-action" data-buy="${skin.id}" type="button">Купить</button>`;
 
 const weaponType = skin.weapon_type
@@ -2308,9 +2327,10 @@ const skin = lastSkins.find(s => String(s.id) === buyBtn.dataset.buy);
 if (skin) openBuySheet(skin);
 return;
 }
-const cancelBtn = e.target.closest('[data-cancel]');
-if (cancelBtn){
-cancelListing(Number(cancelBtn.dataset.cancel));
+const openBtn = e.target.closest('[data-open]');
+if (openBtn){
+const skin = lastSkins.find(s => String(s.id) === openBtn.dataset.open);
+if (skin) openBuySheet(skin);
 }
 });
 
@@ -2360,8 +2380,10 @@ buyHero.style.setProperty('--rarity-glow', RARITY_GLOW[skin.rarity] || 'rgba(235
 
 buyPrice.textContent = formatCoins(skin.price);
 
+const isOwn = currentUserId && skin.seller_id === currentUserId;
+
 const rows = [
-buyDetailRow('Продавец', escapeHtml(skin.seller_username || 'аноним')),
+isOwn ? '' : buyDetailRow('Продавец', escapeHtml(skin.seller_username || 'аноним')),
 buyDetailRow('Износ', skin.wear ? (WEAR_LABEL_FULL[skin.wear] || skin.wear) : null),
 buyDetailRow('Редкость', skin.rarity ? (RARITY_LABEL_RU[skin.rarity] || skin.rarity) : null),
 buyDetailRow('StatTrak', skin.stattrak ? 'Да' : null),
@@ -2371,6 +2393,14 @@ buyDetailRow('Цена', formatCoins(skin.price)),
 
 buyDetailsTable.innerHTML = rows;
 
+// Переключаем набор кнопок: свой лот — управление, чужой — покупка
+buyRemoveBtn.style.display = isOwn ? '' : 'none';
+buyConfirm.style.display = isOwn ? 'none' : '';
+buyEditPriceBtn.style.display = isOwn ? '' : 'none';
+buySavePriceBtn.style.display = 'none';
+buyPriceEdit.style.display = 'none';
+buyNewPriceInput.value = skin.price;
+
 buyStatus.textContent = '';
 buyOverlay.classList.add('show');
 }
@@ -2379,12 +2409,13 @@ buyShareBtn.addEventListener('click', () => {
 if (!pendingBuySkin) return;
 const shareText = `${pendingBuySkin.stattrak ? 'StatTrak™ ' : ''}${pendingBuySkin.title} — ${formatCoins(pendingBuySkin.price)} в DGhost`;
 const shareUrl = `${BID_BOT_URL_JS}?start=skin_${pendingBuySkin.id}`;
-if (tg && tg.switchInlineQuery) {
-tg.switchInlineQuery(shareText, ['users', 'groups']);
+const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+if (tg && tg.openTelegramLink) {
+tg.openTelegramLink(telegramShareUrl);
 } else if (navigator.share) {
 navigator.share({ title: pendingBuySkin.title, text: shareText, url: shareUrl }).catch(() => {});
-} else if (tg && tg.openTelegramLink) {
-tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`);
+} else {
+window.open(telegramShareUrl, '_blank');
 }
 });
 
@@ -2396,6 +2427,62 @@ pendingBuySkin = null;
 buyClose.addEventListener('click', () => {
 buyOverlay.classList.remove('show');
 pendingBuySkin = null;
+});
+
+buyRemoveBtn.addEventListener('click', () => {
+if (!pendingBuySkin) return;
+cancelListing(pendingBuySkin.id);
+});
+
+buyEditPriceBtn.addEventListener('click', () => {
+if (!pendingBuySkin) return;
+buyPriceEdit.style.display = '';
+buyEditPriceBtn.style.display = 'none';
+buySavePriceBtn.style.display = '';
+buyNewPriceInput.focus();
+});
+
+buySavePriceBtn.addEventListener('click', () => {
+if (!pendingBuySkin || !tg || !tg.initData) return;
+
+const newPrice = Number(buyNewPriceInput.value);
+
+if (!newPrice || newPrice <= 0){
+buyStatus.textContent = 'Укажи корректную цену.';
+return;
+}
+
+buySavePriceBtn.disabled = true;
+buyStatus.textContent = 'Сохраняю...';
+
+fetch(API_BASE + '/api/skins/' + pendingBuySkin.id + '/update_price', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData, price: newPrice })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+return r.json();
+})
+.then((data) => {
+buyStatus.textContent = 'Цена обновлена ✓';
+pendingBuySkin.price = data.price;
+buyPrice.textContent = formatCoins(data.price);
+buyDetailsTable.innerHTML = buyDetailsTable.innerHTML.replace(/Цена<\/div><div class="buy-detail-value">[^<]*/, 'Цена</div><div class="buy-detail-value">' + formatCoins(data.price));
+buyPriceEdit.style.display = 'none';
+buyEditPriceBtn.style.display = '';
+buySavePriceBtn.style.display = 'none';
+loadSkins();
+})
+.catch(err => {
+buyStatus.textContent = err.message;
+})
+.finally(() => {
+buySavePriceBtn.disabled = false;
+});
 });
 
 buyConfirm.addEventListener('click', () => {
@@ -2450,6 +2537,8 @@ if (!r.ok){
 const data = await r.json().catch(() => ({}));
 throw new Error(errorMessage(data.error));
 }
+buyOverlay.classList.remove('show');
+pendingBuySkin = null;
 loadSkins();
 })
 .catch(err => showAlert(err.message));
@@ -2985,4 +3074,3 @@ loadSkins();
 </script>
 </body>
 </html>
- 

@@ -2101,6 +2101,8 @@ const countdownHtml = deal.release_at
 const roleLabel = deal.role === 'selling' ? 'Продаю' : 'Покупаю';
 const counterparty = deal.counterparty || 'аноним';
 
+const messageBtn = `<button class="deal-action secondary" data-relay="${deal.id}" type="button">✉️ Написать</button>`;
+
 return `
 <div class="deal-card">
 ${photo}
@@ -2110,7 +2112,7 @@ ${photo}
 ${countdownHtml}
 ${statusHtml}
 </div>
-<div class="deal-actions">${actionHtml}</div>
+<div class="deal-actions">${actionHtml}${messageBtn}</div>
 </div>`;
 }
 
@@ -2149,6 +2151,7 @@ document.getElementById('dealsList').addEventListener('click', (e) => {
 const sentBtn = e.target.closest('[data-mark-sent]');
 const receivedBtn = e.target.closest('[data-mark-received]');
 const cancelBtn = e.target.closest('[data-cancel-sale]');
+const relayBtn = e.target.closest('[data-relay]');
 
 if (sentBtn){
 const id = sentBtn.dataset.markSent;
@@ -2197,6 +2200,26 @@ return r.json();
 .then(() => loadDeals())
 .catch(err => showAlert(err.message));
 });
+}
+
+if (relayBtn){
+const id = relayBtn.dataset.relay;
+fetch(API_BASE + '/api/skins/' + id + '/relay_start', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+return r.json();
+})
+.then((data) => {
+showAlert(`Открой чат с ботом и напиши сообщение следующим — оно уйдёт ${data.role_label} анонимно, без обмена личными контактами.`);
+})
+.catch(err => showAlert(err.message));
 }
 });
 
@@ -3091,4 +3114,3 @@ loadSkins();
 </script>
 </body>
 </html>
- 

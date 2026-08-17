@@ -2298,7 +2298,6 @@ ${stBadge}
 ${weaponType}
 <div class="skin-title">${title}</div>
 ${floatLine}
-<div class="skin-seller">${escapeHtml(skin.seller_username || 'аноним')}</div>
 <div class="skin-price">${formatCoins(skin.price)}</div>
 ${actionBtn}
 </div>`;
@@ -2433,7 +2432,7 @@ buyPrice.textContent = formatCoins(skin.price);
 const isOwn = currentUserId && skin.seller_id === currentUserId;
 
 const rows = [
-isOwn ? '' : buyDetailRow('Продавец', escapeHtml(skin.seller_username || 'аноним')),
+isOwn ? '' : buyDetailRow('Продавец', 'аноним'),
 buyDetailRow('Износ', skin.wear ? (WEAR_LABEL_FULL[skin.wear] || skin.wear) : null),
 buyDetailRow('Редкость', skin.rarity ? (RARITY_LABEL_RU[skin.rarity] || skin.rarity) : null),
 buyDetailRow('StatTrak', skin.stattrak ? 'Да' : null),
@@ -3124,4 +3123,3 @@ loadSkins();
 </script>
 </body>
 </html>
- 

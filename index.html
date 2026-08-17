@@ -31,21 +31,25 @@ font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 canvas#rain{
-position:fixed;
+position:absolute;
 inset:0;
 z-index:0;
-opacity:0.32;
+opacity:0.28;
+width:100%;
+height:100%;
 }
 
-.vignette{
-position:fixed;
-inset:0;
-z-index:1;
-pointer-events:none;
-background:
-radial-gradient(ellipse at 50% 40%, transparent 30%, #000 88%),
-linear-gradient(180deg, #000 0%, transparent 14%, transparent 86%, #000 100%);
+.rain-card-wrap{
+position:relative;
+overflow:hidden;
 }
+
+.rain-card-wrap > *:not(canvas){
+position:relative;
+z-index:1;
+}
+
+.vignette{ display:none; }
 
 /* ---------- corner brand marks ---------- */
 .brand-tl, .brand-tr{
@@ -702,8 +706,8 @@ letter-spacing:0.03em;
 text-transform:uppercase;
 }
 
-.deal-status.pending{ color:#c9a860; }
-.deal-status.sent{ color:#6a8fb0; }
+.deal-status.pending{ color:#dbb84f; }
+.deal-status.sent{ color:#5f93c7; }
 .deal-status.done{ color:#6ba87e; }
 
 .deal-action{
@@ -838,14 +842,14 @@ background:rgba(255,255,255,0.02);
 text-align:left;
 }
 
-.skin-card.rarity-consumer{ border-top-color:#9fb0bd; }
-.skin-card.rarity-industrial{ border-top-color:#6a8fb0; }
-.skin-card.rarity-milspec{ border-top-color:#6b7bc4; }
-.skin-card.rarity-restricted{ border-top-color:#8d6fb8; }
-.skin-card.rarity-classified{ border-top-color:#b06bb8; }
-.skin-card.rarity-covert{ border-top-color:#c25c5c; }
-.skin-card.rarity-contraband{ border-top-color:#c9a860; }
-.skin-card.rarity-extraordinary{ border-top-color:#c9a860; }
+.skin-card.rarity-consumer{ border-top-color:#aec2d1; }
+.skin-card.rarity-industrial{ border-top-color:#5f93c7; }
+.skin-card.rarity-milspec{ border-top-color:#5a6fd6; }
+.skin-card.rarity-restricted{ border-top-color:#8c5fd6; }
+.skin-card.rarity-classified{ border-top-color:#c15bc9; }
+.skin-card.rarity-covert{ border-top-color:#d85454; }
+.skin-card.rarity-contraband{ border-top-color:#dbb84f; }
+.skin-card.rarity-extraordinary{ border-top-color:#dbb84f; }
 
 .skin-photo-wrap{
 position:relative;
@@ -1234,9 +1238,6 @@ cursor:pointer;
 </head>
 <body>
 
-<canvas id="rain"></canvas>
-<div class="vignette"></div>
-
 <div class="brand-tl"><span class="tag">{ <b>DGHOST</b> }</span></div>
 
 
@@ -1315,7 +1316,8 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="screen-profile" id="screenProfile">
 
-<div class="profile-card">
+<div class="profile-card rain-card-wrap">
+<canvas id="rain"></canvas>
 <div class="profile-avatar" id="profileAvatar"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.2-4 4-6 7.5-6s6.3 2 7.5 6"/></svg></div>
 <div class="profile-name" id="profileName">—</div>
 <div class="profile-balance" id="profileBalance"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.8 2.5-1.8s2.5.7 2.5 1.7c0 2.3-5 1.3-5 3.6 0 1 1 1.8 2.5 1.8s2.5-.8 2.5-1.8"/></svg> <span id="profileBalanceAmount">—</span></div>
@@ -1692,23 +1694,27 @@ window.open(joinUrl, '_blank');
 }
 });
 
-// ---- matrix-style digital rain (red, echoes the DGhost brand art) ----
+// ---- matrix-style digital rain — now scoped to the profile hero
+// card instead of the whole page, for a calmer, more minimal feel ----
 const canvas = document.getElementById('rain');
-const ctx = canvas.getContext('2d');
-let w, h, columns, drops;
+let ctx, w, h, columns, drops;
 const CHARS = '01';
-const FONT_SIZE = 15;
+const FONT_SIZE = 13;
 
 function setupRain(){
-w = canvas.width = window.innerWidth;
-h = canvas.height = window.innerHeight;
-columns = Math.floor(w / FONT_SIZE);
-drops = new Array(columns).fill(0).map(() => Math.random() * -100);
+if (!canvas) return;
+const rect = canvas.parentElement.getBoundingClientRect();
+w = canvas.width = rect.width;
+h = canvas.height = rect.height;
+ctx = canvas.getContext('2d');
+columns = Math.max(1, Math.floor(w / FONT_SIZE));
+drops = new Array(columns).fill(0).map(() => Math.random() * -40);
 }
 setupRain();
 window.addEventListener('resize', setupRain);
 
 function drawRain(){
+if (!ctx) return;
 ctx.fillStyle = 'rgba(0,0,0,0.13)';
 ctx.fillRect(0, 0, w, h);
 ctx.font = FONT_SIZE + 'px monospace';
@@ -1719,7 +1725,7 @@ const x = i * FONT_SIZE;
 const y = drops[i] * FONT_SIZE;
 const isHead = Math.random() > 0.94;
 
-ctx.fillStyle = isHead ? '#e08088' : 'rgba(217,74,82,0.55)';
+ctx.fillStyle = isHead ? '#e08088' : 'rgba(217,74,82,0.4)';
 ctx.fillText(char, x, y);
 
 if (y > h && Math.random() > 0.975){
@@ -2206,14 +2212,14 @@ const RARITY_CLASS = {
 };
 
 const RARITY_GLOW = {
-'Consumer Grade': 'rgba(159,176,189,0.22)',
-'Industrial Grade': 'rgba(106,143,176,0.22)',
-'Mil-Spec Grade': 'rgba(107,123,196,0.22)',
-'Restricted': 'rgba(141,111,184,0.22)',
-'Classified': 'rgba(176,107,184,0.22)',
-'Covert': 'rgba(194,92,92,0.22)',
-'Contraband': 'rgba(201,168,96,0.22)',
-'Extraordinary': 'rgba(201,168,96,0.22)',
+'Consumer Grade': 'rgba(174,194,209,0.26)',
+'Industrial Grade': 'rgba(95,147,199,0.26)',
+'Mil-Spec Grade': 'rgba(90,111,214,0.26)',
+'Restricted': 'rgba(140,95,214,0.26)',
+'Classified': 'rgba(193,91,201,0.26)',
+'Covert': 'rgba(216,84,84,0.26)',
+'Contraband': 'rgba(219,184,79,0.26)',
+'Extraordinary': 'rgba(219,184,79,0.26)',
 };
 
 function skinCardHtml(skin){

@@ -2419,7 +2419,7 @@ buyOverlay.classList.add('show');
 buyShareBtn.addEventListener('click', () => {
 if (!pendingBuySkin) return;
 const shareText = `${pendingBuySkin.stattrak ? 'StatTrak™ ' : ''}${pendingBuySkin.title} — ${formatCoins(pendingBuySkin.price)} в DGhost`;
-const shareUrl = `${MINI_APP_LINK_BASE}?startapp=skin_${pendingBuySkin.id}`;
+const shareUrl = `${API_BASE}/s/${pendingBuySkin.id}`;
 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 if (tg && tg.openTelegramLink) {
 tg.openTelegramLink(telegramShareUrl);

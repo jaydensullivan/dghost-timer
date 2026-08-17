@@ -1638,6 +1638,7 @@ let totalDuration = Math.max(1, endTime - Date.now());
 // розыгрыша и сюда же сохраняет правки из формы редактирования.
 const API_BASE = 'https://telegram-countdown-bot-production-fe81.up.railway.app';
 const BID_BOT_URL_JS = 'https://t.me/DGhostCountdownBot';
+const MINI_APP_LINK_BASE = 'https://t.me/DGhostCountdownBot/DGhost';
 
 const clockEl = document.getElementById('clock');
 const ringEl = document.getElementById('ring');
@@ -2272,6 +2273,11 @@ return div.innerHTML;
 
 let lastSkins = [];
 
+let deepLinkSkinId = null;
+if (tg && tg.initDataUnsafe && typeof tg.initDataUnsafe.start_param === 'string' && tg.initDataUnsafe.start_param.startsWith('skin_')){
+deepLinkSkinId = tg.initDataUnsafe.start_param.slice(5);
+}
+
 function applyFiltersAndRender(){
 const q = skinSearch.value.trim().toLowerCase();
 const sort = skinSort.value;
@@ -2306,6 +2312,11 @@ skinsList.innerHTML = filtered.map(skinCardHtml).join('');
 function renderSkins(list){
 lastSkins = list || [];
 applyFiltersAndRender();
+if (deepLinkSkinId){
+const skin = lastSkins.find(s => String(s.id) === deepLinkSkinId);
+if (skin) openBuySheet(skin);
+deepLinkSkinId = null;
+}
 }
 
 function loadSkins(){
@@ -2408,7 +2419,7 @@ buyOverlay.classList.add('show');
 buyShareBtn.addEventListener('click', () => {
 if (!pendingBuySkin) return;
 const shareText = `${pendingBuySkin.stattrak ? 'StatTrak™ ' : ''}${pendingBuySkin.title} — ${formatCoins(pendingBuySkin.price)} в DGhost`;
-const shareUrl = `${BID_BOT_URL_JS}?start=skin_${pendingBuySkin.id}`;
+const shareUrl = `${MINI_APP_LINK_BASE}?startapp=skin_${pendingBuySkin.id}`;
 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 if (tg && tg.openTelegramLink) {
 tg.openTelegramLink(telegramShareUrl);

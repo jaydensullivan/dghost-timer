@@ -1840,7 +1840,7 @@ editStatus.textContent = 'Сохранено ✓';
 setTimeout(() => { editOverlay.classList.remove('show'); }, 600);
 })
 .catch(err => {
-editStatus.textContent = err.message || 'Ошибка сохранения.';
+editStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 editSave.disabled = false;
@@ -1865,6 +1865,16 @@ let currentTab = 'shop';
 function showAlert(message){
 if (tg && tg.showAlert){ tg.showAlert(message); }
 else { alert(message); }
+}
+
+function friendlyErrorMessage(err){
+// fetch() кидает TypeError с техническим текстом вроде "Load failed"
+// или "Failed to fetch", если запрос вообще не дошёл до сервера
+// (обрыв связи и т.п.) — показываем понятную фразу вместо этого.
+if (err instanceof TypeError){
+return 'Нет соединения с сервером — проверь интернет и попробуй ещё раз.';
+}
+return err.message || 'Что-то пошло не так, попробуй ещё раз.';
 }
 
 function showConfirm(message, onOk){
@@ -2198,7 +2208,7 @@ throw new Error('Не удалось отменить продажу.');
 return r.json();
 })
 .then(() => loadDeals())
-.catch(err => showAlert(err.message));
+.catch(err => showAlert(friendlyErrorMessage(err)));
 });
 }
 
@@ -2219,7 +2229,7 @@ return r.json();
 .then((data) => {
 showAlert(`Открой чат с ботом и напиши сообщение следующим — оно уйдёт ${data.role_label} анонимно, без обмена личными контактами.`);
 })
-.catch(err => showAlert(err.message));
+.catch(err => showAlert(friendlyErrorMessage(err)));
 }
 });
 
@@ -2518,7 +2528,7 @@ buySavePriceBtn.style.display = 'none';
 loadSkins();
 })
 .catch(err => {
-buyStatus.textContent = err.message;
+buyStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 buySavePriceBtn.disabled = false;
@@ -2554,7 +2564,7 @@ pendingBuySkin = null;
 }, 700);
 })
 .catch(err => {
-buyStatus.textContent = err.message;
+buyStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 buyConfirm.disabled = false;
@@ -2581,7 +2591,7 @@ buyOverlay.classList.remove('show');
 pendingBuySkin = null;
 loadSkins();
 })
-.catch(err => showAlert(err.message));
+.catch(err => showAlert(friendlyErrorMessage(err)));
 });
 }
 
@@ -2659,7 +2669,7 @@ profileSteamStatus.textContent = '';
 }, 500);
 })
 .catch(err => {
-profileSteamStatus.textContent = err.message;
+profileSteamStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 profileLinkBtn.disabled = false;
@@ -2847,7 +2857,7 @@ if (tg.close) {
 }
 })
 .catch(err => {
-topupStatus.textContent = err.message;
+topupStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 topupSubmitBtn.disabled = false;
@@ -2934,7 +2944,7 @@ withdrawPayoutPreview.textContent = '';
 loadProfile();
 })
 .catch(err => {
-withdrawStatus.textContent = err.message;
+withdrawStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 withdrawSubmitBtn.disabled = false;
@@ -2991,7 +3001,7 @@ lastInventoryItems = data.items || [];
 renderInventory(lastInventoryItems);
 })
 .catch(err => {
-inventoryStatus.textContent = err.message;
+inventoryStatus.textContent = friendlyErrorMessage(err);
 });
 }
 
@@ -3101,7 +3111,7 @@ addSkinStatus.textContent = '';
 }, 600);
 })
 .catch(err => {
-addSkinStatus.textContent = err.message;
+addSkinStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 addSkinSave.disabled = false;

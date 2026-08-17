@@ -10,13 +10,13 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{
---bg:#000000;
---red:#ff1f3d;
---red-glow:#ff3b52;
---red-dim:#4d0f18;
---text:#f3ecec;
---muted:#8a5a60;
---silver:#eef0f2;
+--bg:#0a0708;
+--red:#d94a52;
+--red-glow:#e2565d;
+--red-dim:#3d1418;
+--text:#ece7e6;
+--muted:#8c7275;
+--silver:#e8e4e2;
 }
 
 *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -34,7 +34,7 @@ canvas#rain{
 position:fixed;
 inset:0;
 z-index:0;
-opacity:0.55;
+opacity:0.32;
 }
 
 .vignette{
@@ -107,7 +107,7 @@ font-weight:900;
 letter-spacing:0.01em;
 margin:0 0 6px;
 color:var(--silver);
-text-shadow:0 0 22px rgba(255,31,61,0.45);
+text-shadow:0 0 22px rgba(217,74,82,0.45);
 }
 
 h1::before, h1::after{
@@ -118,7 +118,7 @@ opacity:0.7;
 }
 
 h1::before{
-color:#ff1f3d;
+color:#d94a52;
 animation:glitchA 3.4s infinite steps(1);
 clip-path:inset(0 0 60% 0);
 }
@@ -156,7 +156,7 @@ align-items:center;
 gap:6px;
 padding:7px 18px;
 border-radius:2px;
-background:rgba(255,31,61,0.06);
+background:rgba(217,74,82,0.06);
 border:1px solid var(--red-dim);
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
@@ -187,7 +187,7 @@ height:100%;
 
 .crystal-ring{
 fill:none;
-stroke:rgba(255,31,61,0.14);
+stroke:rgba(217,74,82,0.14);
 stroke-width:2;
 }
 
@@ -196,7 +196,7 @@ fill:none;
 stroke:var(--red);
 stroke-width:3;
 stroke-linecap:round;
-filter:drop-shadow(0 0 9px rgba(255,31,61,0.75));
+filter:drop-shadow(0 0 9px rgba(217,74,82,0.75));
 transition:stroke-dashoffset 1s linear;
 }
 
@@ -215,7 +215,7 @@ font-weight:700;
 letter-spacing:0.03em;
 font-variant-numeric:tabular-nums;
 color:var(--silver);
-text-shadow:0 0 18px rgba(255,31,61,0.4);
+text-shadow:0 0 18px rgba(217,74,82,0.4);
 }
 
 .time-labels{
@@ -235,7 +235,7 @@ font-family:'Orbitron','Inter',sans-serif;
 font-size:clamp(20px,6vw,28px);
 font-weight:800;
 color:var(--red);
-text-shadow:0 0 22px rgba(255,31,61,0.65);
+text-shadow:0 0 22px rgba(217,74,82,0.65);
 animation:pulse 1.1s ease-in-out infinite;
 }
 
@@ -267,7 +267,7 @@ width:100%;
 padding:15px 20px;
 border-radius:2px;
 border:1px solid var(--red-dim);
-background:linear-gradient(180deg, rgba(255,31,61,0.12), rgba(255,31,61,0.02));
+background:linear-gradient(180deg, rgba(217,74,82,0.12), rgba(217,74,82,0.02));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:13px;
@@ -282,7 +282,7 @@ transition:transform .15s ease, background .2s ease;
 
 .cta.live{
 border-color:var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+background:linear-gradient(180deg, rgba(217,74,82,0.22), rgba(217,74,82,0.04));
 }
 
 .footer-note{
@@ -333,7 +333,7 @@ justify-content:center;
 .edit-sheet{
 width:100%;
 max-width:420px;
-background:#0a0a0c;
+background:#0a0708;
 border:1px solid var(--red-dim);
 border-bottom:none;
 border-radius:14px 14px 0 0;
@@ -402,7 +402,7 @@ color:var(--muted);
 
 .edit-actions .save{
 border-color:var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+background:linear-gradient(180deg, rgba(217,74,82,0.22), rgba(217,74,82,0.04));
 color:var(--silver);
 }
 
@@ -488,7 +488,7 @@ padding:22px 16px;
 margin-bottom:14px;
 border-radius:12px;
 border:1px solid var(--red-dim);
-background:rgba(255,31,61,0.04);
+background:rgba(217,74,82,0.04);
 }
 
 .profile-avatar{
@@ -499,7 +499,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-size:28px;
-background:rgba(255,31,61,0.12);
+background:rgba(217,74,82,0.12);
 border:1px solid var(--red-dim);
 margin-bottom:10px;
 overflow:hidden;
@@ -603,7 +603,7 @@ gap:10px;
 padding:14px;
 border-radius:10px;
 border:1.5px solid var(--red);
-background:rgba(255,31,61,0.08);
+background:rgba(217,74,82,0.08);
 margin-bottom:10px;
 cursor:pointer;
 }
@@ -626,7 +626,7 @@ gap:5px;
 padding:8px 12px;
 border-radius:7px;
 border:1px solid var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+background:linear-gradient(180deg, rgba(217,74,82,0.22), rgba(217,74,82,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:10px;
@@ -667,7 +667,7 @@ width:44px;
 height:44px;
 border-radius:8px;
 object-fit:cover;
-background:rgba(255,31,61,0.08);
+background:rgba(217,74,82,0.08);
 flex-shrink:0;
 }
 
@@ -702,16 +702,16 @@ letter-spacing:0.03em;
 text-transform:uppercase;
 }
 
-.deal-status.pending{ color:#e4ae39; }
-.deal-status.sent{ color:#5e98d9; }
-.deal-status.done{ color:#4caf50; }
+.deal-status.pending{ color:#c9a860; }
+.deal-status.sent{ color:#6a8fb0; }
+.deal-status.done{ color:#6ba87e; }
 
 .deal-action{
 flex-shrink:0;
 padding:7px 10px;
 border-radius:7px;
 border:1px solid var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+background:linear-gradient(180deg, rgba(217,74,82,0.22), rgba(217,74,82,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:10px;
@@ -754,7 +754,7 @@ margin-bottom:10px;
 padding:8px 14px;
 border-radius:20px;
 border:1px solid var(--red-dim);
-background:rgba(255,31,61,0.06);
+background:rgba(217,74,82,0.06);
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:12px;
@@ -765,7 +765,7 @@ font-weight:600;
 padding:8px 14px;
 border-radius:20px;
 border:1px solid var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.24), rgba(255,31,61,0.06));
+background:linear-gradient(180deg, rgba(217,74,82,0.24), rgba(217,74,82,0.06));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:12px;
@@ -805,7 +805,7 @@ font-size:12px;
 padding:9px 8px;
 border-radius:8px;
 border:1px solid var(--red-dim);
-background:#0a0a0c;
+background:#0a0708;
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:10px;
@@ -838,14 +838,14 @@ background:rgba(255,255,255,0.02);
 text-align:left;
 }
 
-.skin-card.rarity-consumer{ border-top-color:#b0c3d9; }
-.skin-card.rarity-industrial{ border-top-color:#5e98d9; }
-.skin-card.rarity-milspec{ border-top-color:#4b69ff; }
-.skin-card.rarity-restricted{ border-top-color:#8847ff; }
-.skin-card.rarity-classified{ border-top-color:#d32ce6; }
-.skin-card.rarity-covert{ border-top-color:#eb4b4b; }
-.skin-card.rarity-contraband{ border-top-color:#e4ae39; }
-.skin-card.rarity-extraordinary{ border-top-color:#e4ae39; }
+.skin-card.rarity-consumer{ border-top-color:#9fb0bd; }
+.skin-card.rarity-industrial{ border-top-color:#6a8fb0; }
+.skin-card.rarity-milspec{ border-top-color:#6b7bc4; }
+.skin-card.rarity-restricted{ border-top-color:#8d6fb8; }
+.skin-card.rarity-classified{ border-top-color:#b06bb8; }
+.skin-card.rarity-covert{ border-top-color:#c25c5c; }
+.skin-card.rarity-contraband{ border-top-color:#c9a860; }
+.skin-card.rarity-extraordinary{ border-top-color:#c9a860; }
 
 .skin-photo-wrap{
 position:relative;
@@ -853,7 +853,7 @@ width:100%;
 aspect-ratio:1/1;
 border-radius:8px;
 overflow:hidden;
-background:rgba(255,31,61,0.08);
+background:rgba(217,74,82,0.08);
 margin-bottom:8px;
 }
 
@@ -949,7 +949,7 @@ width:100%;
 padding:7px;
 border-radius:7px;
 border:1px solid var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.22), rgba(255,31,61,0.04));
+background:linear-gradient(180deg, rgba(217,74,82,0.22), rgba(217,74,82,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:10px;
@@ -1015,7 +1015,7 @@ width:100%;
 padding:10px;
 border-radius:7px;
 border:1px solid var(--red);
-background:linear-gradient(180deg, rgba(255,31,61,0.2), rgba(255,31,61,0.04));
+background:linear-gradient(180deg, rgba(217,74,82,0.2), rgba(217,74,82,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
 font-size:12px;
@@ -1081,8 +1081,9 @@ z-index:10;
 background:rgba(0,0,0,0.75);
 backdrop-filter:blur(3px);
 display:none;
-align-items:flex-end;
-justify-content:center;
+flex-direction:column;
+align-items:center;
+justify-content:flex-end;
 }
 
 .buy-overlay.show{ display:flex; }
@@ -1090,45 +1091,144 @@ justify-content:center;
 .buy-sheet{
 width:100%;
 max-width:420px;
-background:#0a0a0c;
+max-height:82vh;
+overflow-y:auto;
+background:#0a0708;
 border:1px solid var(--red-dim);
 border-bottom:none;
 border-radius:14px 14px 0 0;
-padding:20px 18px 28px;
+padding-bottom:16px;
+position:relative;
+}
+
+.buy-close-btn{
+position:absolute;
+top:12px;
+right:12px;
+z-index:2;
+width:30px;
+height:30px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,0.25);
+background:rgba(0,0,0,0.4);
+color:var(--silver);
+font-size:14px;
+line-height:1;
+cursor:pointer;
+}
+
+.buy-hero{
+padding:34px 20px 20px;
 text-align:center;
+border-radius:14px 14px 0 0;
+background:radial-gradient(ellipse at 50% 0%, var(--rarity-glow, rgba(235,75,75,0.35)) 0%, rgba(10,10,12,0) 70%);
 }
 
 .buy-photo{
-width:90px;
-height:90px;
+width:150px;
+height:150px;
 border-radius:10px;
 object-fit:cover;
-margin:0 auto 12px;
+margin:0 auto 14px;
 display:block;
-background:rgba(255,31,61,0.08);
+background:rgba(255,255,255,0.04);
+filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5));
 }
 
-.buy-sheet h2{
-margin:0 0 6px;
+.buy-hero h2{
+margin:0 0 4px;
 font-family:'Inter', sans-serif;
-font-size:15px;
-font-weight:600;
+font-size:17px;
+font-weight:700;
 color:var(--silver);
 }
 
-.buy-price{
-font-family:'JetBrains Mono', monospace;
-font-size:16px;
-font-weight:700;
-color:var(--red);
-margin-bottom:4px;
-}
-
-.buy-seller{
+.buy-subtitle{
 font-family:'JetBrains Mono', monospace;
 font-size:11px;
 color:var(--muted);
-margin-bottom:6px;
+text-transform:uppercase;
+letter-spacing:0.04em;
+}
+
+.buy-actions-row{
+display:flex;
+justify-content:center;
+padding:0 20px 14px;
+}
+
+.buy-action-btn{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:5px;
+background:transparent;
+border:none;
+color:var(--muted);
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+text-transform:uppercase;
+cursor:pointer;
+padding:6px 14px;
+}
+
+.buy-action-btn svg{ color:var(--red); }
+
+.buy-details-table{
+margin:0 20px;
+border:1px solid var(--red-dim);
+border-radius:10px;
+overflow:hidden;
+}
+
+.buy-detail-row{
+display:flex;
+justify-content:space-between;
+padding:11px 14px;
+font-family:'Inter', sans-serif;
+font-size:13px;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.buy-detail-row:last-child{ border-bottom:none; }
+
+.buy-detail-label{ color:var(--muted); }
+.buy-detail-value{ color:var(--silver); font-weight:600; text-align:right; }
+
+.buy-sticky-bar{
+width:100%;
+max-width:420px;
+display:flex;
+gap:10px;
+padding:12px 18px calc(env(safe-area-inset-bottom, 0px) + 12px);
+background:#0a0708;
+border:1px solid var(--red-dim);
+border-top:1px solid var(--red-dim);
+}
+
+.buy-sticky-bar #buyCancel{
+flex:0 0 auto;
+padding:0 18px;
+border-radius:8px;
+border:1px solid var(--muted);
+background:transparent;
+color:var(--muted);
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+cursor:pointer;
+}
+
+.buy-sticky-bar #buyConfirm{
+flex:1;
+padding:0 18px;
+border-radius:8px;
+border:none;
+background:var(--red);
+color:#0a0708;
+font-family:'JetBrains Mono', monospace;
+font-size:13px;
+font-weight:700;
+cursor:pointer;
 }
 </style>
 </head>
@@ -1138,6 +1238,7 @@ margin-bottom:6px;
 <div class="vignette"></div>
 
 <div class="brand-tl"><span class="tag">{ <b>DGHOST</b> }</span></div>
+
 
 <div class="bottom-nav">
 <button class="nav-btn" id="tabTimerBtn" type="button" style="display:none;">
@@ -1437,15 +1538,28 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="buy-overlay" id="buyOverlay">
 <div class="buy-sheet">
+<button type="button" id="buyClose" class="buy-close-btn">✕</button>
+<div class="buy-hero" id="buyHero">
 <img id="buyPhoto" class="buy-photo" alt="" style="display:none;">
 <h2 id="buyTitle">—</h2>
-<div class="buy-price" id="buyPrice">—</div>
-<div class="buy-seller" id="buySeller">—</div>
-<div class="edit-actions">
-<button type="button" id="buyCancel">Отмена</button>
-<button type="button" id="buyConfirm" class="save">Купить</button>
+<div class="buy-subtitle" id="buySubtitle"></div>
 </div>
+
+<div class="buy-actions-row">
+<button type="button" id="buyShareBtn" class="buy-action-btn">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+<span>Поделиться</span>
+</button>
+</div>
+
+<div class="buy-details-table" id="buyDetailsTable"></div>
+
 <div class="edit-status" id="buyStatus"></div>
+</div>
+
+<div class="buy-sticky-bar">
+<button type="button" id="buyCancel">Отмена</button>
+<button type="button" id="buyConfirm" class="save">Купить · <span id="buyPrice">—</span></button>
 </div>
 </div>
 
@@ -1510,6 +1624,7 @@ let totalDuration = Math.max(1, endTime - Date.now());
 // Адрес бота на Railway — сюда мини-апп ходит за живыми данными
 // розыгрыша и сюда же сохраняет правки из формы редактирования.
 const API_BASE = 'https://telegram-countdown-bot-production-fe81.up.railway.app';
+const BID_BOT_URL_JS = 'https://t.me/DGhostCountdownBot';
 
 const clockEl = document.getElementById('clock');
 const ringEl = document.getElementById('ring');
@@ -1590,7 +1705,7 @@ const x = i * FONT_SIZE;
 const y = drops[i] * FONT_SIZE;
 const isHead = Math.random() > 0.94;
 
-ctx.fillStyle = isHead ? '#ff8a95' : 'rgba(255,31,61,0.55)';
+ctx.fillStyle = isHead ? '#e08088' : 'rgba(217,74,82,0.55)';
 ctx.fillText(char, x, y);
 
 if (y > h && Math.random() > 0.975){
@@ -1796,8 +1911,12 @@ const skinSort = document.getElementById('skinSort');
 const buyOverlay = document.getElementById('buyOverlay');
 const buyPhoto = document.getElementById('buyPhoto');
 const buyTitle = document.getElementById('buyTitle');
+const buySubtitle = document.getElementById('buySubtitle');
+const buyHero = document.getElementById('buyHero');
+const buyDetailsTable = document.getElementById('buyDetailsTable');
+const buyShareBtn = document.getElementById('buyShareBtn');
+const buyClose = document.getElementById('buyClose');
 const buyPrice = document.getElementById('buyPrice');
-const buySeller = document.getElementById('buySeller');
 const buyCancel = document.getElementById('buyCancel');
 const buyConfirm = document.getElementById('buyConfirm');
 const buyStatus = document.getElementById('buyStatus');
@@ -2066,6 +2185,17 @@ const RARITY_CLASS = {
 'Extraordinary': 'rarity-extraordinary',
 };
 
+const RARITY_GLOW = {
+'Consumer Grade': 'rgba(159,176,189,0.22)',
+'Industrial Grade': 'rgba(106,143,176,0.22)',
+'Mil-Spec Grade': 'rgba(107,123,196,0.22)',
+'Restricted': 'rgba(141,111,184,0.22)',
+'Classified': 'rgba(176,107,184,0.22)',
+'Covert': 'rgba(194,92,92,0.22)',
+'Contraband': 'rgba(201,168,96,0.22)',
+'Extraordinary': 'rgba(201,168,96,0.22)',
+};
+
 function skinCardHtml(skin){
 const photo = skin.photo_url
 ? `<img class="skin-photo" src="${skin.photo_url}" alt="" onerror="showPlaceholderIcon(this)">`
@@ -2184,6 +2314,30 @@ cancelListing(Number(cancelBtn.dataset.cancel));
 }
 });
 
+const RARITY_LABEL_RU = {
+'Consumer Grade': 'Ширпотреб',
+'Industrial Grade': 'Промышленное',
+'Mil-Spec Grade': 'Армейское',
+'Restricted': 'Запрещённое',
+'Classified': 'Засекреченное',
+'Covert': 'Тайное',
+'Contraband': 'Контрабанда',
+'Extraordinary': 'Экстраординарное',
+};
+
+const WEAR_LABEL_FULL = {
+FN: 'Прямо с завода',
+MW: 'Немного поношенное',
+FT: 'После полевых испытаний',
+WW: 'Поношенное',
+BS: 'Закалённое в боях',
+};
+
+function buyDetailRow(label, value){
+if (value === null || value === undefined || value === '') return '';
+return `<div class="buy-detail-row"><div class="buy-detail-label">${label}</div><div class="buy-detail-value">${value}</div></div>`;
+}
+
 function openBuySheet(skin){
 if (!tg || !tg.initData){
 showAlert(errorMessage('unauthorized'));
@@ -2199,22 +2353,47 @@ buyPhoto.style.display = 'none';
 }
 
 let titleText = skin.stattrak ? 'StatTrak™ ' + skin.title : skin.title;
-if (skin.wear && WEAR_LABELS[skin.wear]) titleText += ' (' + WEAR_LABELS[skin.wear] + ')';
 buyTitle.textContent = titleText;
+buySubtitle.textContent = skin.weapon_type || 'CS2 SKIN';
+
+buyHero.style.setProperty('--rarity-glow', RARITY_GLOW[skin.rarity] || 'rgba(235,75,75,0.35)');
 
 buyPrice.textContent = formatCoins(skin.price);
 
-let sellerText = 'Продавец: ' + (skin.seller_username || 'аноним');
-if (skin.float_value !== null && skin.float_value !== undefined){
-sellerText += ' · Float: ' + Number(skin.float_value).toFixed(4);
-}
-buySeller.textContent = sellerText;
+const rows = [
+buyDetailRow('Продавец', escapeHtml(skin.seller_username || 'аноним')),
+buyDetailRow('Износ', skin.wear ? (WEAR_LABEL_FULL[skin.wear] || skin.wear) : null),
+buyDetailRow('Редкость', skin.rarity ? (RARITY_LABEL_RU[skin.rarity] || skin.rarity) : null),
+buyDetailRow('StatTrak', skin.stattrak ? 'Да' : null),
+buyDetailRow('Float', (skin.float_value !== null && skin.float_value !== undefined) ? Number(skin.float_value).toFixed(4) : null),
+buyDetailRow('Цена', formatCoins(skin.price)),
+].join('');
+
+buyDetailsTable.innerHTML = rows;
 
 buyStatus.textContent = '';
 buyOverlay.classList.add('show');
 }
 
+buyShareBtn.addEventListener('click', () => {
+if (!pendingBuySkin) return;
+const shareText = `${pendingBuySkin.stattrak ? 'StatTrak™ ' : ''}${pendingBuySkin.title} — ${formatCoins(pendingBuySkin.price)} в DGhost`;
+const shareUrl = `${BID_BOT_URL_JS}?start=skin_${pendingBuySkin.id}`;
+if (tg && tg.switchInlineQuery) {
+tg.switchInlineQuery(shareText, ['users', 'groups']);
+} else if (navigator.share) {
+navigator.share({ title: pendingBuySkin.title, text: shareText, url: shareUrl }).catch(() => {});
+} else if (tg && tg.openTelegramLink) {
+tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`);
+}
+});
+
 buyCancel.addEventListener('click', () => {
+buyOverlay.classList.remove('show');
+pendingBuySkin = null;
+});
+
+buyClose.addEventListener('click', () => {
 buyOverlay.classList.remove('show');
 pendingBuySkin = null;
 });

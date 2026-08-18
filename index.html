@@ -66,6 +66,112 @@ z-index:0;
 pointer-events:none;
 }
 
+/* ---------- welcome (princess greeting) screen ---------- */
+.welcome-overlay{
+position:fixed;
+inset:0;
+z-index:60;
+background:#0a0708;
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:flex-end;
+overflow:hidden;
+}
+
+.welcome-overlay.show{ display:flex; }
+
+.welcome-bg{
+position:absolute;
+inset:0;
+background-image:url('princess-bg.jpg');
+background-size:cover;
+background-position:right center;
+}
+
+.welcome-bg::after{
+content:'';
+position:absolute;
+inset:0;
+background:linear-gradient(180deg, rgba(10,7,8,0.15) 0%, rgba(10,7,8,0.55) 55%, rgba(10,7,8,0.96) 100%);
+}
+
+.welcome-content{
+position:relative;
+z-index:1;
+width:100%;
+max-width:420px;
+padding:24px 22px calc(env(safe-area-inset-bottom, 0px) + 28px);
+text-align:center;
+}
+
+.welcome-greeting{
+font-family:'Inter', sans-serif;
+font-size:19px;
+font-weight:700;
+color:var(--silver);
+line-height:1.4;
+margin-bottom:22px;
+text-shadow:0 2px 12px rgba(0,0,0,0.8);
+}
+
+.welcome-actions{
+display:flex;
+gap:12px;
+}
+
+.welcome-btn{
+flex:1;
+min-height:56px;
+border-radius:12px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(217,74,82,0.28), rgba(217,74,82,0.06));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:14px;
+font-weight:700;
+text-transform:uppercase;
+cursor:pointer;
+}
+
+.welcome-btn.primary{
+background:var(--red);
+color:#0a0708;
+}
+
+/* ---------- category chips (buy flow) ---------- */
+.category-chips{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding-bottom:4px;
+margin-bottom:12px;
+-webkit-overflow-scrolling:touch;
+scrollbar-width:none;
+}
+
+.category-chips::-webkit-scrollbar{ display:none; }
+
+.category-chip{
+flex:0 0 auto;
+padding:9px 14px;
+border-radius:20px;
+border:1px solid var(--red-dim);
+background:transparent;
+color:var(--muted);
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+font-weight:600;
+white-space:nowrap;
+cursor:pointer;
+}
+
+.category-chip.active{
+border-color:var(--red);
+background:rgba(217,74,82,0.12);
+color:var(--silver);
+}
+
 .brand-tl, .brand-tr{
 position:absolute;
 top:18px;
@@ -1337,6 +1443,17 @@ justify-content:center;
 
 <div class="brand-tl"><img src="logo.png" alt="DGhost" class="brand-logo" onerror="this.style.display='none'"></div>
 
+<div class="welcome-overlay show" id="welcomeOverlay">
+<div class="welcome-bg"></div>
+<div class="welcome-content">
+<div class="welcome-greeting" data-i18n="welcome_greeting">Добро пожаловать, мой король! Сегодня будем продавать или покупать?</div>
+<div class="welcome-actions">
+<button type="button" id="welcomeSellBtn" class="welcome-btn" data-i18n="btn_sell_action">Продать</button>
+<button type="button" id="welcomeBuyBtn" class="welcome-btn primary" data-i18n="btn_buy_action">Купить</button>
+</div>
+</div>
+</div>
+
 
 <div class="bottom-nav">
 <button class="nav-btn" id="tabTimerBtn" type="button" style="display:none;">
@@ -1395,6 +1512,8 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="shop-hint" data-i18n="hint_sell_flow">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
+
+<div class="category-chips" id="categoryChips"></div>
 
 <div class="shop-controls">
 <input id="skinSearch" class="skin-search" type="text" placeholder="Поиск по названию или оружию..." data-i18n-placeholder="search_placeholder">
@@ -1839,6 +1958,19 @@ topup_warning: '⚠️ После перевода обязательно при
 btn_paid: 'Я оплатил',
 btn_topup_short: 'Пополнить',
 btn_withdraw_short: 'Вывести',
+welcome_greeting: 'Добро пожаловать, мой король! Сегодня будем продавать или покупать?',
+btn_sell_action: 'Продать',
+btn_buy_action: 'Купить',
+cat_all: 'Все',
+cat_pistols: 'Пистолеты',
+cat_rifles: 'Автоматы',
+cat_smgs: 'ПП',
+cat_snipers: 'Снайперки',
+cat_heavy: 'Тяжёлое',
+cat_knives: 'Ножи',
+cat_gloves: 'Перчатки',
+cat_stickers: 'Стикеры',
+cat_other: 'Другое',
 btn_manage: 'Управлять',
 btn_buy: 'Купить',
 form_add_title: 'Выставить скин',
@@ -1925,6 +2057,19 @@ topup_warning: "⚠️ Pul o'tkazgandan so'ng albatta chek skrinshotini botga yu
 btn_paid: "To'ladim",
 btn_topup_short: "To'ldirish",
 btn_withdraw_short: "Yechish",
+welcome_greeting: "Xush kelibsiz, mening shohim! Bugun sotamizmi yoki sotib olamizmi?",
+btn_sell_action: "Sotish",
+btn_buy_action: "Sotib olish",
+cat_all: "Hammasi",
+cat_pistols: "Pistoletlar",
+cat_rifles: "Avtomatlar",
+cat_smgs: "PP",
+cat_snipers: "Snayperlar",
+cat_heavy: "Og'ir qurollar",
+cat_knives: "Pichoqlar",
+cat_gloves: "Qo'lqoplar",
+cat_stickers: "Stikerlar",
+cat_other: "Boshqa",
 btn_manage: "Boshqarish",
 btn_buy: "Sotib olish",
 form_add_title: 'Skinni sotuvga qo\'yish',
@@ -2010,6 +2155,10 @@ if (lang !== 'ru' && lang !== 'uz') return;
 currentLang = lang;
 applyTranslations();
 
+if (typeof renderCategoryChips === 'function'){
+renderCategoryChips();
+}
+
 if (typeof lastSkins !== 'undefined' && lastSkins.length){
 applyFiltersAndRender();
 }
@@ -2035,6 +2184,10 @@ document.getElementById('langBtnRu').addEventListener('click', () => setLanguage
 document.getElementById('langBtnUz').addEventListener('click', () => setLanguage('uz'));
 
 applyTranslations();
+
+if (typeof renderCategoryChips === 'function'){
+renderCategoryChips();
+}
 
 const clockEl = document.getElementById('clock');
 const ringEl = document.getElementById('ring');
@@ -2401,6 +2554,9 @@ hasSteamLink = !!data.has_steam_link;
 if (data.language && data.language !== currentLang){
 currentLang = data.language;
 applyTranslations();
+if (typeof renderCategoryChips === 'function'){
+renderCategoryChips();
+}
 if (typeof loadReferralInfo === 'function'){
 loadReferralInfo();
 }
@@ -2647,6 +2803,62 @@ showAlert(`Открой чат с ботом и напиши сообщение 
 }
 });
 
+// ============================================================
+// КАТЕГОРИИ ОРУЖИЯ (для раздела «Купить»)
+//
+// weapon_type у лотов из инвентаря Steam обычно содержит
+// конкретную модель ("AK-47"), а не общую категорию — сводим
+// известные модели к категориям сами. Для лотов, выставленных
+// вручную (свободный текст), категоризация может быть неточной —
+// в таком случае лот просто попадёт в «Другое».
+// ============================================================
+
+const WEAPON_CATEGORY_MAP = {
+'Glock-18':'pistols','USP-S':'pistols','P2000':'pistols','Dual Berettas':'pistols',
+'P250':'pistols','CZ75-Auto':'pistols','Five-SeveN':'pistols','Tec-9':'pistols',
+'Desert Eagle':'pistols','R8 Revolver':'pistols',
+'AK-47':'rifles','M4A4':'rifles','M4A1-S':'rifles','FAMAS':'rifles',
+'Galil AR':'rifles','AUG':'rifles','SG 553':'rifles',
+'AWP':'snipers','SSG 08':'snipers','SCAR-20':'snipers','G3SG1':'snipers',
+'MP9':'smgs','MAC-10':'smgs','MP7':'smgs','UMP-45':'smgs',
+'P90':'smgs','PP-Bizon':'smgs','MP5-SD':'smgs',
+'Nova':'heavy','XM1014':'heavy','Sawed-Off':'heavy','MAG-7':'heavy',
+'M249':'heavy','Negev':'heavy',
+};
+
+const CATEGORY_ORDER = ['all','pistols','rifles','smgs','snipers','heavy','knives','gloves','stickers','other'];
+
+function categorizeSkin(skin){
+const wt = (skin.weapon_type || '').trim();
+const title = skin.title || '';
+
+if (WEAPON_CATEGORY_MAP[wt]) return WEAPON_CATEGORY_MAP[wt];
+if (/sticker/i.test(wt) || /^sticker/i.test(title)) return 'stickers';
+if (/glove|wraps/i.test(wt) || /glove|wraps/i.test(title)) return 'gloves';
+if (/knife/i.test(wt) || /knife/i.test(title) || title.startsWith('★')) return 'knives';
+return 'other';
+}
+
+let currentCategory = 'all';
+
+function renderCategoryChips(){
+const dict = I18N[currentLang] || I18N.ru;
+const chipsEl = document.getElementById('categoryChips');
+if (!chipsEl) return;
+chipsEl.innerHTML = CATEGORY_ORDER.map(cat => {
+const active = cat === currentCategory ? ' active' : '';
+return `<button type="button" class="category-chip${active}" data-cat="${cat}">${dict['cat_' + cat]}</button>`;
+}).join('');
+}
+
+document.getElementById('categoryChips').addEventListener('click', (e) => {
+const btn = e.target.closest('.category-chip');
+if (!btn) return;
+currentCategory = btn.dataset.cat;
+renderCategoryChips();
+applyFiltersAndRender();
+});
+
 const RARITY_CLASS = {
 'Consumer Grade': 'rarity-consumer',
 'Industrial Grade': 'rarity-industrial',
@@ -2735,6 +2947,10 @@ const q = skinSearch.value.trim().toLowerCase();
 const sort = skinSort.value;
 
 let filtered = lastSkins;
+
+if (currentCategory && currentCategory !== 'all'){
+filtered = filtered.filter(s => categorizeSkin(s) === currentCategory);
+}
 
 if (q){
 filtered = filtered.filter(s =>
@@ -3554,6 +3770,35 @@ return;
 addSkinStatus.textContent = '';
 updateSteamBlockVisibility();
 addSkinOverlay.classList.add('show');
+});
+
+const welcomeOverlay = document.getElementById('welcomeOverlay');
+
+document.getElementById('welcomeSellBtn').addEventListener('click', () => {
+welcomeOverlay.classList.remove('show');
+switchTab('shop');
+
+if (!tg || !tg.initData){
+showAlert(errorMessage('unauthorized'));
+return;
+}
+
+addSkinStatus.textContent = '';
+updateSteamBlockVisibility();
+addSkinOverlay.classList.add('show');
+
+// Если Steam уже привязан — сразу открываем инвентарь, без
+// лишнего тапа на «Выбрать из инвентаря Steam». Если не привязан —
+// addSkinOverlay сам покажет подсказку привязать его сначала.
+if (hasSteamLink){
+inventoryOverlay.classList.add('show');
+loadInventory(false);
+}
+});
+
+document.getElementById('welcomeBuyBtn').addEventListener('click', () => {
+welcomeOverlay.classList.remove('show');
+switchTab('shop');
 });
 
 addSkinCancel.addEventListener('click', () => {

@@ -60,6 +60,9 @@ font-family:'JetBrains Mono', monospace;
 font-size:10px;
 letter-spacing:0.14em;
 color:var(--muted);
+display:flex;
+align-items:center;
+gap:8px;
 }
 
 .brand-tl{ left:18px; }
@@ -68,6 +71,15 @@ color:var(--muted);
 .brand-tl b, .brand-tr b{
 color:var(--red);
 font-weight:600;
+}
+
+.brand-logo{
+width:24px;
+height:24px;
+border-radius:50%;
+border:1px solid var(--red-dim);
+object-fit:cover;
+display:block;
 }
 
 .tag{
@@ -1270,7 +1282,7 @@ cursor:pointer;
 </head>
 <body>
 
-<div class="brand-tl"><span class="tag">{ <b>DGHOST</b> }</span></div>
+<div class="brand-tl"><img src="logo.png" alt="DGhost" class="brand-logo" onerror="this.style.display='none'"><span class="tag">{ <b>DGHOST</b> }</span></div>
 
 
 <div class="bottom-nav">
@@ -1329,14 +1341,14 @@ transform="rotate(-90 100 100)"></circle>
 <button class="add-skin-btn" id="addSkinBtn" type="button" data-i18n="btn_add_skin">+ Скин</button>
 </div>
 
-<div class="shop-hint">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
+<div class="shop-hint" data-i18n="hint_sell_flow">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
 
 <div class="shop-controls">
 <input id="skinSearch" class="skin-search" type="text" placeholder="Поиск по названию или оружию..." data-i18n-placeholder="search_placeholder">
 <select id="skinSort" class="skin-sort">
-<option value="new">Сначала новые</option>
-<option value="price_asc">Цена: сначала дешёвые</option>
-<option value="price_desc">Цена: сначала дорогие</option>
+<option value="new" data-i18n="sort_new">Сначала новые</option>
+<option value="price_asc" data-i18n="sort_price_asc">Цена: сначала дешёвые</option>
+<option value="price_desc" data-i18n="sort_price_desc">Цена: сначала дорогие</option>
 </select>
 </div>
 
@@ -1383,11 +1395,11 @@ transform="rotate(-90 100 100)"></circle>
 <div class="profile-section-title" data-i18n="section_steam">Steam</div>
 <button type="button" id="openSteamTradeUrlBtn" class="steam-link-btn secondary" style="margin-bottom:12px;">
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="vertical-align:-3px;margin-right:5px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
-Открыть страницу Steam с трейд-ссылкой
+<span data-i18n="btn_open_steam">Открыть страницу Steam с трейд-ссылкой</span>
 </button>
 <div id="profileSteamLinked" style="display:none;">
-<div class="profile-steam-status"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M20 6 9 17l-5-5"/></svg> Трейд-ссылка привязана</div>
-<button type="button" id="profileRelinkBtn" class="steam-link-btn secondary">Изменить ссылку</button>
+<div class="profile-steam-status"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M20 6 9 17l-5-5"/></svg> <span data-i18n="steam_linked">Трейд-ссылка привязана</span></div>
+<button type="button" id="profileRelinkBtn" class="steam-link-btn secondary" data-i18n="btn_change_link">Изменить ссылку</button>
 </div>
 <div id="profileSteamUnlinked">
 <div class="shop-hint" style="margin-bottom:10px;">Нажми кнопку выше — откроется страница Steam с твоей трейд-ссылкой, останется скопировать и вставить сюда. Это разовая настройка, потом делать это не придётся.</div>
@@ -1408,12 +1420,12 @@ transform="rotate(-90 100 100)"></circle>
 Скопировать
 </button>
 </div>
-<div class="topup-warning">⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.</div>
+<div class="topup-warning" data-i18n="topup_warning">⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.</div>
 <div class="edit-field">
 <label for="tAmount">Сумма перевода, сум</label>
 <input id="tAmount" type="number" min="1" placeholder="10000">
 </div>
-<button type="button" id="topupSubmitBtn" class="steam-link-btn">Я оплатил</button>
+<button type="button" id="topupSubmitBtn" class="steam-link-btn" data-i18n="btn_paid">Я оплатил</button>
 <div class="edit-status" id="topupStatus"></div>
 </div>
 
@@ -1717,6 +1729,17 @@ btn_cancel: 'Отмена',
 stat_sold: 'Продано',
 stat_bought: 'Куплено',
 stat_active: 'Активных лотов',
+hint_sell_flow: 'Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.',
+sort_new: 'Сначала новые',
+sort_price_asc: 'Цена: сначала дешёвые',
+sort_price_desc: 'Цена: сначала дорогие',
+steam_linked: 'Трейд-ссылка привязана',
+btn_change_link: 'Изменить ссылку',
+btn_open_steam: 'Открыть страницу Steam с трейд-ссылкой',
+topup_warning: '⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.',
+btn_paid: 'Я оплатил',
+btn_manage: 'Управлять',
+btn_buy: 'Купить',
 },
 uz: {
 nav_timer: 'Taymer',
@@ -1734,6 +1757,17 @@ btn_cancel: 'Bekor qilish',
 stat_sold: 'Sotilgan',
 stat_bought: 'Sotib olingan',
 stat_active: 'Faol lotlar',
+hint_sell_flow: "Skin sotdingiz — pul xaridorda 8 kun ushlab turiladi (Steam trade-ban), so'ng avtomatik ravishda balansingizga o'tadi.",
+sort_new: 'Avval yangilari',
+sort_price_asc: "Narx: avval arzon",
+sort_price_desc: "Narx: avval qimmat",
+steam_linked: "Treyd-havola bog'landi",
+btn_change_link: "Havolani o'zgartirish",
+btn_open_steam: "Treyd-havolali Steam sahifasini ochish",
+topup_warning: "⚠️ Pul o'tkazgandan so'ng albatta chek skrinshotini botga yuboring — bo'lmasa ariza tasdiqlanmaydi.",
+btn_paid: "To'ladim",
+btn_manage: "Boshqarish",
+btn_buy: "Sotib olish",
 },
 };
 
@@ -1760,6 +1794,10 @@ function setLanguage(lang){
 if (lang !== 'ru' && lang !== 'uz') return;
 currentLang = lang;
 applyTranslations();
+
+if (typeof lastSkins !== 'undefined' && lastSkins.length){
+applyFiltersAndRender();
+}
 
 if (!tg || !tg.initData) return;
 
@@ -2414,8 +2452,8 @@ const rarityClass = RARITY_CLASS[skin.rarity] || '';
 const isOwn = currentUserId && skin.seller_id === currentUserId;
 
 const actionBtn = isOwn
-? `<button class="skin-action own" data-open="${skin.id}" type="button">Управлять</button>`
-: `<button class="skin-action" data-buy="${skin.id}" type="button">Купить</button>`;
+? `<button class="skin-action own" data-open="${skin.id}" type="button">${(I18N[currentLang] || I18N.ru).btn_manage}</button>`
+: `<button class="skin-action" data-buy="${skin.id}" type="button">${(I18N[currentLang] || I18N.ru).btn_buy}</button>`;
 
 const weaponType = skin.weapon_type
 ? `<div class="skin-weapon-type">${escapeHtml(skin.weapon_type)}</div>`

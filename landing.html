@@ -135,6 +135,30 @@ color:var(--silver);
 
 .btn-sm{ padding:8px 14px; font-size:11px; }
 
+.lang-switch-landing{
+display:flex;
+gap:4px;
+margin-right:6px;
+}
+
+.lang-btn-sm{
+padding:7px 10px;
+border-radius:6px;
+border:1px solid var(--red-dim);
+background:transparent;
+color:var(--muted);
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+font-weight:600;
+cursor:pointer;
+}
+
+.lang-btn-sm.active{
+border-color:var(--red);
+color:var(--silver);
+background:rgba(217,74,82,0.08);
+}
+
 /* ---------- hero ---------- */
 .hero{
 position:relative;
@@ -448,6 +472,7 @@ gap:12px;
 .how-grid{ grid-template-columns:1fr; }
 .hero{ padding:64px 0 48px; }
 .header-inner{ padding:14px 18px; }
+.header-cta a[href="#login"]{ display:none; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -464,8 +489,12 @@ gap:12px;
 <span class="brand-name">{ DGHOST }</span>
 </div>
 <div class="header-cta">
-<a href="#login" class="btn btn-ghost btn-sm">Войти</a>
-<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-primary btn-sm">Открыть в Telegram</a>
+<div class="lang-switch-landing">
+<button type="button" class="lang-btn-sm" id="langBtnRu" data-lang="ru">RU</button>
+<button type="button" class="lang-btn-sm" id="langBtnUz" data-lang="uz">UZ</button>
+</div>
+<a href="#login" class="btn btn-ghost btn-sm" data-i18n="nav_login">Войти</a>
+<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-primary btn-sm" data-i18n="nav_open_telegram">Открыть в Telegram</a>
 </div>
 </div>
 </header>
@@ -473,25 +502,25 @@ gap:12px;
 <section class="hero">
 <div class="hero-glow"></div>
 <div class="wrap">
-<div class="eyebrow"><span class="dot"></span> МАГАЗИН СКИНОВ CS2</div>
-<h1>Покупай и продавай скины <span class="accent">без лишних регистраций</span></h1>
-<p class="hero-sub">Заходишь через свой Telegram — тебя уже узнали. Деньги под защитой холда на время сделки. Выводишь на карту, без крипты.</p>
+<div class="eyebrow"><span class="dot"></span> <span data-i18n="eyebrow">МАГАЗИН СКИНОВ CS2</span></div>
+<h1 data-i18n-html="headline">Покупай и продавай скины <span class="accent">без лишних регистраций</span></h1>
+<p class="hero-sub" data-i18n="hero_sub">Заходишь через свой Telegram — тебя уже узнали. Деньги под защитой холда на время сделки. Выводишь на карту, без крипты.</p>
 <div class="hero-actions">
-<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-primary">Открыть магазин →</a>
-<a href="#login" class="btn btn-ghost">Войти через Telegram</a>
+<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-primary" data-i18n="btn_open_shop">Открыть магазин →</a>
+<a href="#login" class="btn btn-ghost" data-i18n="nav_open_telegram_login">Войти через Telegram</a>
 </div>
 <div class="hero-stats" id="heroStats">
 <div>
 <div class="hero-stat-num" id="statActive">—</div>
-<div class="hero-stat-label">Лотов сейчас</div>
+<div class="hero-stat-label" data-i18n="stat_lots_now">Лотов сейчас</div>
 </div>
 <div>
 <div class="hero-stat-num">0.5%</div>
-<div class="hero-stat-label">Комиссия продажи</div>
+<div class="hero-stat-label" data-i18n="stat_sale_fee">Комиссия продажи</div>
 </div>
 <div>
-<div class="hero-stat-num">8 дней</div>
-<div class="hero-stat-label">Защита сделки</div>
+<div class="hero-stat-num" data-i18n="stat_8_days">8 дней</div>
+<div class="hero-stat-label" data-i18n="stat_deal_protection">Защита сделки</div>
 </div>
 </div>
 </div>
@@ -499,36 +528,36 @@ gap:12px;
 
 <section id="catalog">
 <div class="wrap">
-<div class="section-title">Сейчас в продаже</div>
-<div class="section-sub">Реальные лоты из магазина — обновляется вживую.</div>
+<div class="section-title" data-i18n="catalog_title">Сейчас в продаже</div>
+<div class="section-sub" data-i18n="catalog_sub">Реальные лоты из магазина — обновляется вживую.</div>
 <div class="catalog-grid" id="catalogGrid">
-<div class="catalog-loading">Загрузка...</div>
+<div class="catalog-loading" data-i18n="loading">Загрузка...</div>
 </div>
 <div class="catalog-more">
-<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-ghost">Смотреть весь каталог</a>
+<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-ghost" data-i18n="btn_view_catalog">Смотреть весь каталог</a>
 </div>
 </div>
 </section>
 
 <section id="how">
 <div class="wrap">
-<div class="section-title">Как это работает</div>
-<div class="section-sub">Три вещи, которые отличают DGhost от обычных чатов и площадок.</div>
+<div class="section-title" data-i18n="how_title">Как это работает</div>
+<div class="section-sub" data-i18n="how_sub">Три вещи, которые отличают DGhost от обычных чатов и площадок.</div>
 <div class="how-grid">
 <div class="how-card">
 <svg class="how-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.2-4 4-6 7.5-6s6.3 2 7.5 6"/></svg>
-<div class="how-title">Без регистрации</div>
-<div class="how-text">Не нужно ничего создавать — вход через сам Telegram, тебя уже узнали.</div>
+<div class="how-title" data-i18n="how1_title">Без регистрации</div>
+<div class="how-text" data-i18n="how1_text">Не нужно ничего создавать — вход через сам Telegram, тебя уже узнали.</div>
 </div>
 <div class="how-card">
 <svg class="how-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-<div class="how-title">Сделка под защитой</div>
-<div class="how-text">Деньги в холде 8 дней, пока идёт сделка — продавец не может забрать их раньше срока.</div>
+<div class="how-title" data-i18n="how2_title">Сделка под защитой</div>
+<div class="how-text" data-i18n="how2_text">Деньги в холде 8 дней, пока идёт сделка — продавец не может забрать их раньше срока.</div>
 </div>
 <div class="how-card">
 <svg class="how-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-<div class="how-title">Вывод на карту</div>
-<div class="how-text">Uzcard/Humo — без крипты и иностранных сервисов, реальными деньгами.</div>
+<div class="how-title" data-i18n="how3_title">Вывод на карту</div>
+<div class="how-text" data-i18n="how3_text">Uzcard/Humo — без крипты и иностранных сервисов, реальными деньгами.</div>
 </div>
 </div>
 </div>
@@ -538,8 +567,8 @@ gap:12px;
 <div class="wrap">
 <div class="login-section">
 <div id="loginPrompt">
-<div class="login-title">Войти через Telegram</div>
-<div class="login-sub">Тот же аккаунт, что и в боте — увидишь свой баланс и сделки.</div>
+<div class="login-title" data-i18n="nav_open_telegram_login">Войти через Telegram</div>
+<div class="login-sub" data-i18n="login_sub">Тот же аккаунт, что и в боте — увидишь свой баланс и сделки.</div>
 <div id="telegramLoginBox"></div>
 </div>
 <div class="profile-card" id="profileCard">
@@ -547,25 +576,25 @@ gap:12px;
 <img class="profile-avatar" id="profileAvatar" src="" alt="">
 <div>
 <div class="profile-name" id="profileName">—</div>
-<div class="profile-balance-label">Баланс</div>
+<div class="profile-balance-label" data-i18n="profile_balance_label">Баланс</div>
 </div>
 </div>
 <div class="profile-balance-value" id="profileBalance">—</div>
 <div class="profile-stats">
 <div>
 <div class="profile-stat-num" id="profileSold">—</div>
-<div class="profile-stat-label">Продано</div>
+<div class="profile-stat-label" data-i18n="stat_sold">Продано</div>
 </div>
 <div>
 <div class="profile-stat-num" id="profileBought">—</div>
-<div class="profile-stat-label">Куплено</div>
+<div class="profile-stat-label" data-i18n="stat_bought">Куплено</div>
 </div>
 <div>
 <div class="profile-stat-num" id="profileLots">—</div>
-<div class="profile-stat-label">Активных</div>
+<div class="profile-stat-label" data-i18n="stat_active_short">Активных</div>
 </div>
 </div>
-<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-primary" style="width:100%;">Открыть в Telegram →</a>
+<a href="https://t.me/DGhostCountdownBot/DGhost" class="btn btn-primary" style="width:100%;" data-i18n="btn_open_telegram_arrow">Открыть в Telegram →</a>
 </div>
 </div>
 </div>
@@ -581,6 +610,120 @@ gap:12px;
 <script>
 const API_BASE = 'https://telegram-countdown-bot-production-fe81.up.railway.app';
 
+// ============================================================
+// ЯЗЫК ИНТЕРФЕЙСА (RU / UZ)
+//
+// Обычный сайт, не мини-апп — язык посетителя запоминаем в
+// самом браузере (localStorage), а не синхронизируем с ботом,
+// потому что до входа через Telegram Login мы вообще не знаем,
+// кто это.
+// ============================================================
+
+const LANDING_I18N = {
+ru: {
+nav_login: 'Войти',
+nav_open_telegram: 'Открыть в Telegram',
+eyebrow: 'МАГАЗИН СКИНОВ CS2',
+headline: 'Покупай и продавай скины <span class="accent">без лишних регистраций</span>',
+hero_sub: 'Заходишь через свой Telegram — тебя уже узнали. Деньги под защитой холда на время сделки. Выводишь на карту, без крипты.',
+btn_open_shop: 'Открыть магазин →',
+nav_open_telegram_login: 'Войти через Telegram',
+stat_lots_now: 'Лотов сейчас',
+stat_sale_fee: 'Комиссия продажи',
+stat_8_days: '8 дней',
+stat_deal_protection: 'Защита сделки',
+catalog_title: 'Сейчас в продаже',
+catalog_sub: 'Реальные лоты из магазина — обновляется вживую.',
+loading: 'Загрузка...',
+btn_view_catalog: 'Смотреть весь каталог',
+how_title: 'Как это работает',
+how_sub: 'Три вещи, которые отличают DGhost от обычных чатов и площадок.',
+how1_title: 'Без регистрации',
+how1_text: 'Не нужно ничего создавать — вход через сам Telegram, тебя уже узнали.',
+how2_title: 'Сделка под защитой',
+how2_text: 'Деньги в холде 8 дней, пока идёт сделка — продавец не может забрать их раньше срока.',
+how3_title: 'Вывод на карту',
+how3_text: 'Uzcard/Humo — без крипты и иностранных сервисов, реальными деньгами.',
+login_sub: 'Тот же аккаунт, что и в боте — увидишь свой баланс и сделки.',
+profile_balance_label: 'Баланс',
+stat_sold: 'Продано',
+stat_bought: 'Куплено',
+stat_active_short: 'Активных',
+btn_open_telegram_arrow: 'Открыть в Telegram →',
+catalog_empty: 'Пока пусто — загляни чуть позже.',
+catalog_error: 'Не удалось загрузить каталог.',
+login_failed_title: 'Не удалось войти',
+login_failed_sub: 'Попробуй ещё раз чуть позже.',
+},
+uz: {
+nav_login: 'Kirish',
+nav_open_telegram: "Telegram'da ochish",
+eyebrow: 'CS2 SKINLAR MAGAZINI',
+headline: "Ortiqcha ro'yxatdan o'tishlarsiz <span class=\"accent\">skinlarni sotib oling va soting</span>",
+hero_sub: "Telegram orqali kirasiz — sizni allaqachon tanishadi. Pul bitim davomida hold bilan himoyalangan. Kartaga yechib olasiz, kriptosiz.",
+btn_open_shop: "Do'konni ochish →",
+nav_open_telegram_login: 'Telegram orqali kirish',
+stat_lots_now: 'Hozir lotlar',
+stat_sale_fee: 'Sotish komissiyasi',
+stat_8_days: '8 kun',
+stat_deal_protection: 'Bitim himoyasi',
+catalog_title: 'Hozir sotuvda',
+catalog_sub: "Do'kondagi haqiqiy lotlar — jonli yangilanadi.",
+loading: 'Yuklanmoqda...',
+btn_view_catalog: "Butun katalogni ko'rish",
+how_title: 'Bu qanday ishlaydi',
+how_sub: "DGhost'ni oddiy chatlar va platformalardan ajratib turadigan uchta narsa.",
+how1_title: "Ro'yxatdan o'tishsiz",
+how1_text: "Hech narsa yaratish shart emas — Telegram orqali kirasiz, sizni allaqachon tanishadi.",
+how2_title: 'Bitim himoyalangan',
+how2_text: "Pul bitim davomida 8 kun hold'da turadi — sotuvchi muddatidan oldin ololmaydi.",
+how3_title: "Kartaga pul yechish",
+how3_text: "Uzcard/Humo — kriptosiz va xorijiy servislarsiz, haqiqiy pulda.",
+login_sub: "Botdagi bilan bir xil hisob — balans va bitimlaringizni ko'rasiz.",
+profile_balance_label: 'Balans',
+stat_sold: 'Sotilgan',
+stat_bought: 'Sotib olingan',
+stat_active_short: 'Faol',
+btn_open_telegram_arrow: "Telegram'da ochish →",
+catalog_empty: "Hozircha bo'sh — birozdan keyin qayta ko'ring.",
+catalog_error: "Katalogni yuklab bo'lmadi.",
+login_failed_title: "Kirib bo'lmadi",
+login_failed_sub: "Birozdan keyin qayta urinib ko'ring.",
+},
+};
+
+let currentLandingLang = localStorage.getItem('dghost_landing_lang') || 'ru';
+
+function applyLandingTranslations(){
+const dict = LANDING_I18N[currentLandingLang] || LANDING_I18N.ru;
+
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const key = el.getAttribute('data-i18n');
+if (dict[key]) el.textContent = dict[key];
+});
+
+document.querySelectorAll('[data-i18n-html]').forEach(el => {
+const key = el.getAttribute('data-i18n-html');
+if (dict[key]) el.innerHTML = dict[key];
+});
+
+document.getElementById('langBtnRu').classList.toggle('active', currentLandingLang === 'ru');
+document.getElementById('langBtnUz').classList.toggle('active', currentLandingLang === 'uz');
+document.documentElement.lang = currentLandingLang;
+}
+
+function setLandingLanguage(lang){
+if (lang !== 'ru' && lang !== 'uz') return;
+currentLandingLang = lang;
+localStorage.setItem('dghost_landing_lang', lang);
+applyLandingTranslations();
+}
+
+document.getElementById('langBtnRu').addEventListener('click', () => setLandingLanguage('ru'));
+document.getElementById('langBtnUz').addEventListener('click', () => setLandingLanguage('uz'));
+
+applyLandingTranslations();
+
 // ---------------- Каталог (живые данные) ----------------
 function formatCoins(n){
 return Number(n || 0).toLocaleString('ru-RU') + ' сум';
@@ -591,9 +734,10 @@ fetch(API_BASE + '/api/skins')
 .then(items => {
 const grid = document.getElementById('catalogGrid');
 const statActive = document.getElementById('statActive');
+const dict = LANDING_I18N[currentLandingLang] || LANDING_I18N.ru;
 
 if (!Array.isArray(items) || items.length === 0){
-grid.innerHTML = '<div class="catalog-empty">Пока пусто — загляни чуть позже.</div>';
+grid.innerHTML = `<div class="catalog-empty">${dict.catalog_empty}</div>`;
 statActive.textContent = '0';
 return;
 }
@@ -615,7 +759,8 @@ ${photo}
 }).join('');
 })
 .catch(() => {
-document.getElementById('catalogGrid').innerHTML = '<div class="catalog-empty">Не удалось загрузить каталог.</div>';
+const dict = LANDING_I18N[currentLandingLang] || LANDING_I18N.ru;
+document.getElementById('catalogGrid').innerHTML = `<div class="catalog-empty">${dict.catalog_error}</div>`;
 });
 
 // ---------------- Telegram Login Widget ----------------
@@ -660,7 +805,8 @@ avatar.remove();
 }
 })
 .catch(() => {
-document.getElementById('loginPrompt').innerHTML = '<div class="login-title">Не удалось войти</div><div class="login-sub">Попробуй ещё раз чуть позже.</div>';
+const dict = LANDING_I18N[currentLandingLang] || LANDING_I18N.ru;
+document.getElementById('loginPrompt').innerHTML = `<div class="login-title">${dict.login_failed_title}</div><div class="login-sub">${dict.login_failed_sub}</div>`;
 });
 }
 </script>

@@ -597,6 +597,33 @@ color:var(--red);
 margin-bottom:10px;
 }
 
+.money-btn-row{
+display:flex;
+gap:10px;
+}
+
+.money-btn{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+min-height:64px;
+padding:12px 10px;
+border-radius:10px;
+border:1px solid var(--red);
+background:linear-gradient(180deg, rgba(217,74,82,0.2), rgba(217,74,82,0.04));
+color:var(--silver);
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:600;
+text-transform:uppercase;
+letter-spacing:0.02em;
+cursor:pointer;
+}
+
+.money-btn svg{ color:var(--red); }
+
 .lang-switch{
 display:flex;
 gap:10px;
@@ -1421,22 +1448,17 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-status" id="profileSteamStatus"></div>
 </div>
 
-<div class="profile-section" id="profileTopupSection" style="margin-top:10px;">
-<div class="profile-section-title" data-i18n="section_topup">Пополнить баланс</div>
-<div class="topup-details-box" id="topupDetailsBox">
-<div class="topup-details-text" id="topupDetailsText">Загрузка реквизитов...</div>
-<button type="button" id="topupCopyBtn" class="topup-copy-btn">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-Скопировать
+<div class="profile-section" id="profileMoneyButtons" style="margin-top:10px;">
+<div class="money-btn-row">
+<button type="button" id="openTopupBtn" class="money-btn">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 5v14M5 12h14"/></svg>
+<span data-i18n="btn_topup_short">Пополнить</span>
+</button>
+<button type="button" id="openWithdrawBtn" class="money-btn">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+<span data-i18n="btn_withdraw_short">Вывести</span>
 </button>
 </div>
-<div class="topup-warning" data-i18n="topup_warning">⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.</div>
-<div class="edit-field">
-<label for="tAmount" data-i18n="label_transfer_amount">Сумма перевода, сум</label>
-<input id="tAmount" type="number" min="1" placeholder="10000">
-</div>
-<button type="button" id="topupSubmitBtn" class="steam-link-btn" data-i18n="btn_paid">Я оплатил</button>
-<div class="edit-status" id="topupStatus"></div>
 </div>
 
 <div class="profile-section" id="profileReferralSection" style="margin-top:10px;">
@@ -1459,8 +1481,34 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 </div>
 
-<div class="profile-section" id="profileWithdrawSection" style="margin-top:10px;">
-<div class="profile-section-title" data-i18n="section_withdraw">Вывод средств</div>
+</div>
+
+<div class="edit-overlay" id="topupOverlay">
+<div class="edit-sheet">
+<h2 data-i18n="section_topup">Пополнить баланс</h2>
+<div class="topup-details-box" id="topupDetailsBox">
+<div class="topup-details-text" id="topupDetailsText">Загрузка реквизитов...</div>
+<button type="button" id="topupCopyBtn" class="topup-copy-btn">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+<span data-i18n="btn_copy">Скопировать</span>
+</button>
+</div>
+<div class="topup-warning" data-i18n="topup_warning">⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.</div>
+<div class="edit-field">
+<label for="tAmount" data-i18n="label_transfer_amount">Сумма перевода, сум</label>
+<input id="tAmount" type="number" min="1" placeholder="10000">
+</div>
+<div class="edit-actions">
+<button type="button" id="topupCancel" data-i18n="btn_cancel">Отмена</button>
+<button type="button" id="topupSubmitBtn" class="save" data-i18n="btn_paid">Я оплатил</button>
+</div>
+<div class="edit-status" id="topupStatus"></div>
+</div>
+</div>
+
+<div class="edit-overlay" id="withdrawOverlay">
+<div class="edit-sheet">
+<h2 data-i18n="section_withdraw">Вывод средств</h2>
 <div class="shop-hint" style="margin-bottom:10px;" data-i18n="withdraw_hint">Минимум — <span id="withdrawMinLabel">50,000</span> сум. Комиссия за вывод — <span id="withdrawFeeLabel">2.5</span>%. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
 <div class="edit-field">
 <label for="wAmount" data-i18n="label_amount_sum">Сумма, сум</label>
@@ -1472,10 +1520,12 @@ transform="rotate(-90 100 100)"></circle>
 <div style="color:var(--red); font-family:'Inter', sans-serif; font-size:12px; font-weight:600; margin-bottom:6px;" data-i18n="warning_fio">⚠️ Обязательно укажи Ф.И.О. владельца карты — без этого заявку не обработают</div>
 <input id="wDetails" type="text" placeholder="8600 1234 5678 9012, Иванов И.И.">
 </div>
-<button type="button" id="withdrawSubmitBtn" class="steam-link-btn" data-i18n="btn_submit_withdraw">Подать заявку на вывод</button>
+<div class="edit-actions">
+<button type="button" id="withdrawCancel" data-i18n="btn_cancel">Отмена</button>
+<button type="button" id="withdrawSubmitBtn" class="save" data-i18n="btn_submit_withdraw">Подать заявку на вывод</button>
+</div>
 <div class="edit-status" id="withdrawStatus"></div>
 </div>
-
 </div>
 
 <button class="edit-fab" id="editFab" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
@@ -1748,6 +1798,8 @@ btn_change_link: 'Изменить ссылку',
 btn_open_steam: 'Открыть страницу Steam с трейд-ссылкой',
 topup_warning: '⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.',
 btn_paid: 'Я оплатил',
+btn_topup_short: 'Пополнить',
+btn_withdraw_short: 'Вывести',
 btn_manage: 'Управлять',
 btn_buy: 'Купить',
 form_add_title: 'Выставить скин',
@@ -1832,6 +1884,8 @@ btn_change_link: "Havolani o'zgartirish",
 btn_open_steam: "Treyd-havolali Steam sahifasini ochish",
 topup_warning: "⚠️ Pul o'tkazgandan so'ng albatta chek skrinshotini botga yuboring — bo'lmasa ariza tasdiqlanmaydi.",
 btn_paid: "To'ladim",
+btn_topup_short: "To'ldirish",
+btn_withdraw_short: "Yechish",
 btn_manage: "Boshqarish",
 btn_buy: "Sotib olish",
 form_add_title: 'Skinni sotuvga qo\'yish',
@@ -3089,6 +3143,7 @@ const topupDetailsBox = document.getElementById('topupDetailsBox');
 const topupCopyBtn = document.getElementById('topupCopyBtn');
 
 let topupDetailsRaw = '';
+let topupCardNumber = '';
 
 const TOPUP_ERROR_MESSAGES = {
 below_minimum: 'Сумма меньше минимальной для пополнения.',
@@ -3099,6 +3154,7 @@ fetch(API_BASE + '/api/topup_info')
 .then(r => r.json())
 .then(data => {
 topupDetailsRaw = data.details || '';
+topupCardNumber = data.card_number || topupDetailsRaw;
 topupDetailsText.textContent = topupDetailsRaw;
 if (data.min_amount) tAmount.placeholder = String(data.min_amount);
 })
@@ -3108,7 +3164,7 @@ topupDetailsText.textContent = 'Не удалось загрузить рекв�
 }
 
 function copyTopupDetails(){
-if (!topupDetailsRaw) return;
+if (!topupCardNumber) return;
 
 const done = () => {
 const originalHtml = topupCopyBtn.innerHTML;
@@ -3121,11 +3177,11 @@ topupCopyBtn.innerHTML = originalHtml;
 };
 
 if (navigator.clipboard && navigator.clipboard.writeText){
-navigator.clipboard.writeText(topupDetailsRaw).then(done).catch(() => {
-if (tg && tg.showAlert) tg.showAlert(topupDetailsRaw);
+navigator.clipboard.writeText(topupCardNumber).then(done).catch(() => {
+if (tg && tg.showAlert) tg.showAlert(topupCardNumber);
 });
 } else if (tg && tg.showAlert){
-tg.showAlert(topupDetailsRaw);
+tg.showAlert(topupCardNumber);
 }
 }
 
@@ -3136,6 +3192,23 @@ copyTopupDetails();
 });
 
 loadTopupInfo();
+
+const topupOverlay = document.getElementById('topupOverlay');
+const withdrawOverlay = document.getElementById('withdrawOverlay');
+
+document.getElementById('openTopupBtn').addEventListener('click', () => {
+topupOverlay.classList.add('show');
+});
+document.getElementById('topupCancel').addEventListener('click', () => {
+topupOverlay.classList.remove('show');
+});
+
+document.getElementById('openWithdrawBtn').addEventListener('click', () => {
+withdrawOverlay.classList.add('show');
+});
+document.getElementById('withdrawCancel').addEventListener('click', () => {
+withdrawOverlay.classList.remove('show');
+});
 
 // ============================================================
 // ПРИГЛАСИТЬ ДРУГА

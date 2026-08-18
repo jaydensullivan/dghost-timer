@@ -74,8 +74,8 @@ font-weight:600;
 }
 
 .brand-logo{
-width:24px;
-height:24px;
+width:40px;
+height:40px;
 border-radius:50%;
 border:1px solid var(--red-dim);
 object-fit:cover;
@@ -1292,7 +1292,7 @@ justify-content:center;
 </head>
 <body>
 
-<div class="brand-tl"><img src="logo.png" alt="DGhost" class="brand-logo" onerror="this.style.display='none'"><span class="tag">{ <b>DGHOST</b> }</span></div>
+<div class="brand-tl"><img src="logo.png" alt="DGhost" class="brand-logo" onerror="this.style.display='none'"></div>
 
 
 <div class="bottom-nav">
@@ -1432,7 +1432,7 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 <div class="topup-warning" data-i18n="topup_warning">⚠️ После перевода обязательно пришли скриншот чека прямо в чат с ботом — без него заявку не подтвердят.</div>
 <div class="edit-field">
-<label for="tAmount">Сумма перевода, сум</label>
+<label for="tAmount" data-i18n="label_transfer_amount">Сумма перевода, сум</label>
 <input id="tAmount" type="number" min="1" placeholder="10000">
 </div>
 <button type="button" id="topupSubmitBtn" class="steam-link-btn" data-i18n="btn_paid">Я оплатил</button>
@@ -1461,18 +1461,18 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="profile-section" id="profileWithdrawSection" style="margin-top:10px;">
 <div class="profile-section-title" data-i18n="section_withdraw">Вывод средств</div>
-<div class="shop-hint" style="margin-bottom:10px;">Минимум — <span id="withdrawMinLabel">50,000</span> сум. Комиссия за вывод — <span id="withdrawFeeLabel">2.5</span>%. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
+<div class="shop-hint" style="margin-bottom:10px;" data-i18n="withdraw_hint">Минимум — <span id="withdrawMinLabel">50,000</span> сум. Комиссия за вывод — <span id="withdrawFeeLabel">2.5</span>%. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.</div>
 <div class="edit-field">
-<label for="wAmount">Сумма, сум</label>
+<label for="wAmount" data-i18n="label_amount_sum">Сумма, сум</label>
 <input id="wAmount" type="number" min="1" placeholder="50000">
 <div class="shop-hint" id="withdrawPayoutPreview" style="margin-top:6px;"></div>
 </div>
 <div class="edit-field">
-<label for="wDetails">Карта Uzcard/Humo</label>
-<div style="color:var(--red); font-family:'Inter', sans-serif; font-size:12px; font-weight:600; margin-bottom:6px;">⚠️ Обязательно укажи Ф.И.О. владельца карты — без этого заявку не обработают</div>
+<label for="wDetails" data-i18n="label_card_uzcard_humo">Карта Uzcard/Humo</label>
+<div style="color:var(--red); font-family:'Inter', sans-serif; font-size:12px; font-weight:600; margin-bottom:6px;" data-i18n="warning_fio">⚠️ Обязательно укажи Ф.И.О. владельца карты — без этого заявку не обработают</div>
 <input id="wDetails" type="text" placeholder="8600 1234 5678 9012, Иванов И.И.">
 </div>
-<button type="button" id="withdrawSubmitBtn" class="steam-link-btn">Подать заявку на вывод</button>
+<button type="button" id="withdrawSubmitBtn" class="steam-link-btn" data-i18n="btn_submit_withdraw">Подать заявку на вывод</button>
 <div class="edit-status" id="withdrawStatus"></div>
 </div>
 
@@ -1764,6 +1764,26 @@ label_price: 'Цена, сум',
 label_photo: 'Ссылка на фото (необязательно)',
 btn_list_skin: 'Выставить',
 detail_seller: 'Продавец',
+detail_buyer: 'Покупатель',
+label_transfer_amount: 'Сумма перевода, сум',
+withdraw_hint: 'Минимум — 50 000 сум. Комиссия за вывод — 2.5%. Деньги переводятся вручную на указанные реквизиты в течение некоторого времени.',
+label_amount_sum: 'Сумма, сум',
+label_card_uzcard_humo: 'Карта Uzcard/Humo',
+warning_fio: '⚠️ Обязательно укажи Ф.И.О. владельца карты — без этого заявку не обработают',
+btn_submit_withdraw: 'Подать заявку на вывод',
+status_sent_waiting_hold: 'Отправлено, ждём холд',
+status_need_to_send: 'Нужно отправить',
+btn_sent: 'Отправил',
+btn_cancel_sale: 'Отменить',
+status_confirmed: 'Подтверждено',
+status_seller_sent: 'Продавец отправил',
+btn_received: 'Получил',
+status_waiting_send: 'Ждём отправки',
+countdown_credit: 'Зачисление через: ',
+countdown_hold: 'Холд снимется через: ',
+role_selling: 'Продаю',
+role_buying: 'Покупаю',
+btn_message: '✉️ Написать',
 detail_wear: 'Износ',
 detail_rarity: 'Редкость',
 detail_price: 'Цена',
@@ -1781,6 +1801,7 @@ btn_save_price: 'Сохранить цену',
 btn_copy: 'Скопировать',
 label_invited: 'Приглашено:',
 open_via_telegram: 'Открой через Telegram',
+no_active_deals: 'Активных сделок нет',
 load_failed: 'Не удалось загрузить',
 copied_text: 'Скопировано ✓',
 referral_no_bonus_text: 'Делись ссылкой — приглашённые друзья появятся в счётчике ниже.',
@@ -1827,6 +1848,26 @@ label_price: 'Narxi, sum',
 label_photo: "Foto havolasi (ixtiyoriy)",
 btn_list_skin: "Sotuvga qo'yish",
 detail_seller: 'Sotuvchi',
+detail_buyer: 'Xaridor',
+label_transfer_amount: "O'tkazma summasi, sum",
+withdraw_hint: "Minimum — 50 000 sum. Pul yechish komissiyasi — 2.5%. Pul ko'rsatilgan rekvizitlarga qo'lda, ma'lum vaqt ichida o'tkaziladi.",
+label_amount_sum: 'Summasi, sum',
+label_card_uzcard_humo: 'Uzcard/Humo karta',
+warning_fio: "⚠️ Karta egasining F.I.Sh.ni albatta ko'rsating — bo'lmasa ariza ko'rib chiqilmaydi",
+btn_submit_withdraw: "Pul yechish uchun ariza berish",
+status_sent_waiting_hold: "Yuborildi, hold kutilmoqda",
+status_need_to_send: 'Yuborish kerak',
+btn_sent: 'Yubordim',
+btn_cancel_sale: 'Bekor qilish',
+status_confirmed: 'Tasdiqlandi',
+status_seller_sent: 'Sotuvchi yubordi',
+btn_received: 'Oldim',
+status_waiting_send: 'Yuborilishini kutmoqda',
+countdown_credit: "Hisoblanishiga: ",
+countdown_hold: "Hold tugashiga: ",
+role_selling: 'Sotyapman',
+role_buying: 'Sotib olyapman',
+btn_message: '✉️ Yozish',
 detail_wear: 'Eskirish darajasi',
 detail_rarity: 'Noyoblik',
 detail_price: 'Narxi',
@@ -1844,6 +1885,7 @@ btn_save_price: "Narxni saqlash",
 btn_copy: "Nusxalash",
 label_invited: 'Taklif qilingan:',
 open_via_telegram: 'Telegram orqali oching',
+no_active_deals: "Faol bitimlar yo'q",
 load_failed: "Yuklab bo'lmadi",
 copied_text: "Nusxalandi ✓",
 referral_no_bonus_text: "Havolani ulashing — taklif qilingan do'stlar quyidagi hisoblagichda paydo bo'ladi.",
@@ -1881,6 +1923,10 @@ applyFiltersAndRender();
 
 if (typeof loadReferralInfo === 'function'){
 loadReferralInfo();
+}
+
+if (typeof lastDeals !== 'undefined' && lastDeals.length){
+document.getElementById('dealsList').innerHTML = lastDeals.map(dealCardHtml).join('');
 }
 
 if (!tg || !tg.initData) return;
@@ -2338,6 +2384,8 @@ return `${minutes}м`;
 }
 
 function dealCardHtml(deal){
+const dict = I18N[currentLang] || I18N.ru;
+
 const photo = deal.photo_url
 ? `<img class="deal-photo" src="${deal.photo_url}" alt="">`
 : `<div class="deal-photo" style="display:flex;align-items:center;justify-content:center;">${TARGET_ICON}</div>`;
@@ -2347,41 +2395,41 @@ let actionHtml = '';
 
 if (deal.role === 'selling'){
 if (deal.sent_at){
-statusHtml = '<div class="deal-status sent">Отправлено, ждём холд</div>';
+statusHtml = `<div class="deal-status sent">${dict.status_sent_waiting_hold}</div>`;
 } else {
-statusHtml = '<div class="deal-status pending">Нужно отправить</div>';
-actionHtml = `<button class="deal-action" data-mark-sent="${deal.id}" type="button">Отправил</button>
-<button class="deal-action secondary" data-cancel-sale="${deal.id}" type="button">Отменить</button>`;
+statusHtml = `<div class="deal-status pending">${dict.status_need_to_send}</div>`;
+actionHtml = `<button class="deal-action" data-mark-sent="${deal.id}" type="button">${dict.btn_sent}</button>
+<button class="deal-action secondary" data-cancel-sale="${deal.id}" type="button">${dict.btn_cancel_sale}</button>`;
 }
 } else {
 if (deal.confirmed_at){
-statusHtml = '<div class="deal-status done">Подтверждено</div>';
+statusHtml = `<div class="deal-status done">${dict.status_confirmed}</div>`;
 } else if (deal.sent_at){
-statusHtml = '<div class="deal-status sent">Продавец отправил</div>';
-actionHtml = `<button class="deal-action" data-mark-received="${deal.id}" type="button">Получил</button>`;
+statusHtml = `<div class="deal-status sent">${dict.status_seller_sent}</div>`;
+actionHtml = `<button class="deal-action" data-mark-received="${deal.id}" type="button">${dict.btn_received}</button>`;
 } else {
-statusHtml = '<div class="deal-status pending">Ждём отправки</div>';
+statusHtml = `<div class="deal-status pending">${dict.status_waiting_send}</div>`;
 }
 }
 
 const countdownLabel = deal.role === 'selling'
-? 'Зачисление через: '
-: 'Холд снимется через: ';
+? dict.countdown_credit
+: dict.countdown_hold;
 const countdownHtml = deal.release_at
 ? `<div class="deal-meta">${countdownLabel}${formatDealCountdown(deal.release_at)}</div>`
 : '';
 
-const roleLabel = deal.role === 'selling' ? 'Продаю' : 'Покупаю';
-const counterparty = deal.counterparty || 'аноним';
+const roleLabel = deal.role === 'selling' ? dict.role_selling : dict.role_buying;
+const counterpartyLabel = deal.role === 'selling' ? dict.detail_buyer : dict.detail_seller;
 
-const messageBtn = `<button class="deal-action secondary" data-relay="${deal.id}" type="button">✉️ Написать</button>`;
+const messageBtn = `<button class="deal-action secondary" data-relay="${deal.id}" type="button">${dict.btn_message}</button>`;
 
 return `
 <div class="deal-card">
 ${photo}
 <div class="deal-info">
 <div class="deal-title">${escapeHtml(deal.title)}</div>
-<div class="deal-meta">${roleLabel} · ${escapeHtml(counterparty)} · ${formatCoins(deal.price)}</div>
+<div class="deal-meta">${roleLabel} · ${escapeHtml(counterpartyLabel)} · ${formatCoins(deal.price)}</div>
 ${countdownHtml}
 ${statusHtml}
 </div>
@@ -2392,9 +2440,10 @@ ${statusHtml}
 let lastDeals = [];
 
 function loadDeals(){
+const dict = I18N[currentLang] || I18N.ru;
 const dealsList = document.getElementById('dealsList');
 if (!tg || !tg.initData){
-dealsList.innerHTML = '<div class="skins-empty" style="padding:16px 4px;">Открой через Telegram</div>';
+dealsList.innerHTML = `<div class="skins-empty" style="padding:16px 4px;">${dict.open_via_telegram}</div>`;
 return;
 }
 fetch(API_BASE + '/api/deals?init_data=' + encodeURIComponent(tg.initData))
@@ -2402,7 +2451,7 @@ fetch(API_BASE + '/api/deals?init_data=' + encodeURIComponent(tg.initData))
 .then(data => {
 lastDeals = (data && data.items) || [];
 if (!lastDeals.length){
-dealsList.innerHTML = '<div class="skins-empty" style="padding:16px 4px;">Активных сделок нет</div>';
+dealsList.innerHTML = `<div class="skins-empty" style="padding:16px 4px;">${dict.no_active_deals}</div>`;
 return;
 }
 dealsList.innerHTML = lastDeals.map(dealCardHtml).join('');

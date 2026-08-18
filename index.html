@@ -52,6 +52,20 @@ z-index:1;
 .vignette{ display:none; }
 
 /* ---------- corner brand marks ---------- */
+.princess-bg{
+position:absolute;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+background-image:url('princess-bg.jpg');
+background-size:cover;
+background-position:right bottom;
+opacity:0.22;
+z-index:0;
+pointer-events:none;
+}
+
 .brand-tl, .brand-tr{
 position:absolute;
 top:18px;
@@ -1319,6 +1333,8 @@ justify-content:center;
 </head>
 <body>
 
+<div class="princess-bg" id="princessBg"></div>
+
 <div class="brand-tl"><img src="logo.png" alt="DGhost" class="brand-logo" onerror="this.style.display='none'"></div>
 
 
@@ -1777,6 +1793,9 @@ function pinBrandMark(){
 const el = document.querySelector('.brand-tl');
 if (!el) return;
 el.style.top = (window.scrollY + 18) + 'px';
+
+const bg = document.getElementById('princessBg');
+if (bg) bg.style.top = window.scrollY + 'px';
 }
 
 window.addEventListener('scroll', pinBrandMark, { passive: true });

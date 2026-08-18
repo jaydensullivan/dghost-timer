@@ -986,13 +986,13 @@ margin-top:5px;
 .skin-action{
 margin-top:7px;
 width:100%;
-padding:7px;
+padding:12px 7px;
 border-radius:7px;
 border:1px solid var(--red);
 background:linear-gradient(180deg, rgba(217,74,82,0.22), rgba(217,74,82,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
-font-size:10px;
+font-size:11px;
 font-weight:600;
 letter-spacing:0.03em;
 text-transform:uppercase;
@@ -1052,15 +1052,17 @@ border-bottom:1px dashed var(--red-dim);
 
 .steam-link-btn, .steam-inv-btn{
 width:100%;
-padding:10px;
-border-radius:7px;
+min-height:48px;
+padding:14px 10px;
+border-radius:8px;
 border:1px solid var(--red);
 background:linear-gradient(180deg, rgba(217,74,82,0.2), rgba(217,74,82,0.04));
 color:var(--silver);
 font-family:'JetBrains Mono', monospace;
-font-size:12px;
+font-size:13px;
 font-weight:600;
 cursor:pointer;
+box-sizing:border-box;
 }
 
 .inventory-sheet{
@@ -1256,27 +1258,35 @@ margin:0;
 
 .buy-sticky-bar #buyCancel{
 flex:0 0 auto;
-padding:0 18px;
-border-radius:8px;
+min-height:48px;
+padding:0 20px;
+border-radius:10px;
 border:1px solid var(--muted);
 background:transparent;
 color:var(--muted);
 font-family:'JetBrains Mono', monospace;
-font-size:12px;
+font-size:13px;
 cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .buy-sticky-bar #buyConfirm{
 flex:1;
+min-height:48px;
 padding:0 18px;
-border-radius:8px;
+border-radius:10px;
 border:none;
 background:var(--red);
 color:#0a0708;
 font-family:'JetBrains Mono', monospace;
-font-size:13px;
+font-size:14px;
 font-weight:700;
 cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 </style>
 </head>
@@ -1436,10 +1446,10 @@ transform="rotate(-90 100 100)"></circle>
 <div class="topup-details-text" id="referralLinkText" style="font-size:13px; word-break:break-all;">Загрузка...</div>
 <button type="button" id="referralCopyBtn" class="topup-copy-btn">
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-Скопировать
+<span data-i18n="btn_copy">Скопировать</span>
 </button>
 </div>
-<div class="shop-hint" style="margin-top:10px;">Приглашено: <span id="referralInvitedCount">—</span></div>
+<div class="shop-hint" style="margin-top:10px;"><span data-i18n="label_invited">Приглашено:</span> <span id="referralInvitedCount">—</span></div>
 </div>
 
 <div class="profile-section" id="profileDealsSection" style="margin-top:10px;">
@@ -1506,28 +1516,28 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="edit-overlay" id="addSkinOverlay">
 <div class="edit-sheet">
-<h2>Выставить скин</h2>
+<h2 data-i18n="form_add_title">Выставить скин</h2>
 
 <div class="steam-block" id="steamLinkBlock">
-<div class="shop-hint" style="margin-bottom:0;">Привяжи трейд-ссылку во вкладке «Профиль», чтобы подставлять предметы из инвентаря Steam одним тапом.</div>
+<div class="shop-hint" style="margin-bottom:0;" data-i18n="hint_link_steam_first">Привяжи трейд-ссылку во вкладке «Профиль», чтобы подставлять предметы из инвентаря Steam одним тапом.</div>
 </div>
 
 <div class="steam-block" id="steamInventoryBlock" style="display:none;">
-<button type="button" id="openInventoryBtn" class="steam-inv-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="vertical-align:-3px;margin-right:4px"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>Выбрать из инвентаря Steam</button>
+<button type="button" id="openInventoryBtn" class="steam-inv-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="vertical-align:-3px;margin-right:4px"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><span data-i18n="btn_pick_from_steam">Выбрать из инвентаря Steam</span></button>
 </div>
 
 <div class="edit-field">
-<label for="sWeaponType">Оружие / категория</label>
+<label for="sWeaponType" data-i18n="label_weapon_type">Оружие / категория</label>
 <input id="sWeaponType" type="text" maxlength="40" placeholder="AK-47, AWP, Ножи...">
 </div>
 
 <div class="edit-field">
-<label for="sTitle">Название скина</label>
+<label for="sTitle" data-i18n="label_skin_title">Название скина</label>
 <input id="sTitle" type="text" maxlength="80" placeholder="Redline">
 </div>
 
 <div class="edit-field">
-<label for="sRarity">Редкость</label>
+<label for="sRarity" data-i18n="label_rarity">Редкость</label>
 <select id="sRarity">
 <option value="">—</option>
 <option value="Consumer Grade">Consumer Grade</option>
@@ -1543,7 +1553,7 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="edit-row">
 <div class="edit-field">
-<label for="sWear">Износ</label>
+<label for="sWear" data-i18n="label_wear">Износ</label>
 <select id="sWear">
 <option value="">—</option>
 <option value="FN">Factory New (FN)</option>
@@ -1554,7 +1564,7 @@ transform="rotate(-90 100 100)"></circle>
 </select>
 </div>
 <div class="edit-field">
-<label for="sFloat">Float (0.00–1.00)</label>
+<label for="sFloat" data-i18n="label_float">Float (0.00–1.00)</label>
 <input id="sFloat" type="number" min="0" max="1" step="0.000001" placeholder="0.1834">
 </div>
 </div>
@@ -1562,28 +1572,28 @@ transform="rotate(-90 100 100)"></circle>
 <div class="edit-field edit-checkbox-field">
 <label class="checkbox-label">
 <input id="sStattrak" type="checkbox">
-<span>StatTrak™</span>
+<span data-i18n="label_stattrak">StatTrak™</span>
 </label>
 </div>
 
 <div class="edit-field">
-<label for="sDescription">Описание (необязательно)</label>
+<label for="sDescription" data-i18n="label_description">Описание (необязательно)</label>
 <input id="sDescription" type="text" maxlength="300" placeholder="Наклейки, паттерн...">
 </div>
 
 <div class="edit-field">
-<label for="sPrice">Цена, сум</label>
+<label for="sPrice" data-i18n="label_price">Цена, сум</label>
 <input id="sPrice" type="number" min="1" placeholder="5000">
 </div>
 
 <div class="edit-field">
-<label for="sPhoto">Ссылка на фото (необязательно)</label>
+<label for="sPhoto" data-i18n="label_photo">Ссылка на фото (необязательно)</label>
 <input id="sPhoto" type="url" placeholder="https://...">
 </div>
 
 <div class="edit-actions">
 <button type="button" id="addSkinCancel" data-i18n="btn_cancel">Отмена</button>
-<button type="button" id="addSkinSave" class="save">Выставить</button>
+<button type="button" id="addSkinSave" class="save" data-i18n="btn_list_skin">Выставить</button>
 </div>
 
 <div class="edit-status" id="addSkinStatus"></div>
@@ -1602,11 +1612,11 @@ transform="rotate(-90 100 100)"></circle>
 <div class="buy-actions-row">
 <button type="button" id="buyShareBtn" class="buy-action-btn">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
-<span>Поделиться</span>
+<span data-i18n="btn_share">Поделиться</span>
 </button>
 <button type="button" id="buyRemoveBtn" class="buy-action-btn" style="display:none;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>
-<span>Снять с продажи</span>
+<span data-i18n="btn_remove_listing">Снять с продажи</span>
 </button>
 </div>
 
@@ -1614,14 +1624,14 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="buy-price-edit" id="buyPriceEdit" style="display:none;">
 <div class="edit-field" style="margin:14px 20px 0;">
-<label for="buyNewPriceInput">Новая цена, сум</label>
+<label for="buyNewPriceInput" data-i18n="label_new_price">Новая цена, сум</label>
 <input id="buyNewPriceInput" type="number" min="1">
 </div>
 </div>
 
 <div class="buy-price-edit" id="buyOfferEdit" style="display:none;">
 <div class="edit-field" style="margin:14px 20px 0;">
-<label for="buyOfferInput">Твоя цена, сум</label>
+<label for="buyOfferInput" data-i18n="label_your_price">Твоя цена, сум</label>
 <input id="buyOfferInput" type="number" min="1">
 </div>
 </div>
@@ -1631,11 +1641,11 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="buy-sticky-bar">
 <button type="button" id="buyCancel" data-i18n="btn_cancel">Отмена</button>
-<button type="button" id="buyConfirm" class="save">Купить · <span id="buyPrice">—</span></button>
-<button type="button" id="buyMakeOfferBtn" class="steam-link-btn secondary">Предложить цену</button>
-<button type="button" id="buySendOfferBtn" class="save" style="display:none;">Отправить предложение</button>
-<button type="button" id="buyEditPriceBtn" class="save" style="display:none;">Изменить цену</button>
-<button type="button" id="buySavePriceBtn" class="save" style="display:none;">Сохранить цену</button>
+<button type="button" id="buyConfirm" class="save"><span data-i18n="btn_buy_prefix">Купить</span> · <span id="buyPrice">—</span></button>
+<button type="button" id="buyMakeOfferBtn" class="steam-link-btn secondary" data-i18n="btn_make_offer">Предложить цену</button>
+<button type="button" id="buySendOfferBtn" class="save" style="display:none;" data-i18n="btn_send_offer">Отправить предложение</button>
+<button type="button" id="buyEditPriceBtn" class="save" style="display:none;" data-i18n="btn_edit_price">Изменить цену</button>
+<button type="button" id="buySavePriceBtn" class="save" style="display:none;" data-i18n="btn_save_price">Сохранить цену</button>
 </div>
 </div>
 
@@ -1740,6 +1750,41 @@ topup_warning: '⚠️ После перевода обязательно при
 btn_paid: 'Я оплатил',
 btn_manage: 'Управлять',
 btn_buy: 'Купить',
+form_add_title: 'Выставить скин',
+hint_link_steam_first: 'Привяжи трейд-ссылку во вкладке «Профиль», чтобы подставлять предметы из инвентаря Steam одним тапом.',
+btn_pick_from_steam: 'Выбрать из инвентаря Steam',
+label_weapon_type: 'Оружие / категория',
+label_skin_title: 'Название скина',
+label_rarity: 'Редкость',
+label_wear: 'Износ',
+label_float: 'Float (0.00–1.00)',
+label_stattrak: 'StatTrak™',
+label_description: 'Описание (необязательно)',
+label_price: 'Цена, сум',
+label_photo: 'Ссылка на фото (необязательно)',
+btn_list_skin: 'Выставить',
+detail_seller: 'Продавец',
+detail_wear: 'Износ',
+detail_rarity: 'Редкость',
+detail_price: 'Цена',
+value_anon: 'аноним',
+value_yes: 'Да',
+btn_share: 'Поделиться',
+btn_remove_listing: 'Снять с продажи',
+label_new_price: 'Новая цена, сум',
+label_your_price: 'Твоя цена, сум',
+btn_buy_prefix: 'Купить',
+btn_make_offer: 'Предложить цену',
+btn_send_offer: 'Отправить предложение',
+btn_edit_price: 'Изменить цену',
+btn_save_price: 'Сохранить цену',
+btn_copy: 'Скопировать',
+label_invited: 'Приглашено:',
+open_via_telegram: 'Открой через Telegram',
+load_failed: 'Не удалось загрузить',
+copied_text: 'Скопировано ✓',
+referral_no_bonus_text: 'Делись ссылкой — приглашённые друзья появятся в счётчике ниже.',
+referral_bonus_text: (a, b) => `Пригласи друга — получи ${a} после его первой покупки, а он получит ${b}.`,
 },
 uz: {
 nav_timer: 'Taymer',
@@ -1768,6 +1813,41 @@ topup_warning: "⚠️ Pul o'tkazgandan so'ng albatta chek skrinshotini botga yu
 btn_paid: "To'ladim",
 btn_manage: "Boshqarish",
 btn_buy: "Sotib olish",
+form_add_title: 'Skinni sotuvga qo\'yish',
+hint_link_steam_first: "Steam inventaridan bir tegishda mahsulot qo'shish uchun «Profil» bo'limida treyd-havolani bog'lang.",
+btn_pick_from_steam: "Steam inventaridan tanlash",
+label_weapon_type: 'Qurol / turkum',
+label_skin_title: 'Skin nomi',
+label_rarity: 'Noyoblik',
+label_wear: 'Eskirish darajasi',
+label_float: 'Float (0.00–1.00)',
+label_stattrak: 'StatTrak™',
+label_description: "Tavsif (ixtiyoriy)",
+label_price: 'Narxi, sum',
+label_photo: "Foto havolasi (ixtiyoriy)",
+btn_list_skin: "Sotuvga qo'yish",
+detail_seller: 'Sotuvchi',
+detail_wear: 'Eskirish darajasi',
+detail_rarity: 'Noyoblik',
+detail_price: 'Narxi',
+value_anon: 'anonim',
+value_yes: 'Ha',
+btn_share: "Ulashish",
+btn_remove_listing: "Sotuvdan olish",
+label_new_price: 'Yangi narx, sum',
+label_your_price: 'Sizning narxingiz, sum',
+btn_buy_prefix: 'Sotib olish',
+btn_make_offer: 'Narx taklif qilish',
+btn_send_offer: "Taklifni yuborish",
+btn_edit_price: "Narxni o'zgartirish",
+btn_save_price: "Narxni saqlash",
+btn_copy: "Nusxalash",
+label_invited: 'Taklif qilingan:',
+open_via_telegram: 'Telegram orqali oching',
+load_failed: "Yuklab bo'lmadi",
+copied_text: "Nusxalandi ✓",
+referral_no_bonus_text: "Havolani ulashing — taklif qilingan do'stlar quyidagi hisoblagichda paydo bo'ladi.",
+referral_bonus_text: (a, b) => `Do'stingizni taklif qiling — uning birinchi xarididan so'ng ${a} olasiz, u esa ${b} oladi.`,
 },
 };
 
@@ -1797,6 +1877,10 @@ applyTranslations();
 
 if (typeof lastSkins !== 'undefined' && lastSkins.length){
 applyFiltersAndRender();
+}
+
+if (typeof loadReferralInfo === 'function'){
+loadReferralInfo();
 }
 
 if (!tg || !tg.initData) return;
@@ -2573,12 +2657,31 @@ const RARITY_LABEL_RU = {
 'Extraordinary': 'Экстраординарное',
 };
 
+const RARITY_LABEL_UZ = {
+'Consumer Grade': 'Oddiy',
+'Industrial Grade': 'Sanoat',
+'Mil-Spec Grade': 'Harbiy',
+'Restricted': "Cheklangan",
+'Classified': 'Maxfiy',
+'Covert': 'Yashirin',
+'Contraband': 'Kontrabanda',
+'Extraordinary': "G'ayrioddiy",
+};
+
 const WEAR_LABEL_FULL = {
 FN: 'Прямо с завода',
 MW: 'Немного поношенное',
 FT: 'После полевых испытаний',
 WW: 'Поношенное',
 BS: 'Закалённое в боях',
+};
+
+const WEAR_LABEL_FULL_UZ = {
+FN: "Zavoddan yangi",
+MW: 'Biroz eskirgan',
+FT: 'Dala sinovidan o\'tgan',
+WW: 'Eskirgan',
+BS: "Jangda toblangan",
 };
 
 function buyDetailRow(label, value){
@@ -2610,13 +2713,17 @@ buyPrice.textContent = formatCoins(skin.price);
 
 const isOwn = currentUserId && skin.seller_id === currentUserId;
 
+const dict = I18N[currentLang] || I18N.ru;
+const rarityMap = currentLang === 'uz' ? RARITY_LABEL_UZ : RARITY_LABEL_RU;
+const wearMap = currentLang === 'uz' ? WEAR_LABEL_FULL_UZ : WEAR_LABEL_FULL;
+
 const rows = [
-isOwn ? '' : buyDetailRow('Продавец', 'аноним'),
-buyDetailRow('Износ', skin.wear ? (WEAR_LABEL_FULL[skin.wear] || skin.wear) : null),
-buyDetailRow('Редкость', skin.rarity ? (RARITY_LABEL_RU[skin.rarity] || skin.rarity) : null),
-buyDetailRow('StatTrak', skin.stattrak ? 'Да' : null),
+isOwn ? '' : buyDetailRow(dict.detail_seller, dict.value_anon),
+buyDetailRow(dict.detail_wear, skin.wear ? (wearMap[skin.wear] || skin.wear) : null),
+buyDetailRow(dict.detail_rarity, skin.rarity ? (rarityMap[skin.rarity] || skin.rarity) : null),
+buyDetailRow('StatTrak', skin.stattrak ? dict.value_yes : null),
 buyDetailRow('Float', (skin.float_value !== null && skin.float_value !== undefined) ? Number(skin.float_value).toFixed(4) : null),
-buyDetailRow('Цена', formatCoins(skin.price)),
+buyDetailRow(dict.detail_price, formatCoins(skin.price)),
 ].join('');
 
 buyDetailsTable.innerHTML = rows;
@@ -2957,7 +3064,7 @@ if (!topupDetailsRaw) return;
 const done = () => {
 const originalHtml = topupCopyBtn.innerHTML;
 topupCopyBtn.classList.add('copied');
-topupCopyBtn.textContent = 'Скопировано ✓';
+topupCopyBtn.textContent = (I18N[currentLang] || I18N.ru).copied_text;
 setTimeout(() => {
 topupCopyBtn.classList.remove('copied');
 topupCopyBtn.innerHTML = originalHtml;
@@ -2994,8 +3101,9 @@ const referralInvitedCount = document.getElementById('referralInvitedCount');
 let referralLinkRaw = '';
 
 function loadReferralInfo(){
+const dict = I18N[currentLang] || I18N.ru;
 if (!tg || !tg.initData){
-referralLinkText.textContent = 'Открой через Telegram';
+referralLinkText.textContent = dict.open_via_telegram;
 return;
 }
 fetch(API_BASE + '/api/referral_info?init_data=' + encodeURIComponent(tg.initData))
@@ -3006,13 +3114,13 @@ referralLinkRaw = data.link;
 referralLinkText.textContent = referralLinkRaw;
 referralInvitedCount.textContent = data.invited_count;
 if (data.bonus_referrer > 0 || data.bonus_referred > 0){
-referralBonusText.textContent = `Пригласи друга — получи ${formatCoins(data.bonus_referrer)} после его первой покупки, а он получит ${formatCoins(data.bonus_referred)}.`;
+referralBonusText.textContent = dict.referral_bonus_text(formatCoins(data.bonus_referrer), formatCoins(data.bonus_referred));
 } else {
-referralBonusText.textContent = 'Делись ссылкой — приглашённые друзья появятся в счётчике ниже.';
+referralBonusText.textContent = dict.referral_no_bonus_text;
 }
 })
 .catch(() => {
-referralLinkText.textContent = 'Не удалось загрузить';
+referralLinkText.textContent = dict.load_failed;
 });
 }
 
@@ -3022,7 +3130,7 @@ if (!referralLinkRaw) return;
 const done = () => {
 const originalHtml = referralCopyBtn.innerHTML;
 referralCopyBtn.classList.add('copied');
-referralCopyBtn.textContent = 'Скопировано ✓';
+referralCopyBtn.textContent = (I18N[currentLang] || I18N.ru).copied_text;
 setTimeout(() => {
 referralCopyBtn.classList.remove('copied');
 referralCopyBtn.innerHTML = originalHtml;

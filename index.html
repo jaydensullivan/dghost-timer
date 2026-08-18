@@ -53,9 +53,9 @@ z-index:1;
 
 /* ---------- corner brand marks ---------- */
 .brand-tl, .brand-tr{
-position:fixed;
+position:absolute;
 top:18px;
-z-index:2;
+z-index:50;
 font-family:'JetBrains Mono', monospace;
 font-size:10px;
 letter-spacing:0.14em;
@@ -1764,6 +1764,26 @@ const BID_BOT_URL_JS = 'https://t.me/DGhostCountdownBot';
 const MINI_APP_LINK_BASE = 'https://t.me/DGhostCountdownBot/DGhost';
 
 // ============================================================
+// ЛОГОТИП В УГЛУ — РУЧНАЯ ФИКСАЦИЯ ПРИ СКРОЛЛЕ
+//
+// Внутри Telegram (особенно на iOS) position:fixed иногда
+// считается не от видимого экрана, а от всей высоты страницы —
+// из-за этого значок "уезжал" вниз при прокрутке. Держим его
+// на месте вручную через scroll-listener вместо того, чтобы
+// полагаться на CSS fixed.
+// ============================================================
+
+function pinBrandMark(){
+const el = document.querySelector('.brand-tl');
+if (!el) return;
+el.style.top = (window.scrollY + 18) + 'px';
+}
+
+window.addEventListener('scroll', pinBrandMark, { passive: true });
+window.addEventListener('resize', pinBrandMark);
+pinBrandMark();
+
+// ============================================================
 // ЯЗЫК ИНТЕРФЕЙСА (RU / UZ)
 //
 // Как в боте — переведены пока основные экраны (навигация,
@@ -2362,6 +2382,15 @@ hasSteamLink = !!data.has_steam_link;
 if (data.language && data.language !== currentLang){
 currentLang = data.language;
 applyTranslations();
+if (typeof loadReferralInfo === 'function'){
+loadReferralInfo();
+}
+if (typeof lastSkins !== 'undefined' && lastSkins.length){
+applyFiltersAndRender();
+}
+if (typeof lastDeals !== 'undefined' && lastDeals.length){
+document.getElementById('dealsList').innerHTML = lastDeals.map(dealCardHtml).join('');
+}
 }
 updateFabVisibility();
 updateSteamBlockVisibility();

@@ -1203,11 +1203,19 @@ border-bottom:1px solid rgba(255,255,255,0.05);
 width:100%;
 max-width:420px;
 display:flex;
+flex-wrap:wrap;
 gap:10px;
 padding:12px 18px calc(env(safe-area-inset-bottom, 0px) + 12px);
 background:#0a0708;
 border:1px solid var(--red-dim);
 border-top:1px solid var(--red-dim);
+}
+
+.buy-sticky-bar #buyMakeOfferBtn,
+.buy-sticky-bar #buySendOfferBtn{
+flex:1 1 100%;
+order:3;
+margin:0;
 }
 
 .buy-sticky-bar #buyCancel{
@@ -1567,12 +1575,21 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 </div>
 
+<div class="buy-price-edit" id="buyOfferEdit" style="display:none;">
+<div class="edit-field" style="margin:14px 20px 0;">
+<label for="buyOfferInput">Твоя цена, сум</label>
+<input id="buyOfferInput" type="number" min="1">
+</div>
+</div>
+
 <div class="edit-status" id="buyStatus"></div>
 </div>
 
 <div class="buy-sticky-bar">
 <button type="button" id="buyCancel">Отмена</button>
 <button type="button" id="buyConfirm" class="save">Купить · <span id="buyPrice">—</span></button>
+<button type="button" id="buyMakeOfferBtn" class="steam-link-btn secondary">Предложить цену</button>
+<button type="button" id="buySendOfferBtn" class="save" style="display:none;">Отправить предложение</button>
 <button type="button" id="buyEditPriceBtn" class="save" style="display:none;">Изменить цену</button>
 <button type="button" id="buySavePriceBtn" class="save" style="display:none;">Сохранить цену</button>
 </div>
@@ -1954,6 +1971,10 @@ const buyEditPriceBtn = document.getElementById('buyEditPriceBtn');
 const buySavePriceBtn = document.getElementById('buySavePriceBtn');
 const buyPriceEdit = document.getElementById('buyPriceEdit');
 const buyNewPriceInput = document.getElementById('buyNewPriceInput');
+const buyMakeOfferBtn = document.getElementById('buyMakeOfferBtn');
+const buySendOfferBtn = document.getElementById('buySendOfferBtn');
+const buyOfferEdit = document.getElementById('buyOfferEdit');
+const buyOfferInput = document.getElementById('buyOfferInput');
 const buyStatus = document.getElementById('buyStatus');
 
 let pendingBuySkin = null;
@@ -2450,6 +2471,11 @@ buySavePriceBtn.style.display = 'none';
 buyPriceEdit.style.display = 'none';
 buyNewPriceInput.value = skin.price;
 
+buyMakeOfferBtn.style.display = isOwn ? 'none' : '';
+buySendOfferBtn.style.display = 'none';
+buyOfferEdit.style.display = 'none';
+buyOfferInput.value = '';
+
 buyStatus.textContent = '';
 buyOverlay.classList.add('show');
 }
@@ -2531,6 +2557,52 @@ buyStatus.textContent = friendlyErrorMessage(err);
 })
 .finally(() => {
 buySavePriceBtn.disabled = false;
+});
+});
+
+buyMakeOfferBtn.addEventListener('click', () => {
+buyOfferEdit.style.display = '';
+buyMakeOfferBtn.style.display = 'none';
+buySendOfferBtn.style.display = '';
+buyOfferInput.focus();
+});
+
+buySendOfferBtn.addEventListener('click', () => {
+if (!pendingBuySkin || !tg || !tg.initData) return;
+
+const offerPrice = Number(buyOfferInput.value);
+
+if (!offerPrice || offerPrice <= 0){
+buyStatus.textContent = 'Укажи корректную цену.';
+return;
+}
+
+buySendOfferBtn.disabled = true;
+buyStatus.textContent = 'Отправляю...';
+
+fetch(API_BASE + '/api/skins/' + pendingBuySkin.id + '/offer', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData, price: offerPrice })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+return r.json();
+})
+.then(() => {
+buyStatus.textContent = 'Предложение отправлено продавцу ✓';
+buyOfferEdit.style.display = 'none';
+buySendOfferBtn.style.display = 'none';
+buyMakeOfferBtn.style.display = '';
+})
+.catch(err => {
+buyStatus.textContent = friendlyErrorMessage(err);
+})
+.finally(() => {
+buySendOfferBtn.disabled = false;
 });
 });
 

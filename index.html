@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -68,8 +69,10 @@ pointer-events:none;
 
 /* ---------- welcome (princess greeting) screen ---------- */
 .welcome-overlay{
-position:fixed;
-inset:0;
+position:absolute;
+top:0;
+left:0;
+width:100%;
 z-index:60;
 background:#0a0708;
 display:none;
@@ -1443,7 +1446,7 @@ justify-content:center;
 
 <div class="brand-tl"><img src="logo.png" alt="DGhost" class="brand-logo" onerror="this.style.display='none'"></div>
 
-<div class="welcome-overlay show" id="welcomeOverlay">
+<div class="welcome-overlay" id="welcomeOverlay">
 <div class="welcome-bg"></div>
 <div class="welcome-content">
 <div class="welcome-greeting" data-i18n="welcome_greeting">Добро пожаловать, мой король! Сегодня будем продавать или покупать?</div>
@@ -1919,6 +1922,12 @@ if (bg) bg.style.top = window.scrollY + 'px';
 
 window.addEventListener('scroll', pinBrandMark, { passive: true });
 window.addEventListener('resize', pinBrandMark);
+window.addEventListener('resize', () => {
+const wo = document.getElementById('welcomeOverlay');
+if (wo && wo.classList.contains('show')){
+wo.style.height = window.innerHeight + 'px';
+}
+});
 pinBrandMark();
 
 // ============================================================
@@ -2184,10 +2193,6 @@ document.getElementById('langBtnRu').addEventListener('click', () => setLanguage
 document.getElementById('langBtnUz').addEventListener('click', () => setLanguage('uz'));
 
 applyTranslations();
-
-if (typeof renderCategoryChips === 'function'){
-renderCategoryChips();
-}
 
 const clockEl = document.getElementById('clock');
 const ringEl = document.getElementById('ring');
@@ -2858,6 +2863,8 @@ currentCategory = btn.dataset.cat;
 renderCategoryChips();
 applyFiltersAndRender();
 });
+
+renderCategoryChips();
 
 const RARITY_CLASS = {
 'Consumer Grade': 'rarity-consumer',
@@ -3774,8 +3781,25 @@ addSkinOverlay.classList.add('show');
 
 const welcomeOverlay = document.getElementById('welcomeOverlay');
 
-document.getElementById('welcomeSellBtn').addEventListener('click', () => {
+function showWelcomeOverlay(){
+// 100vh внутри Telegram WebView иногда считается неверно (больше
+// реально видимой области) — измеряем высоту сами через JS и
+// блокируем скролл страницы, пока экран показан, чтобы контент
+// не "уезжал" вниз.
+welcomeOverlay.style.height = window.innerHeight + 'px';
+welcomeOverlay.classList.add('show');
+document.body.style.overflow = 'hidden';
+}
+
+function hideWelcomeOverlay(){
 welcomeOverlay.classList.remove('show');
+document.body.style.overflow = '';
+}
+
+showWelcomeOverlay();
+
+document.getElementById('welcomeSellBtn').addEventListener('click', () => {
+hideWelcomeOverlay();
 switchTab('shop');
 
 if (!tg || !tg.initData){
@@ -3797,7 +3821,7 @@ loadInventory(false);
 });
 
 document.getElementById('welcomeBuyBtn').addEventListener('click', () => {
-welcomeOverlay.classList.remove('show');
+hideWelcomeOverlay();
 switchTab('shop');
 });
 
@@ -3876,4 +3900,3 @@ loadSkins();
 </script>
 </body>
 </html>
- 

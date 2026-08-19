@@ -1793,6 +1793,10 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 <div id="adminSelectedSkin" class="admin-selected-skin" style="display:none;"></div>
 <div class="edit-field">
+<label for="aEmoji" data-i18n="admin_label_emoji">Эмодзи перед названием (необязательно)</label>
+<input id="aEmoji" type="text" maxlength="10" placeholder="🔥">
+</div>
+<div class="edit-field">
 <label for="aStartPrice" data-i18n="admin_label_start_price">Стартовая цена, сум</label>
 <input id="aStartPrice" type="number" min="1" placeholder="1000">
 </div>
@@ -2242,6 +2246,7 @@ nav_admin: 'Admin',
 admin_title: 'Панель администратора',
 admin_section_auction: 'Создать аукцион',
 admin_label_lot_title: 'Название лота',
+admin_label_emoji: 'Эмодзи перед названием (необязательно)',
 admin_label_start_price: 'Стартовая цена, сум',
 admin_label_step: 'Шаг ставки, сум',
 admin_label_minutes: 'Сколько минут идёт аукцион',
@@ -2383,6 +2388,7 @@ nav_admin: 'Admin',
 admin_title: 'Administrator paneli',
 admin_section_auction: 'Auksion yaratish',
 admin_label_lot_title: 'Lot nomi',
+admin_label_emoji: "Nom oldidan emoji (ixtiyoriy)",
 admin_label_start_price: 'Boshlang\'ich narx, sum',
 admin_label_step: 'Stavka qadami, sum',
 admin_label_minutes: 'Auksion necha daqiqa davom etadi',
@@ -4375,13 +4381,14 @@ status.textContent = dict.admin_sending_request;
 
 adminApiFetch('/api/admin/auction/propose', {
 method: 'POST',
-body: { skin_id: adminSelectedSkinId, start_price: startPrice, step: step, minutes: minutes }
+body: { skin_id: adminSelectedSkinId, start_price: startPrice, step: step, minutes: minutes, emoji: document.getElementById('aEmoji').value.trim() }
 })
 .then(() => {
 status.textContent = dict.admin_request_sent;
 document.getElementById('aStartPrice').value = '';
 document.getElementById('aStep').value = '';
 document.getElementById('aMinutes').value = '';
+document.getElementById('aEmoji').value = '';
 document.getElementById('adminSelectedSkin').style.display = 'none';
 adminSelectedSkinId = null;
 loadAdminSkinPicker();

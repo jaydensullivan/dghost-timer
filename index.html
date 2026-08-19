@@ -719,6 +719,70 @@ color:var(--red);
 margin-bottom:10px;
 }
 
+.admin-skin-picker{
+max-height:220px;
+overflow-y:auto;
+border:1px solid var(--red-dim);
+border-radius:10px;
+margin-bottom:12px;
+}
+
+.admin-skin-picker-item{
+display:flex;
+align-items:center;
+gap:10px;
+padding:8px 10px;
+border-bottom:1px solid var(--red-dim);
+cursor:pointer;
+}
+
+.admin-skin-picker-item:last-child{ border-bottom:none; }
+
+.admin-skin-picker-item.selected{ background:rgba(217,74,82,0.14); }
+
+.admin-skin-picker-item img{
+width:36px;
+height:36px;
+border-radius:6px;
+object-fit:contain;
+background:rgba(255,255,255,0.03);
+}
+
+.admin-skin-picker-name{
+font-size:12px;
+color:var(--silver);
+flex:1;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.admin-skin-picker-price{
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+color:var(--red);
+white-space:nowrap;
+}
+
+.admin-selected-skin{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+border:1px solid var(--red);
+border-radius:10px;
+background:rgba(217,74,82,0.08);
+margin-bottom:12px;
+}
+
+.admin-selected-skin img{
+width:40px;
+height:40px;
+border-radius:8px;
+object-fit:contain;
+background:rgba(255,255,255,0.03);
+}
+
 .money-btn-row{
 display:flex;
 gap:10px;
@@ -937,6 +1001,88 @@ align-items:center;
 justify-content:space-between;
 gap:10px;
 margin-bottom:10px;
+}
+
+.auction-banner{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+border-radius:12px;
+border:1px solid var(--red);
+background:linear-gradient(135deg, rgba(217,74,82,0.22), rgba(217,74,82,0.05));
+margin-bottom:12px;
+}
+
+.auction-banner-photo{
+width:52px;
+height:52px;
+border-radius:8px;
+object-fit:contain;
+background:rgba(0,0,0,0.3);
+flex:0 0 auto;
+}
+
+.auction-banner-info{ flex:1; min-width:0; }
+
+.auction-banner-title{
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+text-transform:uppercase;
+letter-spacing:0.05em;
+color:var(--red);
+margin-bottom:2px;
+}
+
+.auction-banner-name{
+font-size:13px;
+font-weight:700;
+color:var(--silver);
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.auction-banner-price{
+font-size:12px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.auction-banner-price span:last-child{
+color:var(--red);
+font-weight:700;
+font-family:'JetBrains Mono', monospace;
+}
+
+.auction-banner-time{
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.auction-banner-btn{
+flex:0 0 auto;
+min-height:44px;
+padding:0 18px;
+border-radius:8px;
+border:none;
+background:var(--red);
+color:#0a0708;
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:700;
+cursor:pointer;
+}
+
+.auction-bid-photo{
+width:100%;
+max-height:180px;
+object-fit:contain;
+border-radius:10px;
+background:rgba(255,255,255,0.03);
+margin-bottom:12px;
 }
 
 .balance-pill{
@@ -1517,6 +1663,17 @@ transform="rotate(-90 100 100)"></circle>
 <button class="add-skin-btn" id="addSkinBtn" type="button" data-i18n="btn_add_skin">+ Скин</button>
 </div>
 
+<div class="auction-banner" id="auctionBanner" style="display:none;">
+<img id="auctionBannerPhoto" class="auction-banner-photo" alt="" style="display:none;">
+<div class="auction-banner-info">
+<div class="auction-banner-title" data-i18n="auction_live_label">🔨 Идёт аукцион</div>
+<div class="auction-banner-name" id="auctionBannerName">—</div>
+<div class="auction-banner-price"><span data-i18n="auction_current_price">Текущая цена:</span> <span id="auctionBannerPrice">—</span></div>
+<div class="auction-banner-time" id="auctionBannerTime">—</div>
+</div>
+<button type="button" id="auctionBannerBtn" class="auction-banner-btn" data-i18n="auction_btn_bid">Ставка</button>
+</div>
+
 <div class="shop-hint" data-i18n="hint_sell_flow">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
 
 <div class="category-chips" id="categoryChips"></div>
@@ -1630,10 +1787,11 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="profile-section" id="adminAuctionSection">
 <div class="profile-section-title" data-i18n="admin_section_auction">Создать аукцион</div>
-<div class="edit-field">
-<label for="aTitle" data-i18n="admin_label_lot_title">Название лота</label>
-<input id="aTitle" type="text" placeholder="SNOW CASE">
+<div class="shop-hint" style="margin-bottom:10px;" data-i18n="admin_pick_skin_hint">Выбери лот из списка ниже — после твоего запроса продавцу придёт вопрос, согласен ли он выставить его на торги.</div>
+<div id="adminSkinPicker" class="admin-skin-picker">
+<div class="skins-empty" style="padding:12px 4px;" data-i18n="loading">Загрузка...</div>
 </div>
+<div id="adminSelectedSkin" class="admin-selected-skin" style="display:none;"></div>
 <div class="edit-field">
 <label for="aStartPrice" data-i18n="admin_label_start_price">Стартовая цена, сум</label>
 <input id="aStartPrice" type="number" min="1" placeholder="1000">
@@ -1646,8 +1804,7 @@ transform="rotate(-90 100 100)"></circle>
 <label for="aMinutes" data-i18n="admin_label_minutes">Сколько минут идёт аукцион</label>
 <input id="aMinutes" type="number" min="1" placeholder="10">
 </div>
-<div class="shop-hint" style="margin-bottom:10px;" data-i18n="admin_auction_photo_hint">Чтобы прикрепить фото к лоту — пришли его боту в личку прямо перед созданием, оно подставится автоматически.</div>
-<button type="button" id="adminCreateAuctionBtn" class="steam-link-btn" data-i18n="admin_btn_create_auction">Опубликовать аукцион</button>
+<button type="button" id="adminCreateAuctionBtn" class="steam-link-btn" data-i18n="admin_btn_propose_auction">Отправить продавцу запрос</button>
 <div class="edit-status" id="adminAuctionStatus"></div>
 </div>
 
@@ -1758,6 +1915,23 @@ transform="rotate(-90 100 100)"></circle>
 <button type="button" id="withdrawSubmitBtn" class="save" data-i18n="btn_submit_withdraw">Подать заявку на вывод</button>
 </div>
 <div class="edit-status" id="withdrawStatus"></div>
+</div>
+</div>
+
+<div class="edit-overlay" id="auctionBidOverlay">
+<div class="edit-sheet">
+<h2 id="auctionBidTitle" data-i18n="auction_bid_title">Ставка на аукционе</h2>
+<img id="auctionBidPhoto" class="auction-bid-photo" alt="" style="display:none;">
+<div class="buy-details-table" id="auctionBidDetails"></div>
+<div class="edit-field">
+<label for="auctionBidInput" data-i18n="auction_your_bid">Твоя ставка, сум</label>
+<input id="auctionBidInput" type="number" min="1">
+</div>
+<div class="edit-actions">
+<button type="button" id="auctionBidCancel" data-i18n="btn_cancel">Отмена</button>
+<button type="button" id="auctionBidSubmit" class="save" data-i18n="auction_btn_place_bid">Сделать ставку</button>
+</div>
+<div class="edit-status" id="auctionBidStatus"></div>
 </div>
 </div>
 
@@ -2088,6 +2262,24 @@ admin_label_user_id: 'Telegram user_id',
 admin_btn_add_admin: '+ Админ',
 admin_btn_add_auctioneer: '+ Организатор',
 btn_save: 'Сохранить',
+admin_pick_skin_hint: 'Выбери лот из списка ниже — после твоего запроса продавцу придёт вопрос, согласен ли он выставить его на торги.',
+admin_btn_propose_auction: 'Отправить продавцу запрос',
+admin_no_skins: 'Пока нет выставленных лотов.',
+admin_pick_skin_first: 'Сначала выбери лот из списка.',
+admin_fill_all_fields: 'Заполни все поля.',
+admin_sending_request: 'Отправляю запрос...',
+admin_request_sent: 'Запрос отправлен продавцу ✓',
+auction_live_label: '🔨 Идёт аукцион',
+auction_current_price: 'Текущая цена:',
+auction_btn_bid: 'Ставка',
+auction_bid_title: 'Ставка на аукционе',
+auction_your_bid: 'Твоя ставка, сум',
+auction_btn_place_bid: 'Сделать ставку',
+auction_current_price_label: 'Текущая цена',
+auction_min_bid: 'Минимальная ставка',
+auction_bid_count: 'Ставок сделано',
+auction_ending: 'завершается...',
+auction_bid_accepted: 'Ставка принята ✓',
 btn_buy: 'Купить',
 form_add_title: 'Выставить скин',
 hint_link_steam_first: 'Привяжи трейд-ссылку во вкладке «Профиль», чтобы подставлять предметы из инвентаря Steam одним тапом.',
@@ -2211,6 +2403,24 @@ admin_label_user_id: 'Telegram user_id',
 admin_btn_add_admin: '+ Admin',
 admin_btn_add_auctioneer: '+ Tashkilotchi',
 btn_save: 'Saqlash',
+admin_pick_skin_hint: "Quyidagi ro'yxatdan lotni tanlang — so'rovingizdan so'ng sotuvchiga uni auksionga qo'yishga rozimi degan savol boradi.",
+admin_btn_propose_auction: "Sotuvchiga so'rov yuborish",
+admin_no_skins: "Hozircha sotuvda lotlar yo'q.",
+admin_pick_skin_first: "Avval ro'yxatdan lot tanlang.",
+admin_fill_all_fields: "Barcha maydonlarni to'ldiring.",
+admin_sending_request: "So'rov yuborilmoqda...",
+admin_request_sent: "So'rov sotuvchiga yuborildi ✓",
+auction_live_label: '🔨 Auksion ketmoqda',
+auction_current_price: 'Joriy narx:',
+auction_btn_bid: 'Stavka',
+auction_bid_title: 'Auksionda stavka',
+auction_your_bid: 'Sizning stavkangiz, sum',
+auction_btn_place_bid: 'Stavka qo\'yish',
+auction_current_price_label: 'Joriy narx',
+auction_min_bid: 'Minimal stavka',
+auction_bid_count: "Qo'yilgan stavkalar",
+auction_ending: 'tugamoqda...',
+auction_bid_accepted: 'Stavka qabul qilindi ✓',
 btn_buy: "Sotib olish",
 form_add_title: 'Skinni sotuvga qo\'yish',
 hint_link_steam_first: "Steam inventaridan bir tegishda mahsulot qo'shish uchun «Profil» bo'limida treyd-havolani bog'lang.",
@@ -2663,6 +2873,8 @@ forbidden: 'Можно снять только свой лот.',
 not_found: 'Лот не найден.',
 invalid: 'Проверь название и цену.',
 bad_price: 'Укажи корректную цену.',
+too_low: 'Ставка слишком маленькая — кто-то уже успел поставить больше.',
+not_active: 'Аукцион уже завершился.',
 };
 
 function errorMessage(code){
@@ -4072,6 +4284,8 @@ document.getElementById('adminPromoSection').style.display = isAdmin ? '' : 'non
 document.getElementById('adminReferralSection').style.display = isAdmin ? '' : 'none';
 document.getElementById('adminPeopleSection').style.display = isAdmin ? '' : 'none';
 
+loadAdminSkinPicker();
+
 if (!isAdmin) return;
 
 loadAdminTopups();
@@ -4082,33 +4296,95 @@ loadAdminPeople();
 
 // ---------------- Создание аукциона ----------------
 
+// ---------------- Выбор лота для аукциона ----------------
+
+let adminSelectedSkinId = null;
+let adminAuctionSkins = [];
+
+function loadAdminSkinPicker(){
+const picker = document.getElementById('adminSkinPicker');
+adminApiFetch('/api/admin/skins_for_auction')
+.then(data => {
+adminAuctionSkins = data.items || [];
+if (!adminAuctionSkins.length){
+picker.innerHTML = `<div class="skins-empty" style="padding:12px 4px;">${(I18N[currentLang] || I18N.ru).admin_no_skins}</div>`;
+return;
+}
+picker.innerHTML = adminAuctionSkins.map(s => {
+const photo = s.photo_url
+? `<img src="${s.photo_url}" alt="" onerror="this.style.display='none'">`
+: '';
+const title = (s.stattrak ? 'StatTrak™ ' : '') + escapeHtml(s.title);
+return `<div class="admin-skin-picker-item" data-skin-id="${s.id}">
+${photo}
+<div class="admin-skin-picker-name">${title}</div>
+<div class="admin-skin-picker-price">${formatCoins(s.price)}</div>
+</div>`;
+}).join('');
+})
+.catch(() => {
+picker.innerHTML = `<div class="skins-empty" style="padding:12px 4px;">${(I18N[currentLang] || I18N.ru).load_failed}</div>`;
+});
+}
+
+document.getElementById('adminSkinPicker').addEventListener('click', (e) => {
+const item = e.target.closest('.admin-skin-picker-item');
+if (!item) return;
+
+adminSelectedSkinId = Number(item.dataset.skinId);
+
+document.querySelectorAll('.admin-skin-picker-item').forEach(el => {
+el.classList.toggle('selected', Number(el.dataset.skinId) === adminSelectedSkinId);
+});
+
+const skin = adminAuctionSkins.find(s => s.id === adminSelectedSkinId);
+const box = document.getElementById('adminSelectedSkin');
+if (skin){
+const photo = skin.photo_url
+? `<img src="${skin.photo_url}" alt="" onerror="this.style.display='none'">`
+: '';
+const title = (skin.stattrak ? 'StatTrak™ ' : '') + escapeHtml(skin.title);
+box.innerHTML = `${photo}<div><div class="admin-skin-picker-name">${title}</div><div class="admin-skin-picker-price">${formatCoins(skin.price)}</div></div>`;
+box.style.display = 'flex';
+}
+});
+
+// ---------------- Отправка предложения продавцу ----------------
+
 document.getElementById('adminCreateAuctionBtn').addEventListener('click', () => {
 const btn = document.getElementById('adminCreateAuctionBtn');
 const status = document.getElementById('adminAuctionStatus');
+const dict = I18N[currentLang] || I18N.ru;
 
-const title = document.getElementById('aTitle').value.trim();
 const startPrice = Number(document.getElementById('aStartPrice').value);
 const step = Number(document.getElementById('aStep').value);
 const minutes = Number(document.getElementById('aMinutes').value);
 
-if (!title || !startPrice || !step || !minutes){
-status.textContent = 'Заполни все поля.';
+if (!adminSelectedSkinId){
+status.textContent = dict.admin_pick_skin_first;
+return;
+}
+
+if (!startPrice || !step || !minutes){
+status.textContent = dict.admin_fill_all_fields;
 return;
 }
 
 btn.disabled = true;
-status.textContent = 'Публикую...';
+status.textContent = dict.admin_sending_request;
 
-adminApiFetch('/api/admin/auction/create', {
+adminApiFetch('/api/admin/auction/propose', {
 method: 'POST',
-body: { title: title, start_price: startPrice, step: step, minutes: minutes }
+body: { skin_id: adminSelectedSkinId, start_price: startPrice, step: step, minutes: minutes }
 })
 .then(() => {
-status.textContent = 'Аукцион опубликован ✓';
-document.getElementById('aTitle').value = '';
+status.textContent = dict.admin_request_sent;
 document.getElementById('aStartPrice').value = '';
 document.getElementById('aStep').value = '';
 document.getElementById('aMinutes').value = '';
+document.getElementById('adminSelectedSkin').style.display = 'none';
+adminSelectedSkinId = null;
+loadAdminSkinPicker();
 })
 .catch(err => { status.textContent = friendlyErrorMessage(err); })
 .finally(() => { btn.disabled = false; });
@@ -4302,6 +4578,131 @@ adminApiFetch('/api/admin/people/add_auctioneer', { method: 'POST', body: { user
 .then(() => { status.textContent = 'Готово ✓'; document.getElementById('adminNewPersonId').value = ''; loadAdminPeople(); })
 .catch(err => { status.textContent = friendlyErrorMessage(err); });
 });
+
+// ============================================================
+// ЖИВОЙ АУКЦИОН В МАГАЗИНЕ
+// ============================================================
+
+let currentAuctionData = null;
+let auctionPollTimer = null;
+
+function formatAuctionCountdown(endTimestamp){
+const dict = I18N[currentLang] || I18N.ru;
+if (!endTimestamp) return '';
+const remaining = endTimestamp * 1000 - Date.now();
+if (remaining <= 0) return dict.auction_ending;
+const totalSeconds = Math.floor(remaining / 1000);
+const h = Math.floor(totalSeconds / 3600);
+const m = Math.floor((totalSeconds % 3600) / 60);
+const s = totalSeconds % 60;
+const pad = n => String(n).padStart(2, '0');
+return (h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`);
+}
+
+function pollCurrentAuction(){
+fetch(API_BASE + '/api/auction/current')
+.then(r => r.json())
+.then(data => {
+currentAuctionData = data && data.active ? data : null;
+renderAuctionBanner();
+})
+.catch(() => {});
+}
+
+function renderAuctionBanner(){
+const banner = document.getElementById('auctionBanner');
+if (!currentAuctionData){
+banner.style.display = 'none';
+return;
+}
+banner.style.display = 'flex';
+const photo = document.getElementById('auctionBannerPhoto');
+if (currentAuctionData.photo_url){
+photo.src = currentAuctionData.photo_url;
+photo.style.display = '';
+} else {
+photo.style.display = 'none';
+}
+document.getElementById('auctionBannerName').textContent = currentAuctionData.title;
+document.getElementById('auctionBannerPrice').textContent = formatCoins(currentAuctionData.current_price);
+document.getElementById('auctionBannerTime').textContent = formatAuctionCountdown(currentAuctionData.end_time);
+}
+
+document.getElementById('auctionBannerBtn').addEventListener('click', () => {
+if (!currentAuctionData) return;
+if (!tg || !tg.initData){
+showAlert(errorMessage('unauthorized'));
+return;
+}
+
+const dict = I18N[currentLang] || I18N.ru;
+
+document.getElementById('auctionBidTitle').textContent = currentAuctionData.title;
+
+const photo = document.getElementById('auctionBidPhoto');
+if (currentAuctionData.photo_url){
+photo.src = currentAuctionData.photo_url;
+photo.style.display = '';
+} else {
+photo.style.display = 'none';
+}
+
+document.getElementById('auctionBidDetails').innerHTML = [
+buyDetailRow(dict.auction_current_price_label, formatCoins(currentAuctionData.current_price)),
+buyDetailRow(dict.auction_min_bid, formatCoins(currentAuctionData.minimum_bid)),
+buyDetailRow(dict.auction_bid_count, String(currentAuctionData.bid_count)),
+].join('');
+
+document.getElementById('auctionBidInput').value = currentAuctionData.minimum_bid;
+document.getElementById('auctionBidInput').min = currentAuctionData.minimum_bid;
+document.getElementById('auctionBidStatus').textContent = '';
+document.getElementById('auctionBidOverlay').classList.add('show');
+});
+
+document.getElementById('auctionBidCancel').addEventListener('click', () => {
+document.getElementById('auctionBidOverlay').classList.remove('show');
+});
+
+document.getElementById('auctionBidSubmit').addEventListener('click', () => {
+if (!currentAuctionData || !tg || !tg.initData) return;
+
+const btn = document.getElementById('auctionBidSubmit');
+const status = document.getElementById('auctionBidStatus');
+const amount = Number(document.getElementById('auctionBidInput').value);
+
+if (!amount || amount < currentAuctionData.minimum_bid){
+status.textContent = errorMessage('too_low');
+return;
+}
+
+btn.disabled = true;
+status.textContent = '...';
+
+fetch(API_BASE + '/api/auction/bid', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ init_data: tg.initData, amount: amount })
+})
+.then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error));
+}
+return r.json();
+})
+.then(() => {
+status.textContent = (I18N[currentLang] || I18N.ru).auction_bid_accepted;
+pollCurrentAuction();
+setTimeout(() => {
+document.getElementById('auctionBidOverlay').classList.remove('show');
+}, 900);
+})
+.catch(err => { status.textContent = friendlyErrorMessage(err); })
+.finally(() => { btn.disabled = false; });
+});
+
+pollCurrentAuction();
+auctionPollTimer = setInterval(pollCurrentAuction, 8000);
 
 // Магазин теперь главный экран — сразу подтягиваем баланс и каталог
 loadMe();

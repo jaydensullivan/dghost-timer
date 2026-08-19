@@ -1470,6 +1470,10 @@ justify-content:center;
 <span class="nav-icon" id="navAvatarIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.2-4 4-6 7.5-6s6.3 2 7.5 6"/></svg></span>
 <span class="nav-label" data-i18n="nav_profile">Профиль</span>
 </button>
+<button class="nav-btn" id="tabAdminBtn" type="button" style="display:none;">
+<span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"/></svg></span>
+<span class="nav-label" data-i18n="nav_admin">Admin</span>
+</button>
 </div>
 
 <div class="wrap" id="screenTimer" style="display:none;">
@@ -1616,6 +1620,98 @@ transform="rotate(-90 100 100)"></circle>
 <div id="dealsList">
 <div class="skins-empty" style="padding:16px 4px;">Загрузка...</div>
 </div>
+</div>
+
+</div>
+
+<div class="screen-profile" id="screenAdmin" style="display:none; padding:50px 16px 100px;">
+
+<div class="profile-section-title" style="font-size:16px; margin-bottom:14px;" data-i18n="admin_title">Панель администратора</div>
+
+<div class="profile-section" id="adminAuctionSection">
+<div class="profile-section-title" data-i18n="admin_section_auction">Создать аукцион</div>
+<div class="edit-field">
+<label for="aTitle" data-i18n="admin_label_lot_title">Название лота</label>
+<input id="aTitle" type="text" placeholder="SNOW CASE">
+</div>
+<div class="edit-field">
+<label for="aStartPrice" data-i18n="admin_label_start_price">Стартовая цена, сум</label>
+<input id="aStartPrice" type="number" min="1" placeholder="1000">
+</div>
+<div class="edit-field">
+<label for="aStep" data-i18n="admin_label_step">Шаг ставки, сум</label>
+<input id="aStep" type="number" min="1" placeholder="100">
+</div>
+<div class="edit-field">
+<label for="aMinutes" data-i18n="admin_label_minutes">Сколько минут идёт аукцион</label>
+<input id="aMinutes" type="number" min="1" placeholder="10">
+</div>
+<div class="shop-hint" style="margin-bottom:10px;" data-i18n="admin_auction_photo_hint">Чтобы прикрепить фото к лоту — пришли его боту в личку прямо перед созданием, оно подставится автоматически.</div>
+<button type="button" id="adminCreateAuctionBtn" class="steam-link-btn" data-i18n="admin_btn_create_auction">Опубликовать аукцион</button>
+<div class="edit-status" id="adminAuctionStatus"></div>
+</div>
+
+<div class="profile-section" id="adminTopupsSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_topups">Заявки на пополнение</div>
+<div id="adminTopupsList"><div class="skins-empty" style="padding:16px 4px;" data-i18n="loading">Загрузка...</div></div>
+</div>
+
+<div class="profile-section" id="adminWithdrawalsSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_withdrawals">Заявки на вывод</div>
+<div id="adminWithdrawalsList"><div class="skins-empty" style="padding:16px 4px;" data-i18n="loading">Загрузка...</div></div>
+</div>
+
+<div class="profile-section" id="adminTopupDetailsSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_topup_details">Реквизиты для пополнения</div>
+<div class="edit-field">
+<label for="adminCardNumber" data-i18n="admin_label_card_number">Номер карты</label>
+<input id="adminCardNumber" type="text" placeholder="9860 0466 0400 2967">
+</div>
+<div class="edit-field">
+<label for="adminCardHolder" data-i18n="admin_label_card_holder">Ф.И.О. владельца</label>
+<input id="adminCardHolder" type="text" placeholder="Ахмадбеков Н.">
+</div>
+<button type="button" id="adminSaveTopupDetailsBtn" class="steam-link-btn secondary" data-i18n="btn_save">Сохранить</button>
+<div class="edit-status" id="adminTopupDetailsStatus"></div>
+</div>
+
+<div class="profile-section" id="adminPromoSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_promo">Промо: продажи без комиссии</div>
+<div class="shop-hint" id="adminPromoStatus2" style="margin-bottom:10px;"></div>
+<div class="edit-field">
+<label for="adminPromoLimit" data-i18n="admin_label_promo_limit">Лимит продаж без комиссии (всего)</label>
+<input id="adminPromoLimit" type="number" min="0" placeholder="0">
+</div>
+<button type="button" id="adminSavePromoBtn" class="steam-link-btn secondary" data-i18n="btn_save">Сохранить</button>
+<div class="edit-status" id="adminPromoStatus"></div>
+</div>
+
+<div class="profile-section" id="adminReferralSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_referral_bonus">Реферальный бонус</div>
+<div class="edit-field">
+<label for="adminRefReferrer" data-i18n="admin_label_ref_referrer">Пригласившему, сум</label>
+<input id="adminRefReferrer" type="number" min="0" placeholder="0">
+</div>
+<div class="edit-field">
+<label for="adminRefReferred" data-i18n="admin_label_ref_referred">Приглашённому, сум</label>
+<input id="adminRefReferred" type="number" min="0" placeholder="0">
+</div>
+<button type="button" id="adminSaveReferralBtn" class="steam-link-btn secondary" data-i18n="btn_save">Сохранить</button>
+<div class="edit-status" id="adminReferralStatus"></div>
+</div>
+
+<div class="profile-section" id="adminPeopleSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_people">Админы и организаторы аукционов</div>
+<div id="adminPeopleList" style="margin-bottom:12px;"></div>
+<div class="edit-field">
+<label for="adminNewPersonId" data-i18n="admin_label_user_id">Telegram user_id</label>
+<input id="adminNewPersonId" type="number" placeholder="123456789">
+</div>
+<div class="money-btn-row">
+<button type="button" id="adminAddAdminBtn" class="money-btn" data-i18n="admin_btn_add_admin">+ Админ</button>
+<button type="button" id="adminAddAuctioneerBtn" class="money-btn" data-i18n="admin_btn_add_auctioneer">+ Организатор</button>
+</div>
+<div class="edit-status" id="adminPeopleStatus"></div>
 </div>
 
 </div>
@@ -1968,6 +2064,30 @@ cat_gloves: 'Перчатки',
 cat_stickers: 'Стикеры',
 cat_other: 'Другое',
 btn_manage: 'Управлять',
+nav_admin: 'Admin',
+admin_title: 'Панель администратора',
+admin_section_auction: 'Создать аукцион',
+admin_label_lot_title: 'Название лота',
+admin_label_start_price: 'Стартовая цена, сум',
+admin_label_step: 'Шаг ставки, сум',
+admin_label_minutes: 'Сколько минут идёт аукцион',
+admin_auction_photo_hint: 'Чтобы прикрепить фото к лоту — пришли его боту в личку прямо перед созданием, оно подставится автоматически.',
+admin_btn_create_auction: 'Опубликовать аукцион',
+admin_section_topups: 'Заявки на пополнение',
+admin_section_withdrawals: 'Заявки на вывод',
+admin_section_topup_details: 'Реквизиты для пополнения',
+admin_label_card_number: 'Номер карты',
+admin_label_card_holder: 'Ф.И.О. владельца',
+admin_section_promo: 'Промо: продажи без комиссии',
+admin_label_promo_limit: 'Лимит продаж без комиссии (всего)',
+admin_section_referral_bonus: 'Реферальный бонус',
+admin_label_ref_referrer: 'Пригласившему, сум',
+admin_label_ref_referred: 'Приглашённому, сум',
+admin_section_people: 'Админы и организаторы аукционов',
+admin_label_user_id: 'Telegram user_id',
+admin_btn_add_admin: '+ Админ',
+admin_btn_add_auctioneer: '+ Организатор',
+btn_save: 'Сохранить',
 btn_buy: 'Купить',
 form_add_title: 'Выставить скин',
 hint_link_steam_first: 'Привяжи трейд-ссылку во вкладке «Профиль», чтобы подставлять предметы из инвентаря Steam одним тапом.',
@@ -2067,6 +2187,30 @@ cat_gloves: "Qo'lqoplar",
 cat_stickers: "Stikerlar",
 cat_other: "Boshqa",
 btn_manage: "Boshqarish",
+nav_admin: 'Admin',
+admin_title: 'Administrator paneli',
+admin_section_auction: 'Auksion yaratish',
+admin_label_lot_title: 'Lot nomi',
+admin_label_start_price: 'Boshlang\'ich narx, sum',
+admin_label_step: 'Stavka qadami, sum',
+admin_label_minutes: 'Auksion necha daqiqa davom etadi',
+admin_auction_photo_hint: "Lotga foto biriktirish uchun — yaratishdan oldin uni botga shaxsiy xabarda yuboring, u avtomatik qo'shiladi.",
+admin_btn_create_auction: "Auksionni e'lon qilish",
+admin_section_topups: "To'ldirish arizalari",
+admin_section_withdrawals: "Pul yechish arizalari",
+admin_section_topup_details: "To'ldirish uchun rekvizitlar",
+admin_label_card_number: 'Karta raqami',
+admin_label_card_holder: 'Karta egasining F.I.Sh.',
+admin_section_promo: "Promo: komissiyasiz sotuvlar",
+admin_label_promo_limit: "Komissiyasiz sotuvlar limiti (jami)",
+admin_section_referral_bonus: 'Referal bonusi',
+admin_label_ref_referrer: "Taklif qiluvchiga, sum",
+admin_label_ref_referred: "Taklif qilinganga, sum",
+admin_section_people: "Adminlar va auksion tashkilotchilari",
+admin_label_user_id: 'Telegram user_id',
+admin_btn_add_admin: '+ Admin',
+admin_btn_add_auctioneer: '+ Tashkilotchi',
+btn_save: 'Saqlash',
 btn_buy: "Sotib olish",
 form_add_title: 'Skinni sotuvga qo\'yish',
 hint_link_steam_first: "Steam inventaridan bir tegishda mahsulot qo'shish uchun «Profil» bo'limida treyd-havolani bog'lang.",
@@ -2398,6 +2542,7 @@ const screenShop = document.getElementById('screenShop');
 const screenProfile = document.getElementById('screenProfile');
 
 let isAdmin = false;
+let isAuctioneer = false;
 let currentUserId = null;
 let currentTab = 'shop';
 
@@ -2431,21 +2576,26 @@ currentTab = name;
 screenTimer.style.display = name === 'timer' ? '' : 'none';
 screenShop.style.display = name === 'shop' ? 'block' : 'none';
 screenProfile.style.display = name === 'profile' ? 'block' : 'none';
+document.getElementById('screenAdmin').style.display = name === 'admin' ? 'block' : 'none';
 tabTimerBtn.classList.toggle('active', name === 'timer');
 tabShopBtn.classList.toggle('active', name === 'shop');
 tabProfileBtn.classList.toggle('active', name === 'profile');
+document.getElementById('tabAdminBtn').classList.toggle('active', name === 'admin');
 updateFabVisibility();
 if (name === 'shop'){
 loadMe();
 loadSkins();
 } else if (name === 'profile'){
 loadProfile();
+} else if (name === 'admin'){
+loadAdminPanel();
 }
 }
 
 tabTimerBtn.addEventListener('click', () => switchTab('timer'));
 tabShopBtn.addEventListener('click', () => switchTab('shop'));
 tabProfileBtn.addEventListener('click', () => switchTab('profile'));
+document.getElementById('tabAdminBtn').addEventListener('click', () => switchTab('admin'));
 
 // Аватар Telegram-пользователя в нижней навигации, если доступен
 if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.photo_url){
@@ -2541,6 +2691,8 @@ fetch(API_BASE + '/api/me?init_data=' + encodeURIComponent(tg.initData))
 if (!data || data.error) return;
 document.getElementById('balanceAmount').textContent = formatCoins(data.available);
 isAdmin = !!data.is_admin;
+isAuctioneer = !!data.is_auctioneer;
+document.getElementById('tabAdminBtn').style.display = (isAdmin || isAuctioneer) ? '' : 'none';
 currentUserId = data.user_id;
 hasSteamLink = !!data.has_steam_link;
 if (data.language && data.language !== currentLang){
@@ -2592,6 +2744,8 @@ return r.json();
 if (!data || data.error) throw new Error();
 
 isAdmin = !!data.is_admin;
+isAuctioneer = !!data.is_auctioneer;
+document.getElementById('tabAdminBtn').style.display = (isAdmin || isAuctioneer) ? '' : 'none';
 currentUserId = data.user_id;
 hasSteamLink = !!data.has_steam_link;
 updateFabVisibility();
@@ -3879,6 +4033,274 @@ addSkinStatus.textContent = friendlyErrorMessage(err);
 .finally(() => {
 addSkinSave.disabled = false;
 });
+});
+
+// ============================================================
+// ПАНЕЛЬ АДМИНИСТРАТОРА
+// ============================================================
+
+function adminApiFetch(path, opts){
+opts = opts || {};
+if (!tg || !tg.initData){
+return Promise.reject(new Error(errorMessage('unauthorized')));
+}
+const isGet = !opts.method || opts.method === 'GET';
+const url = isGet
+? API_BASE + path + (path.includes('?') ? '&' : '?') + 'init_data=' + encodeURIComponent(tg.initData)
+: API_BASE + path;
+const fetchOpts = {
+method: opts.method || 'GET',
+};
+if (!isGet){
+fetchOpts.headers = { 'Content-Type': 'application/json' };
+fetchOpts.body = JSON.stringify(Object.assign({ init_data: tg.initData }, opts.body || {}));
+}
+return fetch(url, fetchOpts).then(async r => {
+if (!r.ok){
+const data = await r.json().catch(() => ({}));
+throw new Error(errorMessage(data.error) || 'Ошибка');
+}
+return r.json();
+});
+}
+
+function loadAdminPanel(){
+document.getElementById('adminTopupsSection').style.display = isAdmin ? '' : 'none';
+document.getElementById('adminWithdrawalsSection').style.display = isAdmin ? '' : 'none';
+document.getElementById('adminTopupDetailsSection').style.display = isAdmin ? '' : 'none';
+document.getElementById('adminPromoSection').style.display = isAdmin ? '' : 'none';
+document.getElementById('adminReferralSection').style.display = isAdmin ? '' : 'none';
+document.getElementById('adminPeopleSection').style.display = isAdmin ? '' : 'none';
+
+if (!isAdmin) return;
+
+loadAdminTopups();
+loadAdminWithdrawals();
+loadAdminSettings();
+loadAdminPeople();
+}
+
+// ---------------- Создание аукциона ----------------
+
+document.getElementById('adminCreateAuctionBtn').addEventListener('click', () => {
+const btn = document.getElementById('adminCreateAuctionBtn');
+const status = document.getElementById('adminAuctionStatus');
+
+const title = document.getElementById('aTitle').value.trim();
+const startPrice = Number(document.getElementById('aStartPrice').value);
+const step = Number(document.getElementById('aStep').value);
+const minutes = Number(document.getElementById('aMinutes').value);
+
+if (!title || !startPrice || !step || !minutes){
+status.textContent = 'Заполни все поля.';
+return;
+}
+
+btn.disabled = true;
+status.textContent = 'Публикую...';
+
+adminApiFetch('/api/admin/auction/create', {
+method: 'POST',
+body: { title: title, start_price: startPrice, step: step, minutes: minutes }
+})
+.then(() => {
+status.textContent = 'Аукцион опубликован ✓';
+document.getElementById('aTitle').value = '';
+document.getElementById('aStartPrice').value = '';
+document.getElementById('aStep').value = '';
+document.getElementById('aMinutes').value = '';
+})
+.catch(err => { status.textContent = friendlyErrorMessage(err); })
+.finally(() => { btn.disabled = false; });
+});
+
+// ---------------- Заявки на пополнение ----------------
+
+function loadAdminTopups(){
+const list = document.getElementById('adminTopupsList');
+adminApiFetch('/api/admin/topups')
+.then(data => {
+const items = data.items || [];
+if (!items.length){
+list.innerHTML = '<div class="skins-empty" style="padding:12px 4px;">Заявок нет</div>';
+return;
+}
+list.innerHTML = items.map(t => `
+<div class="deal-card">
+<div class="deal-info">
+<div class="deal-title">${escapeHtml(t.username || ('ID ' + t.user_id))}</div>
+<div class="deal-meta">${formatCoins(t.amount)}${t.photo_file_id ? ' · 📎 чек есть' : ' · ⚠️ чека нет'}</div>
+</div>
+<div class="deal-actions">
+<button class="deal-action" data-topup-approve="${t.id}" type="button">Принять</button>
+<button class="deal-action secondary" data-topup-reject="${t.id}" type="button">Отклонить</button>
+</div>
+</div>`).join('');
+})
+.catch(() => { list.innerHTML = '<div class="skins-empty" style="padding:12px 4px;">Не удалось загрузить</div>'; });
+}
+
+document.getElementById('adminTopupsList').addEventListener('click', (e) => {
+const approveBtn = e.target.closest('[data-topup-approve]');
+const rejectBtn = e.target.closest('[data-topup-reject]');
+if (approveBtn){
+adminApiFetch('/api/admin/topups/' + approveBtn.dataset.topupApprove + '/approve', { method: 'POST' })
+.then(loadAdminTopups)
+.catch(err => showAlert(friendlyErrorMessage(err)));
+}
+if (rejectBtn){
+showConfirm('Отклонить заявку?', () => {
+adminApiFetch('/api/admin/topups/' + rejectBtn.dataset.topupReject + '/reject', { method: 'POST' })
+.then(loadAdminTopups)
+.catch(err => showAlert(friendlyErrorMessage(err)));
+});
+}
+});
+
+// ---------------- Заявки на вывод ----------------
+
+function loadAdminWithdrawals(){
+const list = document.getElementById('adminWithdrawalsList');
+adminApiFetch('/api/admin/withdrawals')
+.then(data => {
+const items = data.items || [];
+if (!items.length){
+list.innerHTML = '<div class="skins-empty" style="padding:12px 4px;">Заявок нет</div>';
+return;
+}
+list.innerHTML = items.map(w => `
+<div class="deal-card">
+<div class="deal-info">
+<div class="deal-title">${escapeHtml(w.username || ('ID ' + w.user_id))}</div>
+<div class="deal-meta">${formatCoins(w.amount)}</div>
+<div class="deal-meta">${escapeHtml(w.payment_details)}</div>
+</div>
+<div class="deal-actions">
+<button class="deal-action" data-w-approve="${w.id}" type="button">Принять</button>
+<button class="deal-action secondary" data-w-reject="${w.id}" type="button">Отклонить</button>
+</div>
+</div>`).join('');
+})
+.catch(() => { list.innerHTML = '<div class="skins-empty" style="padding:12px 4px;">Не удалось загрузить</div>'; });
+}
+
+document.getElementById('adminWithdrawalsList').addEventListener('click', (e) => {
+const approveBtn = e.target.closest('[data-w-approve]');
+const rejectBtn = e.target.closest('[data-w-reject]');
+if (approveBtn){
+showConfirm('Подтвердить вывод? (переведи деньги вручную ДО подтверждения)', () => {
+adminApiFetch('/api/admin/withdrawals/' + approveBtn.dataset.wApprove + '/approve', { method: 'POST' })
+.then(loadAdminWithdrawals)
+.catch(err => showAlert(friendlyErrorMessage(err)));
+});
+}
+if (rejectBtn){
+showConfirm('Отклонить заявку на вывод?', () => {
+adminApiFetch('/api/admin/withdrawals/' + rejectBtn.dataset.wReject + '/reject', { method: 'POST' })
+.then(loadAdminWithdrawals)
+.catch(err => showAlert(friendlyErrorMessage(err)));
+});
+}
+});
+
+// ---------------- Настройки (реквизиты, промо, реферал) ----------------
+
+function loadAdminSettings(){
+adminApiFetch('/api/admin/settings')
+.then(data => {
+const parts = (data.topup_details || '').split(' ');
+document.getElementById('adminCardHolder').value = '';
+document.getElementById('adminCardNumber').value = data.topup_details || '';
+document.getElementById('adminPromoLimit').value = data.promo_limit || 0;
+document.getElementById('adminPromoStatus2').textContent = `Использовано: ${data.promo_used || 0} из ${data.promo_limit || 0}`;
+document.getElementById('adminRefReferrer').value = data.referral_bonus_referrer || 0;
+document.getElementById('adminRefReferred').value = data.referral_bonus_referred || 0;
+})
+.catch(() => {});
+}
+
+document.getElementById('adminSaveTopupDetailsBtn').addEventListener('click', () => {
+const status = document.getElementById('adminTopupDetailsStatus');
+const cardNumber = document.getElementById('adminCardNumber').value.trim();
+const holder = document.getElementById('adminCardHolder').value.trim();
+if (!cardNumber){ status.textContent = 'Укажи номер карты.'; return; }
+status.textContent = 'Сохраняю...';
+adminApiFetch('/api/admin/topup_details', { method: 'POST', body: { card_number: cardNumber, holder: holder } })
+.then(() => { status.textContent = 'Сохранено ✓'; loadAdminSettings(); })
+.catch(err => { status.textContent = friendlyErrorMessage(err); });
+});
+
+document.getElementById('adminSavePromoBtn').addEventListener('click', () => {
+const status = document.getElementById('adminPromoStatus');
+const limit = Number(document.getElementById('adminPromoLimit').value);
+status.textContent = 'Сохраняю...';
+adminApiFetch('/api/admin/promo_limit', { method: 'POST', body: { limit: limit } })
+.then(() => { status.textContent = 'Сохранено ✓'; loadAdminSettings(); })
+.catch(err => { status.textContent = friendlyErrorMessage(err); });
+});
+
+document.getElementById('adminSaveReferralBtn').addEventListener('click', () => {
+const status = document.getElementById('adminReferralStatus');
+const referrer = Number(document.getElementById('adminRefReferrer').value);
+const referred = Number(document.getElementById('adminRefReferred').value);
+status.textContent = 'Сохраняю...';
+adminApiFetch('/api/admin/referral_bonus', { method: 'POST', body: { referrer: referrer, referred: referred } })
+.then(() => { status.textContent = 'Сохранено ✓'; })
+.catch(err => { status.textContent = friendlyErrorMessage(err); });
+});
+
+// ---------------- Люди (админы / организаторы аукционов) ----------------
+
+function loadAdminPeople(){
+const list = document.getElementById('adminPeopleList');
+adminApiFetch('/api/admin/people')
+.then(data => {
+const rows = [];
+rows.push(`<div class="deal-meta" style="margin-bottom:8px;">Владелец: ${data.owner_id}</div>`);
+(data.admins || []).forEach(id => {
+rows.push(`<div class="deal-card" style="padding:8px 12px;"><div class="deal-info"><div class="deal-title" style="font-size:13px;">Админ · ${id}</div></div>${data.is_owner ? `<div class="deal-actions"><button class="deal-action secondary" data-remove-admin="${id}" type="button">Снять</button></div>` : ''}</div>`);
+});
+(data.auctioneers || []).forEach(id => {
+rows.push(`<div class="deal-card" style="padding:8px 12px;"><div class="deal-info"><div class="deal-title" style="font-size:13px;">Организатор · ${id}</div></div>${data.is_owner ? `<div class="deal-actions"><button class="deal-action secondary" data-remove-auctioneer="${id}" type="button">Снять</button></div>` : ''}</div>`);
+});
+list.innerHTML = rows.join('');
+document.getElementById('adminAddAdminBtn').style.display = data.is_owner ? '' : 'none';
+document.getElementById('adminAddAuctioneerBtn').style.display = data.is_owner ? '' : 'none';
+})
+.catch(() => {});
+}
+
+document.getElementById('adminPeopleList').addEventListener('click', (e) => {
+const removeAdminBtn = e.target.closest('[data-remove-admin]');
+const removeAuctBtn = e.target.closest('[data-remove-auctioneer]');
+if (removeAdminBtn){
+adminApiFetch('/api/admin/people/remove_admin', { method: 'POST', body: { user_id: Number(removeAdminBtn.dataset.removeAdmin) } })
+.then(loadAdminPeople)
+.catch(err => showAlert(friendlyErrorMessage(err)));
+}
+if (removeAuctBtn){
+adminApiFetch('/api/admin/people/remove_auctioneer', { method: 'POST', body: { user_id: Number(removeAuctBtn.dataset.removeAuctioneer) } })
+.then(loadAdminPeople)
+.catch(err => showAlert(friendlyErrorMessage(err)));
+}
+});
+
+document.getElementById('adminAddAdminBtn').addEventListener('click', () => {
+const status = document.getElementById('adminPeopleStatus');
+const id = Number(document.getElementById('adminNewPersonId').value);
+if (!id){ status.textContent = 'Укажи user_id.'; return; }
+adminApiFetch('/api/admin/people/add_admin', { method: 'POST', body: { user_id: id } })
+.then(() => { status.textContent = 'Готово ✓'; document.getElementById('adminNewPersonId').value = ''; loadAdminPeople(); })
+.catch(err => { status.textContent = friendlyErrorMessage(err); });
+});
+
+document.getElementById('adminAddAuctioneerBtn').addEventListener('click', () => {
+const status = document.getElementById('adminPeopleStatus');
+const id = Number(document.getElementById('adminNewPersonId').value);
+if (!id){ status.textContent = 'Укажи user_id.'; return; }
+adminApiFetch('/api/admin/people/add_auctioneer', { method: 'POST', body: { user_id: id } })
+.then(() => { status.textContent = 'Готово ✓'; document.getElementById('adminNewPersonId').value = ''; loadAdminPeople(); })
+.catch(err => { status.textContent = friendlyErrorMessage(err); });
 });
 
 // Магазин теперь главный экран — сразу подтягиваем баланс и каталог

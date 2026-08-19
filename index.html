@@ -1797,6 +1797,11 @@ transform="rotate(-90 100 100)"></circle>
 <input id="aEmoji" type="text" maxlength="10" placeholder="🔥">
 </div>
 <div class="edit-field">
+<label for="aEmojiId" data-i18n="admin_label_emoji_id">ID premium-эмодзи (необязательно)</label>
+<input id="aEmojiId" type="text" inputmode="numeric" placeholder="5427009714745517609">
+<div class="shop-hint" style="margin-top:6px; margin-bottom:0;" data-i18n="admin_emoji_id_hint">Достать ID — команда /emoji_id боту в личке. Без ID эмодзи вставится обычным текстом.</div>
+</div>
+<div class="edit-field">
 <label for="aStartPrice" data-i18n="admin_label_start_price">Стартовая цена, сум</label>
 <input id="aStartPrice" type="number" min="1" placeholder="1000">
 </div>
@@ -2247,6 +2252,8 @@ admin_title: 'Панель администратора',
 admin_section_auction: 'Создать аукцион',
 admin_label_lot_title: 'Название лота',
 admin_label_emoji: 'Эмодзи перед названием (необязательно)',
+admin_label_emoji_id: 'ID premium-эмодзи (необязательно)',
+admin_emoji_id_hint: 'Достать ID — команда /emoji_id боту в личке. Без ID эмодзи вставится обычным текстом.',
 admin_label_start_price: 'Стартовая цена, сум',
 admin_label_step: 'Шаг ставки, сум',
 admin_label_minutes: 'Сколько минут идёт аукцион',
@@ -2389,6 +2396,8 @@ admin_title: 'Administrator paneli',
 admin_section_auction: 'Auksion yaratish',
 admin_label_lot_title: 'Lot nomi',
 admin_label_emoji: "Nom oldidan emoji (ixtiyoriy)",
+admin_label_emoji_id: "Premium-emoji ID (ixtiyoriy)",
+admin_emoji_id_hint: "ID olish — botga shaxsiy xabarda /emoji_id buyrug'i. ID bo'lmasa, emoji oddiy matn sifatida qo'shiladi.",
 admin_label_start_price: 'Boshlang\'ich narx, sum',
 admin_label_step: 'Stavka qadami, sum',
 admin_label_minutes: 'Auksion necha daqiqa davom etadi',
@@ -4394,7 +4403,7 @@ status.textContent = dict.admin_sending_request;
 
 adminApiFetch('/api/admin/auction/propose', {
 method: 'POST',
-body: { skin_id: adminSelectedSkinId, start_price: startPrice, step: step, minutes: minutes, emoji: document.getElementById('aEmoji').value.trim() }
+body: { skin_id: adminSelectedSkinId, start_price: startPrice, step: step, minutes: minutes, emoji: document.getElementById('aEmoji').value.trim(), emoji_id: document.getElementById('aEmojiId').value.trim() }
 })
 .then(() => {
 status.textContent = dict.admin_request_sent;
@@ -4402,6 +4411,7 @@ document.getElementById('aStartPrice').value = '';
 document.getElementById('aStep').value = '';
 document.getElementById('aMinutes').value = '';
 document.getElementById('aEmoji').value = '';
+document.getElementById('aEmojiId').value = '';
 document.getElementById('adminSelectedSkin').style.display = 'none';
 adminSelectedSkinId = null;
 loadAdminSkinPicker();

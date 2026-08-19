@@ -4655,6 +4655,8 @@ photo.style.display = 'none';
 }
 
 document.getElementById('auctionBidDetails').innerHTML = [
+buyDetailRow(dict.detail_wear, currentAuctionData.wear ? ((currentLang === 'uz' ? WEAR_LABEL_FULL_UZ : WEAR_LABEL_FULL)[currentAuctionData.wear] || currentAuctionData.wear) : null),
+buyDetailRow('Float', (currentAuctionData.float_value !== null && currentAuctionData.float_value !== undefined) ? Number(currentAuctionData.float_value).toFixed(4) : null),
 buyDetailRow(dict.auction_current_price_label, formatCoins(currentAuctionData.current_price)),
 buyDetailRow(dict.auction_min_bid, formatCoins(currentAuctionData.minimum_bid)),
 buyDetailRow(dict.auction_bid_count, String(currentAuctionData.bid_count)),

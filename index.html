@@ -4120,9 +4120,22 @@ sWeaponType.value = item.weapon_type || '';
 sWear.value = item.wear || '';
 sRarity.value = item.rarity || '';
 sStattrak.checked = !!item.stattrak;
-if (item.photo_url) sPhoto.value = item.photo_url;
-if (item.float_value !== null && item.float_value !== undefined){
-sFloat.value = item.float_value;
+
+// Раньше эти поля только ЗАПОЛНЯЛИСЬ, когда у предмета была
+// нужная информация, но никогда не очищались для предмета,
+// у которого её нет — оставалось значение от предыдущего
+// выбранного скина. Теперь всегда явно ставим (или очищаем).
+sPhoto.value = item.photo_url || '';
+sFloat.value = (item.float_value !== null && item.float_value !== undefined)
+? item.float_value
+: '';
+
+// Паттерн (paint seed) — если Steam-инвентарь его отдаёт,
+// подставляем в описание автоматически, а не только float.
+if (item.pattern !== null && item.pattern !== undefined && item.pattern !== ''){
+sDescription.value = 'Паттерн: ' + item.pattern;
+} else {
+sDescription.value = '';
 }
 
 inventoryOverlay.classList.remove('show');

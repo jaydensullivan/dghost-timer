@@ -83,6 +83,11 @@ overflow:hidden;
 
 .welcome-overlay.show{ display:flex; }
 
+#categoryPickerScreen{
+justify-content:flex-start;
+align-items:stretch;
+}
+
 .welcome-bg{
 position:absolute;
 inset:0;
@@ -142,6 +147,72 @@ color:#0a0708;
 }
 
 /* ---------- category chips (buy flow) ---------- */
+.back-btn{
+width:38px;
+height:38px;
+border-radius:50%;
+border:1px solid var(--red-dim);
+background:rgba(0,0,0,0.4);
+color:var(--silver);
+font-size:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+flex:0 0 auto;
+}
+
+.category-picker-header{
+display:flex;
+align-items:center;
+gap:12px;
+padding:20px 16px 10px;
+position:relative;
+z-index:1;
+}
+
+.category-picker-title{
+font-family:'JetBrains Mono', monospace;
+font-size:16px;
+font-weight:700;
+color:var(--silver);
+}
+
+.category-tile-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:14px 16px 24px;
+position:relative;
+z-index:1;
+overflow-y:auto;
+}
+
+.category-tile{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:8px;
+min-height:110px;
+border-radius:14px;
+border:1px solid var(--red-dim);
+background:rgba(10,7,8,0.7);
+cursor:pointer;
+}
+
+.category-tile:active{ border-color:var(--red); background:rgba(217,74,82,0.1); }
+
+.category-tile-icon{ color:var(--red); }
+
+.category-tile-label{
+font-family:'JetBrains Mono', monospace;
+font-size:12px;
+font-weight:700;
+color:var(--silver);
+text-transform:uppercase;
+}
+
 .category-chips{
 display:flex;
 gap:8px;
@@ -786,6 +857,29 @@ background:rgba(255,255,255,0.03);
 .money-btn-row{
 display:flex;
 gap:10px;
+}
+
+.admin-commission-box{
+flex:1;
+padding:12px;
+border-radius:10px;
+border:1px solid var(--red-dim);
+text-align:center;
+}
+
+.admin-commission-label{
+font-family:'JetBrains Mono', monospace;
+font-size:10px;
+text-transform:uppercase;
+color:var(--muted);
+margin-bottom:6px;
+}
+
+.admin-commission-value{
+font-family:'JetBrains Mono', monospace;
+font-size:16px;
+font-weight:700;
+color:var(--red);
 }
 
 .money-btn{
@@ -1605,6 +1699,45 @@ justify-content:center;
 </div>
 </div>
 
+<div class="welcome-overlay" id="categoryPickerScreen" style="background:var(--bg);">
+<div class="category-picker-header">
+<button type="button" id="categoryPickerBack" class="back-btn">←</button>
+<div class="category-picker-title" data-i18n="category_picker_title">Что ищешь?</div>
+</div>
+<div class="category-tile-grid">
+<button type="button" class="category-tile" data-cat="all">
+<span class="category-tile-label" data-i18n="cat_all">Все</span>
+</button>
+<button type="button" class="category-tile" data-cat="pistols">
+<span class="category-tile-label" data-i18n="cat_pistols">Пистолеты</span>
+</button>
+<button type="button" class="category-tile" data-cat="rifles">
+<span class="category-tile-label" data-i18n="cat_rifles">Автоматы</span>
+</button>
+<button type="button" class="category-tile" data-cat="smgs">
+<span class="category-tile-label" data-i18n="cat_smgs">ПП</span>
+</button>
+<button type="button" class="category-tile" data-cat="snipers">
+<span class="category-tile-label" data-i18n="cat_snipers">Снайперки</span>
+</button>
+<button type="button" class="category-tile" data-cat="heavy">
+<span class="category-tile-label" data-i18n="cat_heavy">Тяжёлое</span>
+</button>
+<button type="button" class="category-tile" data-cat="knives">
+<span class="category-tile-label" data-i18n="cat_knives">Ножи</span>
+</button>
+<button type="button" class="category-tile" data-cat="gloves">
+<span class="category-tile-label" data-i18n="cat_gloves">Перчатки</span>
+</button>
+<button type="button" class="category-tile" data-cat="stickers">
+<span class="category-tile-label" data-i18n="cat_stickers">Стикеры</span>
+</button>
+<button type="button" class="category-tile" data-cat="other">
+<span class="category-tile-label" data-i18n="cat_other">Другое</span>
+</button>
+</div>
+</div>
+
 
 <div class="bottom-nav">
 <button class="nav-btn" id="tabTimerBtn" type="button" style="display:none;">
@@ -1666,7 +1799,10 @@ transform="rotate(-90 100 100)"></circle>
 <div class="screen-shop" id="screenShop" style="display:block;">
 
 <div class="shop-header">
+<div style="display:flex; align-items:center; gap:10px;">
+<button type="button" class="back-btn" id="shopBackBtn">←</button>
 <div class="balance-pill" id="balancePill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.8 2.5-1.8s2.5.7 2.5 1.7c0 2.3-5 1.3-5 3.6 0 1 1 1.8 2.5 1.8s2.5-.8 2.5-1.8"/></svg> <span id="balanceAmount">—</span></div>
+</div>
 <button class="add-skin-btn" id="addSkinBtn" type="button" data-i18n="btn_add_skin">+ Скин</button>
 </div>
 
@@ -1690,6 +1826,8 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="screen-profile" id="screenProfile">
+
+<button type="button" class="back-btn" id="profileBackBtn" style="margin-bottom:12px;">←</button>
 
 <div class="profile-card rain-card-wrap">
 <canvas id="rain"></canvas>
@@ -1779,6 +1917,8 @@ transform="rotate(-90 100 100)"></circle>
 
 <div class="screen-profile" id="screenAuctions" style="display:none; padding:50px 16px 100px;">
 
+<button type="button" class="back-btn" id="auctionsBackBtn" style="margin-bottom:12px;">←</button>
+
 <div class="profile-section-title" style="font-size:16px; margin-bottom:14px;" data-i18n="auctions_title">Аукцион</div>
 
 <div id="auctionsList">
@@ -1788,6 +1928,8 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="screen-profile" id="screenAdmin" style="display:none; padding:50px 16px 100px;">
+
+<button type="button" class="back-btn" id="adminBackBtn" style="margin-bottom:12px;">←</button>
 
 <div class="profile-section-title" style="font-size:16px; margin-bottom:14px;" data-i18n="admin_title">Панель администратора</div>
 
@@ -1852,6 +1994,20 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 <button type="button" id="adminSaveTopupDetailsBtn" class="steam-link-btn secondary" data-i18n="btn_save">Сохранить</button>
 <div class="edit-status" id="adminTopupDetailsStatus"></div>
+</div>
+
+<div class="profile-section" id="adminCommissionSection" style="margin-top:10px; display:none;">
+<div class="profile-section-title" data-i18n="admin_section_commission">Заработано на комиссиях</div>
+<div class="money-btn-row">
+<div class="admin-commission-box">
+<div class="admin-commission-label" data-i18n="admin_commission_sale">С продаж (0.5%)</div>
+<div class="admin-commission-value" id="adminCommissionSale">—</div>
+</div>
+<div class="admin-commission-box">
+<div class="admin-commission-label" data-i18n="admin_commission_withdraw">С выводов (2.5%)</div>
+<div class="admin-commission-value" id="adminCommissionWithdraw">—</div>
+</div>
+</div>
 </div>
 
 <div class="profile-section" id="adminPromoSection" style="margin-top:10px; display:none;">
@@ -2212,6 +2368,10 @@ const wo = document.getElementById('welcomeOverlay');
 if (wo && wo.classList.contains('show')){
 wo.style.height = window.innerHeight + 'px';
 }
+const cp = document.getElementById('categoryPickerScreen');
+if (cp && cp.classList.contains('show')){
+cp.style.height = window.innerHeight + 'px';
+}
 });
 
 // ============================================================
@@ -2254,6 +2414,7 @@ btn_withdraw_short: 'Вывести',
 welcome_greeting: 'Добро пожаловать, мой король! Сегодня будем продавать или покупать?',
 btn_sell_action: 'Продать',
 btn_buy_action: 'Купить',
+category_picker_title: 'Что ищешь?',
 cat_all: 'Все',
 cat_pistols: 'Пистолеты',
 cat_rifles: 'Автоматы',
@@ -2282,6 +2443,9 @@ admin_section_withdrawals: 'Заявки на вывод',
 admin_section_topup_details: 'Реквизиты для пополнения',
 admin_label_card_number: 'Номер карты',
 admin_label_card_holder: 'Ф.И.О. владельца',
+admin_section_commission: 'Заработано на комиссиях',
+admin_commission_sale: 'С продаж (0.5%)',
+admin_commission_withdraw: 'С выводов (2.5%)',
 admin_section_promo: 'Промо: продажи без комиссии',
 admin_label_promo_limit: 'Лимит продаж без комиссии (всего)',
 admin_section_referral_bonus: 'Реферальный бонус',
@@ -2347,6 +2511,8 @@ label_card_uzcard_humo: 'Карта Uzcard/Humo',
 warning_fio: '⚠️ Обязательно укажи Ф.И.О. владельца карты — без этого заявку не обработают',
 btn_submit_withdraw: 'Подать заявку на вывод',
 status_sent_waiting_hold: 'Отправлено, ждём холд',
+status_waiting_buyer_confirm: 'Отправлено, ждём подтверждения покупателя',
+status_hold_running: 'Холд идёт',
 status_need_to_send: 'Нужно отправить',
 btn_sent: 'Отправил',
 btn_cancel_sale: 'Отменить',
@@ -2412,6 +2578,7 @@ btn_withdraw_short: "Yechish",
 welcome_greeting: "Xush kelibsiz, mening shohim! Bugun sotamizmi yoki sotib olamizmi?",
 btn_sell_action: "Sotish",
 btn_buy_action: "Sotib olish",
+category_picker_title: "Nima izlayapsiz?",
 cat_all: "Hammasi",
 cat_pistols: "Pistoletlar",
 cat_rifles: "Avtomatlar",
@@ -2440,6 +2607,9 @@ admin_section_withdrawals: "Pul yechish arizalari",
 admin_section_topup_details: "To'ldirish uchun rekvizitlar",
 admin_label_card_number: 'Karta raqami',
 admin_label_card_holder: 'Karta egasining F.I.Sh.',
+admin_section_commission: 'Komissiyadan tushum',
+admin_commission_sale: "Sotuvlardan (0.5%)",
+admin_commission_withdraw: "Pul yechishdan (2.5%)",
 admin_section_promo: "Promo: komissiyasiz sotuvlar",
 admin_label_promo_limit: "Komissiyasiz sotuvlar limiti (jami)",
 admin_section_referral_bonus: 'Referal bonusi',
@@ -2505,6 +2675,8 @@ label_card_uzcard_humo: 'Uzcard/Humo karta',
 warning_fio: "⚠️ Karta egasining F.I.Sh.ni albatta ko'rsating — bo'lmasa ariza ko'rib chiqilmaydi",
 btn_submit_withdraw: "Pul yechish uchun ariza berish",
 status_sent_waiting_hold: "Yuborildi, hold kutilmoqda",
+status_waiting_buyer_confirm: "Yuborildi, xaridor tasdiqlashini kutmoqda",
+status_hold_running: "Hold davom etmoqda",
 status_need_to_send: 'Yuborish kerak',
 btn_sent: 'Yubordim',
 btn_cancel_sale: 'Bekor qilish',
@@ -2868,10 +3040,51 @@ loadAuctionsList();
 }
 
 tabTimerBtn.addEventListener('click', () => switchTab('timer'));
-tabShopBtn.addEventListener('click', () => switchTab('shop'));
-tabProfileBtn.addEventListener('click', () => switchTab('profile'));
-document.getElementById('tabAdminBtn').addEventListener('click', () => switchTab('admin'));
-document.getElementById('tabAuctionsBtn').addEventListener('click', () => switchTab('auctions'));
+
+// ============================================================
+// ИСТОРИЯ НАВИГАЦИИ — «НАЗАД» ВЕДЁТ НА ПРЕДЫДУЩИЙ ЭКРАН,
+// А НЕ СРАЗУ НА ГЛАВНЫЙ
+// ============================================================
+
+let navStack = [];
+
+function getCurrentScreenName(){
+if (welcomeOverlay.classList.contains('show')) return 'welcome';
+if (categoryPickerScreen.classList.contains('show')) return 'categoryPicker';
+return currentTab;
+}
+
+function displayScreen(name){
+if (name === 'welcome'){
+hideCategoryPicker();
+showWelcomeOverlay();
+} else if (name === 'categoryPicker'){
+hideWelcomeOverlay();
+showCategoryPicker();
+} else {
+hideWelcomeOverlay();
+hideCategoryPicker();
+switchTab(name);
+}
+}
+
+function goToScreen(name){
+const current = getCurrentScreenName();
+if (current !== name){
+navStack.push(current);
+}
+displayScreen(name);
+}
+
+function goBack(){
+const prev = navStack.pop();
+displayScreen(prev || 'welcome');
+}
+
+document.getElementById('tabShopBtn').addEventListener('click', () => goToScreen('shop'));
+document.getElementById('tabProfileBtn').addEventListener('click', () => goToScreen('profile'));
+document.getElementById('tabAdminBtn').addEventListener('click', () => goToScreen('admin'));
+document.getElementById('tabAuctionsBtn').addEventListener('click', () => goToScreen('auctions'));
 
 // Аватар Telegram-пользователя в нижней навигации, если доступен
 if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.photo_url){
@@ -3077,8 +3290,10 @@ let statusHtml = '';
 let actionHtml = '';
 
 if (deal.role === 'selling'){
-if (deal.sent_at){
-statusHtml = `<div class="deal-status sent">${dict.status_sent_waiting_hold}</div>`;
+if (deal.sent_at && deal.confirmed_at){
+statusHtml = `<div class="deal-status sent">${dict.status_hold_running}</div>`;
+} else if (deal.sent_at){
+statusHtml = `<div class="deal-status sent">${dict.status_waiting_buyer_confirm}</div>`;
 } else {
 statusHtml = `<div class="deal-status pending">${dict.status_need_to_send}</div>`;
 actionHtml = `<button class="deal-action" data-mark-sent="${deal.id}" type="button">${dict.btn_sent}</button>
@@ -4232,11 +4447,23 @@ welcomeOverlay.classList.remove('show');
 document.body.style.overflow = '';
 }
 
+const categoryPickerScreen = document.getElementById('categoryPickerScreen');
+
+function showCategoryPicker(){
+categoryPickerScreen.style.height = window.innerHeight + 'px';
+categoryPickerScreen.classList.add('show');
+document.body.style.overflow = 'hidden';
+}
+
+function hideCategoryPicker(){
+categoryPickerScreen.classList.remove('show');
+document.body.style.overflow = '';
+}
+
 showWelcomeOverlay();
 
 document.getElementById('welcomeSellBtn').addEventListener('click', () => {
-hideWelcomeOverlay();
-switchTab('shop');
+goToScreen('shop');
 
 if (!tg || !tg.initData){
 showAlert(errorMessage('unauthorized'));
@@ -4257,8 +4484,22 @@ loadInventory(false);
 });
 
 document.getElementById('welcomeBuyBtn').addEventListener('click', () => {
-hideWelcomeOverlay();
-switchTab('shop');
+goToScreen('categoryPicker');
+});
+
+document.getElementById('categoryPickerBack').addEventListener('click', goBack);
+
+document.getElementById('shopBackBtn').addEventListener('click', goBack);
+document.getElementById('profileBackBtn').addEventListener('click', goBack);
+document.getElementById('auctionsBackBtn').addEventListener('click', goBack);
+document.getElementById('adminBackBtn').addEventListener('click', goBack);
+
+document.querySelector('.category-tile-grid').addEventListener('click', (e) => {
+const tile = e.target.closest('.category-tile');
+if (!tile) return;
+currentCategory = tile.dataset.cat;
+if (typeof renderCategoryChips === 'function') renderCategoryChips();
+goToScreen('shop');
 });
 
 addSkinCancel.addEventListener('click', () => {
@@ -4374,6 +4615,7 @@ function loadAdminPanel(){
 document.getElementById('adminTopupsSection').style.display = isAdmin ? '' : 'none';
 document.getElementById('adminWithdrawalsSection').style.display = isAdmin ? '' : 'none';
 document.getElementById('adminTopupDetailsSection').style.display = isAdmin ? '' : 'none';
+document.getElementById('adminCommissionSection').style.display = isAdmin ? '' : 'none';
 document.getElementById('adminPromoSection').style.display = isAdmin ? '' : 'none';
 document.getElementById('adminReferralSection').style.display = isAdmin ? '' : 'none';
 document.getElementById('adminPeopleSection').style.display = isAdmin ? '' : 'none';
@@ -4656,6 +4898,8 @@ document.getElementById('adminPromoLimit').value = data.promo_limit || 0;
 document.getElementById('adminPromoStatus2').textContent = `Использовано: ${data.promo_used || 0} из ${data.promo_limit || 0}`;
 document.getElementById('adminRefReferrer').value = data.referral_bonus_referrer || 0;
 document.getElementById('adminRefReferred').value = data.referral_bonus_referred || 0;
+document.getElementById('adminCommissionSale').textContent = formatCoins(data.commission_sale_total || 0);
+document.getElementById('adminCommissionWithdraw').textContent = formatCoins(data.commission_withdraw_total || 0);
 })
 .catch(() => {});
 }
@@ -4821,7 +5065,7 @@ renderAuctionsList();
 if (deepLinkAuctionId){
 const target = auctionsData.find(a => a.auction_id === deepLinkAuctionId);
 if (target){
-switchTab('auctions');
+goToScreen('auctions');
 renderAuctionsList();
 openAuctionBid(target.auction_id);
 }

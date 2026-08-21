@@ -182,11 +182,13 @@ color:var(--silver);
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:12px;
-padding:14px 16px 24px;
+padding:14px 16px 100px;
 position:relative;
 z-index:1;
 overflow-y:auto;
 }
+
+.bottom-nav.elevated{ z-index:65; }
 
 .category-tile{
 display:flex;
@@ -1739,7 +1741,7 @@ justify-content:center;
 </div>
 
 
-<div class="bottom-nav">
+<div class="bottom-nav" id="bottomNav">
 <button class="nav-btn" id="tabTimerBtn" type="button" style="display:none;">
 <span class="nav-icon">⏱</span>
 <span class="nav-label" data-i18n="nav_timer">Таймер</span>
@@ -1807,8 +1809,6 @@ transform="rotate(-90 100 100)"></circle>
 </div>
 
 <div class="shop-hint" data-i18n="hint_sell_flow">Продал скин — деньги придут покупателю в холд на 8 дней (трейд-бан Steam), затем автоматически на твой баланс.</div>
-
-<div class="category-chips" id="categoryChips"></div>
 
 <div class="shop-controls">
 <input id="skinSearch" class="skin-search" type="text" placeholder="Поиск по названию или оружию..." data-i18n-placeholder="search_placeholder">
@@ -3026,6 +3026,10 @@ tabShopBtn.classList.toggle('active', name === 'shop');
 tabProfileBtn.classList.toggle('active', name === 'profile');
 document.getElementById('tabAdminBtn').classList.toggle('active', name === 'admin');
 document.getElementById('tabAuctionsBtn').classList.toggle('active', name === 'auctions');
+// В каталоге лотов (после выбора категории на плитках) нижняя
+// навигация не нужна — там только кнопка «Назад». На остальных
+// экранах навигация остаётся видимой как обычно.
+document.getElementById('bottomNav').style.display = name === 'shop' ? 'none' : 'flex';
 updateFabVisibility();
 if (name === 'shop'){
 loadMe();
@@ -3046,13 +3050,15 @@ tabTimerBtn.addEventListener('click', () => switchTab('timer'));
 // А НЕ СРАЗУ НА ГЛАВНЫЙ
 // ============================================================
 
-let navStack = [];
-
-function getCurrentScreenName(){
-if (welcomeOverlay.classList.contains('show')) return 'welcome';
-if (categoryPickerScreen.classList.contains('show')) return 'categoryPicker';
-return currentTab;
-}
+// ============================================================
+// ФИКСИРОВАННАЯ ИЕРАРХИЯ ЭКРАНОВ
+//
+// Главный экран
+//   └ Магазин / Профиль / Аукцион / Admin — «Назад» отсюда
+//     всегда ведёт на главный экран (не по истории переходов)
+//       └ (только внутри Магазина) категории → активные лоты —
+//         «Назад» отсюда ведёт на экран категорий Магазина
+// ============================================================
 
 function displayScreen(name){
 if (name === 'welcome'){
@@ -3069,16 +3075,7 @@ switchTab(name);
 }
 
 function goToScreen(name){
-const current = getCurrentScreenName();
-if (current !== name){
-navStack.push(current);
-}
 displayScreen(name);
-}
-
-function goBack(){
-const prev = navStack.pop();
-displayScreen(prev || 'welcome');
 }
 
 document.getElementById('tabShopBtn').addEventListener('click', () => goToScreen('shop'));
@@ -3491,13 +3488,16 @@ return `<button type="button" class="category-chip${active}" data-cat="${cat}">$
 }).join('');
 }
 
-document.getElementById('categoryChips').addEventListener('click', (e) => {
+const categoryChipsEl = document.getElementById('categoryChips');
+if (categoryChipsEl){
+categoryChipsEl.addEventListener('click', (e) => {
 const btn = e.target.closest('.category-chip');
 if (!btn) return;
 currentCategory = btn.dataset.cat;
 renderCategoryChips();
 applyFiltersAndRender();
 });
+}
 
 renderCategoryChips();
 
@@ -4453,11 +4453,14 @@ function showCategoryPicker(){
 categoryPickerScreen.style.height = window.innerHeight + 'px';
 categoryPickerScreen.classList.add('show');
 document.body.style.overflow = 'hidden';
+document.getElementById('bottomNav').style.display = 'flex';
+document.getElementById('bottomNav').classList.add('elevated');
 }
 
 function hideCategoryPicker(){
 categoryPickerScreen.classList.remove('show');
 document.body.style.overflow = '';
+document.getElementById('bottomNav').classList.remove('elevated');
 }
 
 showWelcomeOverlay();
@@ -4487,12 +4490,12 @@ document.getElementById('welcomeBuyBtn').addEventListener('click', () => {
 goToScreen('categoryPicker');
 });
 
-document.getElementById('categoryPickerBack').addEventListener('click', goBack);
+document.getElementById('categoryPickerBack').addEventListener('click', () => goToScreen('welcome'));
 
-document.getElementById('shopBackBtn').addEventListener('click', goBack);
-document.getElementById('profileBackBtn').addEventListener('click', goBack);
-document.getElementById('auctionsBackBtn').addEventListener('click', goBack);
-document.getElementById('adminBackBtn').addEventListener('click', goBack);
+document.getElementById('shopBackBtn').addEventListener('click', () => goToScreen('categoryPicker'));
+document.getElementById('profileBackBtn').addEventListener('click', () => goToScreen('welcome'));
+document.getElementById('auctionsBackBtn').addEventListener('click', () => goToScreen('welcome'));
+document.getElementById('adminBackBtn').addEventListener('click', () => goToScreen('welcome'));
 
 document.querySelector('.category-tile-grid').addEventListener('click', (e) => {
 const tile = e.target.closest('.category-tile');
